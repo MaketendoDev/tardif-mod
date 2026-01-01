@@ -1,0 +1,100 @@
+package net.maketendo.tardifmod.datagen.providers;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.maketendo.tardifmod.main.TARDIFBlocks;
+import net.maketendo.tardifmod.main.TARDIFEntities;
+import net.maketendo.tardifmod.main.TARDIFItems;
+import net.minecraft.registry.RegistryWrapper;
+
+import java.util.concurrent.CompletableFuture;
+
+public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
+
+    public TARDIFModEnglishLangProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(dataOutput, registryLookup);
+    }
+
+    @Override
+    public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
+        // Creative Tabs
+        translationBuilder.add("itemgroup.tardif_mod.items", "TARDIF: Items");
+        translationBuilder.add("itemgroup.tardif_mod.decoration", "TARDIF: Decoration");
+
+        // Items
+        translationBuilder.add(TARDIFItems.TARDIS_ITEM, "TARDIS");
+        translationBuilder.add(TARDIFItems.SILVER_TARDIS_KEY, "TARDIS Key");
+        translationBuilder.add(TARDIFItems.GOLD_TARDIS_KEY, "TARDIS Key");
+
+        // Blocks
+        translationBuilder.add(TARDIFBlocks.ROUNDEL, "Roundel");
+        translationBuilder.add(TARDIFBlocks.ROUNDEL_HALF, "Roundel");
+
+        translationBuilder.add(TARDIFBlocks.GREY_STAINED_QUARTZ, "Grey Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ, "Dark Grey Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ, "Black Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.BROWN_STAINED_QUARTZ, "Brown Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.RED_STAINED_QUARTZ, "Red Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.ORANGE_STAINED_QUARTZ, "Orange Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.YELLOW_STAINED_QUARTZ, "Yellow Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.LIME_STAINED_QUARTZ, "Lime Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.GREEN_STAINED_QUARTZ, "Green Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.CYAN_STAINED_QUARTZ, "Cyan Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ, "Light Blue Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.BLUE_STAINED_QUARTZ, "Blue Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.PURPLE_STAINED_QUARTZ, "Purple Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ, "Magenta Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ, "Pink Stained Quartz");
+
+        translationBuilder.add(TARDIFBlocks.GREY_ROUNDEL, "Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.GREY_ROUNDEL_HALF, "Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.DARK_GREY_ROUNDEL, "Dark Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.DARK_GREY_ROUNDEL_HALF, "Dark Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.BLACK_ROUNDEL, "Black Roundel");
+        translationBuilder.add(TARDIFBlocks.BLACK_ROUNDEL_HALF, "Black Roundel");
+        translationBuilder.add(TARDIFBlocks.BROWN_ROUNDEL, "Brown Roundel");
+        translationBuilder.add(TARDIFBlocks.BROWN_ROUNDEL_HALF, "Brown Roundel");
+        translationBuilder.add(TARDIFBlocks.RED_ROUNDEL, "Red Roundel");
+        translationBuilder.add(TARDIFBlocks.RED_ROUNDEL_HALF, "Red Roundel");
+        translationBuilder.add(TARDIFBlocks.ORANGE_ROUNDEL, "Orange Roundel");
+        translationBuilder.add(TARDIFBlocks.ORANGE_ROUNDEL_HALF, "Orange Roundel");
+        translationBuilder.add(TARDIFBlocks.YELLOW_ROUNDEL, "Yellow Roundel");
+        translationBuilder.add(TARDIFBlocks.YELLOW_ROUNDEL_HALF, "Yellow Roundel");
+        translationBuilder.add(TARDIFBlocks.LIME_ROUNDEL, "Lime Roundel");
+        translationBuilder.add(TARDIFBlocks.LIME_ROUNDEL_HALF, "Lime Roundel");
+        translationBuilder.add(TARDIFBlocks.GREEN_ROUNDEL, "Green Roundel");
+        translationBuilder.add(TARDIFBlocks.GREEN_ROUNDEL_HALF, "Green Roundel");
+        translationBuilder.add(TARDIFBlocks.CYAN_ROUNDEL, "Cyan Roundel");
+        translationBuilder.add(TARDIFBlocks.CYAN_ROUNDEL_HALF, "Cyan Roundel");
+        translationBuilder.add(TARDIFBlocks.LIGHT_BLUE_ROUNDEL, "Light Blue Roundel");
+        translationBuilder.add(TARDIFBlocks.LIGHT_BLUE_ROUNDEL_HALF, "Light Blue Roundel");
+        translationBuilder.add(TARDIFBlocks.BLUE_ROUNDEL, "Blue Roundel");
+        translationBuilder.add(TARDIFBlocks.BLUE_ROUNDEL_HALF, "Blue Roundel");
+        translationBuilder.add(TARDIFBlocks.PURPLE_ROUNDEL, "Purple Roundel");
+        translationBuilder.add(TARDIFBlocks.PURPLE_ROUNDEL_HALF, "Purple Roundel");
+        translationBuilder.add(TARDIFBlocks.MAGENTA_ROUNDEL, "Magenta Roundel");
+        translationBuilder.add(TARDIFBlocks.MAGENTA_ROUNDEL_HALF, "Magenta Roundel");
+        translationBuilder.add(TARDIFBlocks.PINK_ROUNDEL, "Pink Roundel");
+        translationBuilder.add(TARDIFBlocks.PINK_ROUNDEL_HALF, "Pink Roundel");
+
+        // Item Tooltips
+        translationBuilder.add("tooltip.tardif_mod.linkable_item.1", "Click on the interior door of the TARDIS");
+        translationBuilder.add("tooltip.tardif_mod.linkable_item.2", "for it to link.");
+        translationBuilder.add("tooltip.tardif_mod.linkable_item.id", "Linked ID: ");
+        translationBuilder.add("tooltip.tardif_mod.tardis_key.type", "Material: ");
+
+        // Actionbar Messages
+        translationBuilder.add("message.tardif_mod.tardis_item.created_tardis","Created TARDIS Successfully!");
+
+        // Entities
+        translationBuilder.add(TARDIFEntities.TARDIS, "TARDIS");
+        translationBuilder.add(TARDIFEntities.TARDIS_INTERIOR_DOOR, "TARDIS Interior Door");
+
+        // Tags
+        translationBuilder.add("tag.item.tardif_mod.tardis_keys", "TARDIS Keys");
+        translationBuilder.add("tag.item.tardif_mod.linkable_items", "TARDIF Linkable Items");
+        translationBuilder.add("tag.item.tardif_mod.paint_brush", "Paint Brushes");
+        translationBuilder.add("tag.block.tardif_mod.roundels", "Roundels");
+        translationBuilder.add("tag.block.tardif_mod.stained_quartz", "Stained Quartz");
+    }
+}

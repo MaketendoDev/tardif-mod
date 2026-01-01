@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.maketendo.tardifmod.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "client.LevelSummaryMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

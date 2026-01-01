@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "tardif_mod",
+  "version": "${version}",
+  "name": "TARDIF Mod",
+  "description": "TARDIS :3",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/tardif_mod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "net.maketendo.tardifmod.datagen.TARDIFModDataGenerator"
+    ],
+    "client": [
+      "net.maketendo.tardifmod.client.TARDIFModClient"
+    ],
+    "main": [
+      "net.maketendo.tardifmod.TARDIFMod"
+    ]
+  },
+  "mixins": [
+    "tardif_mod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

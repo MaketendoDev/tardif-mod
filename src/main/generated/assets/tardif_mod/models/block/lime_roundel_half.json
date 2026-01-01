@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "tardif_mod:block/lime_roundel_half"
+  }
+}

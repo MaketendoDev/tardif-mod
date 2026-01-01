@@ -1,0 +1,11 @@
+{
+  "type": "tardif_mod:tardis_void",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:the_void",
+      "layers": [],
+      "structures": {}
+    }
+  }
+}
