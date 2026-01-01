@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "tardif_mod:block/magenta_stained_quartz",
+    "side": "tardif_mod:block/magenta_stained_quartz",
+    "top": "tardif_mod:block/magenta_stained_quartz"
+  }
+}

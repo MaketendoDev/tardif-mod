@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "tardif_mod:brown_stained_quartz",
+  "result": {
+    "count": 1,
+    "id": "tardif_mod:brown_roundel"
+  }
+}

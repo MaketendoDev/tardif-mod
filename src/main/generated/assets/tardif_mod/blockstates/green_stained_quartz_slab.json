@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "tardif_mod:block/green_stained_quartz_slab"
+    },
+    "type=double": {
+      "model": "tardif_mod:block/green_stained_quartz"
+    },
+    "type=top": {
+      "model": "tardif_mod:block/green_stained_quartz_slab_top"
+    }
+  }
+}

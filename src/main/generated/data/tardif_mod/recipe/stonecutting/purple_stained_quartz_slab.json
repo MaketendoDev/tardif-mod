@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "tardif_mod:purple_stained_quartz",
+  "result": {
+    "count": 2,
+    "id": "tardif_mod:purple_stained_quartz_slab"
+  }
+}
