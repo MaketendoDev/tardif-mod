@@ -1,0 +1,23 @@
+{
+  "id": 1,
+  "owner": "25155a88-cf0d-4100-a9d8-d6bb5bd716d6",
+  "door_open": false,
+  "door_locked": false,
+  "powered": "true",
+  "roundel_light": "10",
+  "interior_yaw": 0.0,
+  "interior_origin": 64,
+  "interior_pos": {
+    "x": 0.0,
+    "y": 65.0,
+    "z": 3.0
+  },
+  "interior_dim": "tardif_mod:tardis",
+  "exterior_yaw": 0.0,
+  "exterior_pos": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "exterior_dim": "minecraft:overworld"
+}

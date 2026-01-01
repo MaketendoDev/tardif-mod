@@ -1,0 +1,21 @@
+{
+  "stats": {
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 1195,
+      "minecraft:time_since_rest": 1582,
+      "minecraft:walk_one_cm": 3337,
+      "minecraft:total_world_time": 6846,
+      "minecraft:leave_game": 1,
+      "minecraft:fly_one_cm": 6908,
+      "minecraft:crouch_one_cm": 3,
+      "minecraft:sneak_time": 59,
+      "minecraft:play_time": 1582,
+      "minecraft:jump": 11,
+      "minecraft:time_since_death": 1582
+    },
+    "minecraft:used": {
+      "tardif_mod:tardis_item": 7
+    }
+  },
+  "DataVersion": 4671
+}

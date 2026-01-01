@@ -1,0 +1,20 @@
+{
+  "values": [
+    "minecraft:quartz_block",
+    "tardif_mod:grey_stained_quartz",
+    "tardif_mod:dark_grey_stained_quartz",
+    "tardif_mod:black_stained_quartz",
+    "tardif_mod:brown_stained_quartz",
+    "tardif_mod:red_stained_quartz",
+    "tardif_mod:orange_stained_quartz",
+    "tardif_mod:yellow_stained_quartz",
+    "tardif_mod:lime_stained_quartz",
+    "tardif_mod:green_stained_quartz",
+    "tardif_mod:cyan_stained_quartz",
+    "tardif_mod:light_blue_stained_quartz",
+    "tardif_mod:blue_stained_quartz",
+    "tardif_mod:purple_stained_quartz",
+    "tardif_mod:magenta_stained_quartz",
+    "tardif_mod:pink_stained_quartz"
+  ]
+}

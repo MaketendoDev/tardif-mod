@@ -1,0 +1,17 @@
+{
+  "stats": {
+    "minecraft:used": {
+      "minecraft:diamond_pickaxe": 1,
+      "tardif_mod:roundel_half": 2
+    },
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 84,
+      "minecraft:time_since_rest": 468,
+      "minecraft:walk_one_cm": 70,
+      "minecraft:total_world_time": 468,
+      "minecraft:play_time": 468,
+      "minecraft:time_since_death": 468
+    }
+  },
+  "DataVersion": 4671
+}
