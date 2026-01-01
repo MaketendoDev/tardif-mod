@@ -77,6 +77,39 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.PINK_ROUNDEL, "Pink Roundel");
         translationBuilder.add(TARDIFBlocks.PINK_ROUNDEL_HALF, "Pink Roundel");
 
+        translationBuilder.add(TARDIFBlocks.GREY_STAINED_QUARTZ_SLAB, "Grey Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_SLAB, "Dark Grey Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ_SLAB, "Black Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.BROWN_STAINED_QUARTZ_SLAB, "Brown Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.RED_STAINED_QUARTZ_SLAB, "Red Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.ORANGE_STAINED_QUARTZ_SLAB, "Orange Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.YELLOW_STAINED_QUARTZ_SLAB, "Yellow Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.LIME_STAINED_QUARTZ_SLAB, "Lime Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.GREEN_STAINED_QUARTZ_SLAB, "Green Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.CYAN_STAINED_QUARTZ_SLAB, "Cyan Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ_SLAB, "Light Blue Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.BLUE_STAINED_QUARTZ_SLAB, "Blue Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.PURPLE_STAINED_QUARTZ_SLAB, "Purple Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_SLAB, "Magenta Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ_SLAB, "Pink Stained Quartz Slab");
+
+        translationBuilder.add(TARDIFBlocks.GREY_STAINED_QUARTZ_STAIRS, "Grey Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_STAIRS, "Dark Grey Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ_STAIRS, "Black Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.BROWN_STAINED_QUARTZ_STAIRS, "Brown Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.RED_STAINED_QUARTZ_STAIRS, "Red Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.ORANGE_STAINED_QUARTZ_STAIRS, "Orange Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.YELLOW_STAINED_QUARTZ_STAIRS, "Yellow Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.LIME_STAINED_QUARTZ_STAIRS, "Lime Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.GREEN_STAINED_QUARTZ_STAIRS, "Green Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.CYAN_STAINED_QUARTZ_STAIRS, "Cyan Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ_STAIRS, "Light Blue Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.BLUE_STAINED_QUARTZ_STAIRS, "Blue Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.PURPLE_STAINED_QUARTZ_STAIRS, "Purple Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_STAIRS, "Magenta Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS, "Pink Stained Quartz Stairs");
+
+
         // Item Tooltips
         translationBuilder.add("tooltip.tardif_mod.linkable_item.1", "Click on the interior door of the TARDIS");
         translationBuilder.add("tooltip.tardif_mod.linkable_item.2", "for it to link.");

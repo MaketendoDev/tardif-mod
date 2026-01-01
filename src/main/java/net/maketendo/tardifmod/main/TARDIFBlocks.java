@@ -4,10 +4,7 @@ import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.blocks.RoundelBlock;
 import net.maketendo.tardifmod.main.blocks.StainedBlock;
 import net.maketendo.tardifmod.main.blocks.panels.PowerPanelBlock;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -238,6 +235,68 @@ public class TARDIFBlocks {
             properties -> new StainedBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
     public static final Block PINK_STAINED_QUARTZ = registerBlock("pink_stained_quartz",
             properties -> new StainedBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+
+    public static final Block GREY_STAINED_QUARTZ_SLAB = registerBlock("grey_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block DARK_GREY_STAINED_QUARTZ_SLAB = registerBlock("dark_grey_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block BLACK_STAINED_QUARTZ_SLAB = registerBlock("black_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block BROWN_STAINED_QUARTZ_SLAB = registerBlock("brown_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block RED_STAINED_QUARTZ_SLAB = registerBlock("red_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block ORANGE_STAINED_QUARTZ_SLAB = registerBlock("orange_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block YELLOW_STAINED_QUARTZ_SLAB = registerBlock("yellow_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block LIME_STAINED_QUARTZ_SLAB = registerBlock("lime_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block GREEN_STAINED_QUARTZ_SLAB = registerBlock("green_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block CYAN_STAINED_QUARTZ_SLAB = registerBlock("cyan_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block LIGHT_BLUE_STAINED_QUARTZ_SLAB = registerBlock("light_blue_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block BLUE_STAINED_QUARTZ_SLAB = registerBlock("blue_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block PURPLE_STAINED_QUARTZ_SLAB = registerBlock("purple_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block MAGENTA_STAINED_QUARTZ_SLAB = registerBlock("magenta_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block PINK_STAINED_QUARTZ_SLAB = registerBlock("pink_stained_quartz_slab",
+            properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+
+    public static final Block GREY_STAINED_QUARTZ_STAIRS = registerBlock("grey_stained_quartz_stairs",
+            properties -> new StairsBlock(GREY_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block DARK_GREY_STAINED_QUARTZ_STAIRS = registerBlock("dark_grey_stained_quartz_stairs",
+            properties -> new StairsBlock(DARK_GREY_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block BLACK_STAINED_QUARTZ_STAIRS = registerBlock("black_stained_quartz_stairs",
+            properties -> new StairsBlock(BLACK_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block BROWN_STAINED_QUARTZ_STAIRS = registerBlock("brown_stained_quartz_stairs",
+            properties -> new StairsBlock(BROWN_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block RED_STAINED_QUARTZ_STAIRS = registerBlock("red_stained_quartz_stairs",
+            properties -> new StairsBlock(RED_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block ORANGE_STAINED_QUARTZ_STAIRS = registerBlock("orange_stained_quartz_stairs",
+            properties -> new StairsBlock(ORANGE_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block YELLOW_STAINED_QUARTZ_STAIRS = registerBlock("yellow_stained_quartz_stairs",
+            properties -> new StairsBlock(YELLOW_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block LIME_STAINED_QUARTZ_STAIRS = registerBlock("lime_stained_quartz_stairs",
+            properties -> new StairsBlock(LIME_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block GREEN_STAINED_QUARTZ_STAIRS = registerBlock("green_stained_quartz_stairs",
+            properties -> new StairsBlock(GREEN_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block CYAN_STAINED_QUARTZ_STAIRS = registerBlock("cyan_stained_quartz_stairs",
+            properties -> new StairsBlock(CYAN_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block LIGHT_BLUE_STAINED_QUARTZ_STAIRS = registerBlock("light_blue_stained_quartz_stairs",
+            properties -> new StairsBlock(LIGHT_BLUE_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block BLUE_STAINED_QUARTZ_STAIRS = registerBlock("blue_stained_quartz_stairs",
+            properties -> new StairsBlock(BLUE_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block PURPLE_STAINED_QUARTZ_STAIRS = registerBlock("purple_stained_quartz_stairs",
+            properties -> new StairsBlock(PURPLE_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block MAGENTA_STAINED_QUARTZ_STAIRS = registerBlock("magenta_stained_quartz_stairs",
+            properties -> new StairsBlock(MAGENTA_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
+    public static final Block PINK_STAINED_QUARTZ_STAIRS = registerBlock("pink_stained_quartz_stairs",
+            properties -> new StairsBlock(PINK_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
 
     public static final Block POWER_PANEL = registerBlock("power_panel",
             properties -> new PowerPanelBlock(properties.nonOpaque()));

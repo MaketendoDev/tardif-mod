@@ -80,6 +80,39 @@ public class TARDIFItemGroups {
                         entries.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ);
                         entries.add(TARDIFBlocks.PINK_STAINED_QUARTZ);
 
+                        entries.add(TARDIFBlocks.GREY_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.BLACK_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.BROWN_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.RED_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.ORANGE_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.YELLOW_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.LIME_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.GREEN_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.CYAN_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.BLUE_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.PURPLE_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_SLAB);
+                        entries.add(TARDIFBlocks.PINK_STAINED_QUARTZ_SLAB);
+
+                        entries.add(TARDIFBlocks.GREY_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.BLACK_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.BROWN_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.RED_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.ORANGE_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.YELLOW_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.LIME_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.GREEN_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.CYAN_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.BLUE_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.PURPLE_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_STAIRS);
+                        entries.add(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS);
+
+
                     }).build());
 
 

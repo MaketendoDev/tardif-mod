@@ -18,22 +18,21 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ROUNDEL);
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ROUNDEL_HALF);
 
-
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREY_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLACK_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BROWN_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.RED_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ORANGE_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.YELLOW_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIME_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREEN_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.CYAN_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLUE_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PURPLE_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.MAGENTA_STAINED_QUARTZ);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREY_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLACK_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BROWN_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.RED_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ORANGE_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.YELLOW_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIME_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREEN_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.CYAN_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLUE_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PURPLE_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.MAGENTA_STAINED_QUARTZ);
+//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_STAINED_QUARTZ);
 
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREY_ROUNDEL);
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREY_ROUNDEL_HALF);
@@ -65,6 +64,67 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.MAGENTA_ROUNDEL_HALF);
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_ROUNDEL);
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_ROUNDEL_HALF);
+
+        BlockStateModelGenerator.BlockTexturePool greyStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.GREY_STAINED_QUARTZ);
+        greyStainedQuartzPool.stairs(TARDIFBlocks.GREY_STAINED_QUARTZ_STAIRS);
+        greyStainedQuartzPool.slab(TARDIFBlocks.GREY_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool darkGreyStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ);
+        darkGreyStainedQuartzPool.stairs(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_STAIRS);
+        darkGreyStainedQuartzPool.slab(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool blackStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.BLACK_STAINED_QUARTZ);
+        blackStainedQuartzPool.stairs(TARDIFBlocks.BLACK_STAINED_QUARTZ_STAIRS);
+        blackStainedQuartzPool.slab(TARDIFBlocks.BLACK_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool brownStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.BROWN_STAINED_QUARTZ);
+        brownStainedQuartzPool.stairs(TARDIFBlocks.BROWN_STAINED_QUARTZ_STAIRS);
+        brownStainedQuartzPool.slab(TARDIFBlocks.BROWN_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool redStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.RED_STAINED_QUARTZ);
+        redStainedQuartzPool.stairs(TARDIFBlocks.RED_STAINED_QUARTZ_STAIRS);
+        redStainedQuartzPool.slab(TARDIFBlocks.RED_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool orangeStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.ORANGE_STAINED_QUARTZ);
+        orangeStainedQuartzPool.stairs(TARDIFBlocks.ORANGE_STAINED_QUARTZ_STAIRS);
+        orangeStainedQuartzPool.slab(TARDIFBlocks.ORANGE_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool yellowStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.YELLOW_STAINED_QUARTZ);
+        yellowStainedQuartzPool.stairs(TARDIFBlocks.YELLOW_STAINED_QUARTZ_STAIRS);
+        yellowStainedQuartzPool.slab(TARDIFBlocks.YELLOW_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool limeStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.LIME_STAINED_QUARTZ);
+        limeStainedQuartzPool.stairs(TARDIFBlocks.LIME_STAINED_QUARTZ_STAIRS);
+        limeStainedQuartzPool.slab(TARDIFBlocks.LIME_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool greenStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.GREEN_STAINED_QUARTZ);
+        greenStainedQuartzPool.stairs(TARDIFBlocks.GREEN_STAINED_QUARTZ_STAIRS);
+        greenStainedQuartzPool.slab(TARDIFBlocks.GREEN_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool cyanStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.CYAN_STAINED_QUARTZ);
+        cyanStainedQuartzPool.stairs(TARDIFBlocks.CYAN_STAINED_QUARTZ_STAIRS);
+        cyanStainedQuartzPool.slab(TARDIFBlocks.CYAN_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool lightBlueStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ);
+        lightBlueStainedQuartzPool.stairs(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ_STAIRS);
+        lightBlueStainedQuartzPool.slab(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool blueStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.BLUE_STAINED_QUARTZ);
+        blueStainedQuartzPool.stairs(TARDIFBlocks.BLUE_STAINED_QUARTZ_STAIRS);
+        blueStainedQuartzPool.slab(TARDIFBlocks.BLUE_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool purpleStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.PURPLE_STAINED_QUARTZ);
+        purpleStainedQuartzPool.stairs(TARDIFBlocks.PURPLE_STAINED_QUARTZ_STAIRS);
+        purpleStainedQuartzPool.slab(TARDIFBlocks.PURPLE_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool magentaStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.MAGENTA_STAINED_QUARTZ);
+        magentaStainedQuartzPool.stairs(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_STAIRS);
+        magentaStainedQuartzPool.slab(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_SLAB);
+
+        BlockStateModelGenerator.BlockTexturePool pinkStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.PINK_STAINED_QUARTZ);
+        pinkStainedQuartzPool.stairs(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS);
+        pinkStainedQuartzPool.slab(TARDIFBlocks.PINK_STAINED_QUARTZ_SLAB);
+
     }
 
     @Override
