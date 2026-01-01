@@ -1,16 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" factoryName="Application" name="Data Generation" type="Application">
     <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main"/>
-    <module name="TARDIFMod.main"/>
-    <option name="PROGRAM_PARAMETERS" value=""/>
+    <module name="tardif-mod"/>
+    <shortenClasspath name="ARGS_FILE"/>
     <option name="VM_PARAMETERS" value="-Dfabric.dli.config=D:\Awsome@@0020Tendo's@@0020Modding\IDEAModdingWorkspaces\TARDIFMod\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=client -Dfabric-api.datagen &quot;-Dfabric-api.datagen.output-dir=D:\Awsome Tendo's Modding\IDEAModdingWorkspaces\TARDIFMod\src\main\generated&quot; -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"/>
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/build/datagen/"/>
     <method v="2">
       <option enabled="true" name="Make"/>
     </method>
-    <envs>
-      
-    </envs>
-    <shortenClasspath name="ARGS_FILE"/>
   <classpathModifications/></configuration>
 </component>

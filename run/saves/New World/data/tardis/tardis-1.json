@@ -1,10 +1,11 @@
 {
   "id": 1,
-  "owner": "25155a88-cf0d-4100-a9d8-d6bb5bd716d6",
+  "owner": "7619f16b-711c-43e2-b732-f1497abed575",
   "door_open": false,
   "door_locked": false,
   "powered": "true",
   "roundel_light": "10",
+  "roundels": [],
   "interior_yaw": 0.0,
   "interior_origin": 64,
   "interior_pos": {
