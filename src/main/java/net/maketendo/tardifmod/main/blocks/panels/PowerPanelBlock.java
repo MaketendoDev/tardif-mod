@@ -1,18 +1,26 @@
 package net.maketendo.tardifmod.main.blocks.panels;
 
 import com.mojang.serialization.MapCodec;
+import net.maketendo.tardifmod.main.TARDIFDimensions;
 import net.maketendo.tardifmod.main.blockentities.panels.PowerPanelBlockEntity;
+import net.maketendo.tardifmod.main.tardis.TardisData;
+import net.maketendo.tardifmod.main.tardis.TardisInteriorResolver;
+import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.utils.ShapeUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -55,6 +63,16 @@ public class PowerPanelBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+
+        if (world.isClient()) {return ActionResult.PASS;}
+
+        ServerWorld tardisWorld = world.getServer().getWorld(TARDIFDimensions.TARDIS_WORLD);
+        int tardisId = TardisInteriorResolver.getTardisIdAt(tardisWorld, pos);
+        if (tardisId < 0) return ActionResult.PASS;
+
+        TardisData data = TardisManager.get(world.getServer(), tardisId);
+        if (data == null) return ActionResult.PASS;
+
         Vec3d local = hit.getPos().subtract(
                 pos.getX(),
                 pos.getY(),
@@ -69,7 +87,7 @@ public class PowerPanelBlock extends BlockWithEntity {
 
         for (PowerPanelPart part : PowerPanelPart.values()) {
             if (part.contains(unrotated.x, unrotated.y, unrotated.z)) {
-                handlePartClick(part, world, pos, player);
+                handlePartClick(part, world, pos, player, data);
                 return ActionResult.CONSUME;
             }
         }
@@ -119,12 +137,64 @@ public class PowerPanelBlock extends BlockWithEntity {
             PowerPanelPart part,
             World world,
             BlockPos pos,
-            PlayerEntity player
+            PlayerEntity player,
+            TardisData data
     ) {
         switch (part) {
-            case BUTTON_A -> player.sendMessage(Text.literal("Button A"), true);
-            case BUTTON_B -> player.sendMessage(Text.literal("Button B"), true);
-            case SWITCH   -> player.sendMessage(Text.literal("Switch"), true);
+            case BUTTON_A -> {
+                if (world.getBlockEntity(pos) instanceof PowerPanelBlockEntity counterBlockEntity) {
+                    counterBlockEntity.toggleIncrementUp();
+
+                    player.sendMessage(
+                            Text.literal("Light Level Increment Mode: ")
+                                    .append(Text.literal(counterBlockEntity.isIncrementingUp() ? "Positive" : "Negative")),
+                            true
+                    );
+                }
+            }
+            case BUTTON_B -> {
+                if (world.getBlockEntity(pos) instanceof PowerPanelBlockEntity counterBlockEntity) {
+                    if (counterBlockEntity.isIncrementingUp()) {
+                        data.roundelLight++;
+                    } else {
+                        data.roundelLight--;
+                    }
+
+                    data.roundelLight = Math.clamp(data.roundelLight, 1, 15);
+                    player.sendMessage(Text.literal("Light Level is currently: " + data.roundelLight), true);
+                }
+            }
+            case SWITCH   -> {
+                if (!player.isSneaking()) {
+                    data.powered = !data.powered;
+                    player.sendMessage(
+                            Text.literal("TARDIS Power: ")
+                                    .append(Text.literal(data.powered ? "ENABLED" : "DISABLED")
+                                            .formatted(data.powered ? Formatting.GREEN : Formatting.RED)),
+                            true
+                    );
+
+                    if (data.powered) {
+                        world.playSound(null, pos, SoundEvents.BLOCK_CONDUIT_ACTIVATE, SoundCategory.AMBIENT, 5, 0.7f);
+                        world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.AMBIENT, 5, 0.7f);
+                    } else {
+                        world.playSound(null, pos, SoundEvents.BLOCK_CONDUIT_DEACTIVATE, SoundCategory.AMBIENT, 5, 0.7f);
+                        world.playSound(null, pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.AMBIENT, 5, 0.7f);
+                    }
+                } else {
+                    data.emergencyMode = !data.emergencyMode;
+                    player.sendMessage(
+                            Text.literal(data.emergencyMode ? "⚠ Activated TARDIS Emergency Mode!" : "⚠ Disabled TARDIS Emergency Mode!").formatted(Formatting.GOLD),
+                            true
+                    );
+
+                    if (data.emergencyMode) {
+                        world.playSound(null, pos, SoundEvents.BLOCK_BELL_USE, SoundCategory.AMBIENT, 5, 0.5f);
+                    } else {
+                        world.playSound(null, pos, SoundEvents.BLOCK_BELL_USE, SoundCategory.AMBIENT, 5, 0.5f);
+                    }
+                }
+            }
         }
     }
 

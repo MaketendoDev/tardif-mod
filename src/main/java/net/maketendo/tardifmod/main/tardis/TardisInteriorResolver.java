@@ -37,15 +37,5 @@ public class TardisInteriorResolver {
                 && Math.abs(pos.getY() - origin.getY()) <= radius
                 && Math.abs(pos.getZ() - origin.getZ()) <= radius;
     }
-
-
-    public static void forEachRoundel(ServerWorld world, int tardisId, Consumer<BlockPos> consumer) {
-        TardisData data = TardisManager.get(world.getServer(), tardisId);
-        if (data == null) return;
-
-        for (BlockPos pos : data.roundelPositions) {
-            consumer.accept(pos);
-        }
-    }
 }
 

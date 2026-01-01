@@ -1,15 +1,10 @@
 package net.maketendo.tardifmod.main.tardis;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.maketendo.tardifmod.main.blocks.RoundelBlock;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public class TardisData {
@@ -20,9 +15,8 @@ public class TardisData {
     public Boolean doorOpen;
     public Boolean doorLocked;
     public Boolean powered;
-
+    public Boolean emergencyMode;
     public Integer roundelLight;
-    public Set<BlockPos> roundelPositions = new HashSet<>();
 
 
     // Interior
@@ -45,14 +39,8 @@ public class TardisData {
         json.addProperty("door_open", doorOpen);
         json.addProperty("door_locked", doorLocked);
         json.addProperty("powered", powered.toString());
+        json.addProperty("emergency_mode", emergencyMode.toString());
         json.addProperty("roundel_light", roundelLight.toString());
-
-        JsonArray roundels = new JsonArray();
-        for (BlockPos pos : roundelPositions) {
-            roundels.add(pos.asLong());
-        }
-        json.add("roundels", roundels);
-
 
         // Interior
         json.addProperty("interior_yaw", interiorYaw);
@@ -87,16 +75,8 @@ public class TardisData {
         data.doorOpen = json.get("door_open").getAsBoolean();
         data.doorLocked = json.get("door_locked").getAsBoolean();
         data.powered = json.get("powered").getAsBoolean();
+        data.emergencyMode = json.get("emergency_mode").getAsBoolean();
         data.roundelLight = json.get("roundel_light").getAsInt();
-
-        data.roundelPositions = new HashSet<>();
-        if (json.has("roundels")) {
-            JsonArray roundels = json.getAsJsonArray("roundels");
-            for (var el : roundels) {
-                data.roundelPositions.add(BlockPos.fromLong(el.getAsLong()));
-            }
-        }
-
 
         // Interior
         data.interiorYaw = json.get("interior_yaw").getAsFloat();
