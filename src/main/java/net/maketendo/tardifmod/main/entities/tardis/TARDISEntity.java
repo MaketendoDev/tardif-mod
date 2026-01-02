@@ -286,6 +286,7 @@ public class TARDISEntity extends TARDISExteriorBase {
         data.doorOpen = false;
         data.doorLocked = false;
         data.powered = true;
+        data.emergencyMode = false;
         data.roundelLight = 10;
 
         data.exteriorPos = getEntityPos();

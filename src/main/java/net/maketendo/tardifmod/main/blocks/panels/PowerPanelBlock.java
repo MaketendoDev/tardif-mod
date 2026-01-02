@@ -7,6 +7,7 @@ import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisInteriorResolver;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.utils.ShapeUtil;
+import net.maketendo.tardifmod.utils.TardisWorldUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
 import org.jspecify.annotations.Nullable;
 
 public class PowerPanelBlock extends BlockWithEntity {
@@ -66,11 +68,7 @@ public class PowerPanelBlock extends BlockWithEntity {
 
         if (world.isClient()) {return ActionResult.PASS;}
 
-        ServerWorld tardisWorld = world.getServer().getWorld(TARDIFDimensions.TARDIS_WORLD);
-        int tardisId = TardisInteriorResolver.getTardisIdAt(tardisWorld, pos);
-        if (tardisId < 0) return ActionResult.PASS;
-
-        TardisData data = TardisManager.get(world.getServer(), tardisId);
+        TardisData data = TardisWorldUtil.getTardisData(world, pos);
         if (data == null) return ActionResult.PASS;
 
         Vec3d local = hit.getPos().subtract(
@@ -198,8 +196,6 @@ public class PowerPanelBlock extends BlockWithEntity {
         }
     }
 
-
-
     public enum PowerPanelPart {
         BUTTON_A(1, 0, 1, 3, 1, 3),
         BUTTON_B(6, 0, 2, 5, 1, 3),
@@ -220,6 +216,20 @@ public class PowerPanelBlock extends BlockWithEntity {
             return lx >= x && lx <= x + w &&
                     ly >= y && ly <= y + h &&
                     lz >= z && lz <= z + l;
+        }
+    }
+
+    @Override
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
+        if (world.isClient()) return;
+
+        TardisData data = TardisWorldUtil.getTardisData(world, pos);
+        if (data == null) return;
+
+        boolean poweredNow = world.isReceivingRedstonePower(pos);
+
+        if (poweredNow) {
+            data.powered = !data.powered;
         }
     }
 
