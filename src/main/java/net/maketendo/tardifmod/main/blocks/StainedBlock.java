@@ -21,27 +21,29 @@ public class StainedBlock extends Block {
         super(settings);
     }
 
-
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
-        if (world.isClient()) return ActionResult.SUCCESS;
+        if (world.isClient()) {
+            return ActionResult.PASS;
+        }
 
         if (player.getOffHandStack().isIn(TARDIFTags.Items.PAINT_BRUSH)) {
             Block replacement = StainedQuartzRegistry.getFromDye(stack);
-            if (replacement == null) return ActionResult.PASS;
+            if (replacement == null) {
+                return ActionResult.PASS;
+            }
 
             world.setBlockState(pos, replacement.getDefaultState());
-
             world.playSound(null, pos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 0.5f, 1f);
 
             if (!player.isCreative()) {
                 stack.decrement(1);
             }
+
             return ActionResult.CONSUME;
         }
 
-        return ActionResult.SUCCESS;
+        return ActionResult.PASS;
     }
-
 }
