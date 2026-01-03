@@ -114,9 +114,5 @@ public class TARDIFModBlockTagProvider extends FabricTagProvider.BlockTagProvide
                         TARDIFBlocks.PINK_STAINED_QUARTZ_SLAB
 
                 );
-
-
-
-
     }
 }

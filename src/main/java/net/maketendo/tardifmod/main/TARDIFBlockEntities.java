@@ -3,6 +3,7 @@ package net.maketendo.tardifmod.main;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.blockentities.RoundelBlockEntity;
+import net.maketendo.tardifmod.main.blockentities.panels.CoordinatesPanelBlockEntity;
 import net.maketendo.tardifmod.main.blockentities.panels.PowerPanelBlockEntity;
 import net.maketendo.tardifmod.main.blocks.RoundelBlock;
 import net.maketendo.tardifmod.main.blocks.StainedBlock;
@@ -26,6 +27,10 @@ public class TARDIFBlockEntities {
     public static final BlockEntityType<PowerPanelBlockEntity> POWER_PANEL =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "power_panel"),
                     FabricBlockEntityTypeBuilder.create(PowerPanelBlockEntity::new, TARDIFBlocks.POWER_PANEL).build(null));
+
+    public static final BlockEntityType<CoordinatesPanelBlockEntity> COORDINATES_PANEL =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "coordinates_panel"),
+                    FabricBlockEntityTypeBuilder.create(CoordinatesPanelBlockEntity::new, TARDIFBlocks.COORDINATES_PANEL).build(null));
 
     public static final BlockEntityType<RoundelBlockEntity> ROUNDELS =
             Registry.register(

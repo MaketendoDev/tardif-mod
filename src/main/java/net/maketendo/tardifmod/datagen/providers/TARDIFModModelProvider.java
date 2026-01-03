@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.maketendo.tardifmod.main.TARDIFBlocks;
 import net.maketendo.tardifmod.main.TARDIFItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.ItemModelGenerator;
 import net.minecraft.client.data.Models;
@@ -64,6 +65,9 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.MAGENTA_ROUNDEL_HALF);
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_ROUNDEL);
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_ROUNDEL_HALF);
+
+        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.POWER_PANEL, Blocks.IRON_BLOCK);
+        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.COORDINATES_PANEL, Blocks.IRON_BLOCK);
 
         BlockStateModelGenerator.BlockTexturePool greyStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.GREY_STAINED_QUARTZ);
         greyStainedQuartzPool.stairs(TARDIFBlocks.GREY_STAINED_QUARTZ_STAIRS);
@@ -132,5 +136,7 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(TARDIFItems.GOLD_TARDIS_KEY, Models.GENERATED);
         itemModelGenerator.register(TARDIFItems.SILVER_TARDIS_KEY, Models.GENERATED);
         itemModelGenerator.register(TARDIFItems.TARDIS_ITEM, Models.GENERATED);
+        itemModelGenerator.register(TARDIFBlocks.POWER_PANEL.asItem(), Models.GENERATED);
+        itemModelGenerator.register(TARDIFBlocks.COORDINATES_PANEL.asItem(), Models.GENERATED);
     }
 }

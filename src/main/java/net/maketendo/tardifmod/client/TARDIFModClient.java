@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.maketendo.tardifmod.TARDIFMod;
+import net.maketendo.tardifmod.client.renderers.entities.CoordinatesPanelBlockEntityRenderer;
 import net.maketendo.tardifmod.client.renderers.entities.PowerPanelBlockEntityRenderer;
 import net.maketendo.tardifmod.client.renderers.entities.TARDISEntityRenderer;
 import net.maketendo.tardifmod.client.renderers.entities.TARDISInteriorDoorEntityRenderer;
@@ -26,7 +27,9 @@ public class TARDIFModClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityRendererRegistry.register(TARDIFEntities.TARDIS, TARDISEntityRenderer::new);
         EntityRendererRegistry.register(TARDIFEntities.TARDIS_INTERIOR_DOOR, TARDISInteriorDoorEntityRenderer::new);
+
         BlockEntityRendererRegistry.register(TARDIFBlockEntities.POWER_PANEL, PowerPanelBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(TARDIFBlockEntities.COORDINATES_PANEL, CoordinatesPanelBlockEntityRenderer::new);
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             HudRenderCallback.EVENT.register(new DevOverlay());

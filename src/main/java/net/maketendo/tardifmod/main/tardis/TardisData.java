@@ -18,7 +18,6 @@ public class TardisData {
     public Boolean emergencyMode;
     public Integer roundelLight;
 
-
     // Interior
     public Float interiorYaw;
     public BlockPos interiorOrigin;
@@ -29,6 +28,9 @@ public class TardisData {
     public Float exteriorYaw;
     public Vec3d exteriorPos;
     public Identifier exteriorDimension;
+
+    public Vec3d previousPos;
+    public Vec3d setPos;
 
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
@@ -59,8 +61,20 @@ public class TardisData {
         exteriorPosJson.addProperty("y", exteriorPos.y);
         exteriorPosJson.addProperty("z", exteriorPos.z);
         json.add("exterior_pos", exteriorPosJson);
-
         json.addProperty("exterior_dim", exteriorDimension.toString());
+
+        // Travel
+        JsonObject previousPosJson = new JsonObject();
+        previousPosJson.addProperty("x", previousPos.x);
+        previousPosJson.addProperty("y", previousPos.y);
+        previousPosJson.addProperty("z", previousPos.z);
+        json.add("previous_pos", previousPosJson);
+
+        JsonObject setPosJson = new JsonObject();
+        setPosJson.addProperty("x", setPos.x);
+        setPosJson.addProperty("y", setPos.y);
+        setPosJson.addProperty("z", setPos.z);
+        json.add("set_pos", setPosJson);
 
         return json;
     }
@@ -98,8 +112,30 @@ public class TardisData {
                 exteriorPosJson.get("z").getAsDouble()
         );
         data.exteriorDimension = Identifier.of(json.get("exterior_dim").getAsString());
+
+        // Travel
+        JsonObject setPosJson = json.getAsJsonObject("exterior_pos");
+        data.setPos = new Vec3d(
+                setPosJson.get("x").getAsDouble(),
+                setPosJson.get("y").getAsDouble(),
+                setPosJson.get("z").getAsDouble()
+        );
         return data;
     }
+
+    // Helpers
+    public void incrementX(int amount) {
+        this.setPos = this.setPos.add(amount, 0, 0);
+    }
+
+    public void incrementY(int amount) {
+        this.setPos = this.setPos.add(0, amount, 0);
+    }
+
+    public void incrementZ(int amount) {
+        this.setPos = this.setPos.add(0, 0, amount);
+    }
+
 
 }
 

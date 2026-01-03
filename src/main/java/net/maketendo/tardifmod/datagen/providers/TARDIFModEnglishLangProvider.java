@@ -109,6 +109,9 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_STAIRS, "Magenta Stained Quartz Stairs");
         translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS, "Pink Stained Quartz Stairs");
 
+        // Panels
+        translationBuilder.add(TARDIFBlocks.POWER_PANEL, "TARDIS Power Panel");
+        translationBuilder.add(TARDIFBlocks.COORDINATES_PANEL, "TARDIS Coordinates Panel");
 
         // Item Tooltips
         translationBuilder.add("tooltip.tardif_mod.linkable_item.1", "Click on the interior door of the TARDIS");

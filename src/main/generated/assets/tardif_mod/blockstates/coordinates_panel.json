@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tardif_mod:block/coordinates_panel"
+    }
+  }
+}

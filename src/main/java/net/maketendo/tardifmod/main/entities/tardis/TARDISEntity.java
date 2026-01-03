@@ -302,6 +302,9 @@ public class TARDISEntity extends TARDISExteriorBase {
         data.interiorYaw = 0f;
         data.interiorDimension = tardisWorld.getRegistryKey().getValue();
 
+        data.previousPos = getEntityPos();
+        data.setPos = getEntityPos();
+
         TardisInteriorGenerator.generate(tardisWorld, interiorOrigin);
 
         int id = TardisManager.createTardis(server, data);

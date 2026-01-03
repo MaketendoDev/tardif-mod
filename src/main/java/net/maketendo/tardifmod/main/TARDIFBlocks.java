@@ -3,6 +3,7 @@ package net.maketendo.tardifmod.main;
 import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.blocks.RoundelBlock;
 import net.maketendo.tardifmod.main.blocks.StainedBlock;
+import net.maketendo.tardifmod.main.blocks.panels.CoordinatesPanelBlock;
 import net.maketendo.tardifmod.main.blocks.panels.PowerPanelBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
@@ -299,7 +300,10 @@ public class TARDIFBlocks {
             properties -> new StairsBlock(PINK_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
 
     public static final Block POWER_PANEL = registerBlock("power_panel",
-            properties -> new PowerPanelBlock(properties.nonOpaque()));
+            properties -> new PowerPanelBlock(properties.nonOpaque().strength(0.6F)));
+
+    public static final Block COORDINATES_PANEL = registerBlock("coordinates_panel",
+            properties -> new CoordinatesPanelBlock(properties.nonOpaque().strength(0.6F)));
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> function) {
         Block toRegister = function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(TARDIFMod.MOD_ID, name))));
