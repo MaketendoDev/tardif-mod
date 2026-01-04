@@ -14,7 +14,7 @@ public class StainedQuartzRegistry {
 
     private static final Map<Item, Block> DYE_TO_BLOCK = new HashMap<>();
 
-    public static void init() {
+    public static void register() {
         DYE_TO_BLOCK.put(Items.WHITE_DYE, Blocks.QUARTZ_BLOCK);
         DYE_TO_BLOCK.put(Items.GRAY_DYE, TARDIFBlocks.GREY_STAINED_QUARTZ);
         DYE_TO_BLOCK.put(Items.BLACK_DYE, TARDIFBlocks.BLACK_STAINED_QUARTZ);

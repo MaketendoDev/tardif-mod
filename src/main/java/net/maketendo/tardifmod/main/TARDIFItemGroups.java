@@ -22,6 +22,8 @@ public class TARDIFItemGroups {
                         entries.add(TARDIFItems.GOLD_TARDIS_KEY);
 
                         entries.add(TARDIFBlocks.POWER_PANEL);
+                        entries.add(TARDIFBlocks.COORDINATES_PANEL);
+                        entries.add(TARDIFBlocks.DEMATERIALISATION_PANEL);
 
                     }).build());
 

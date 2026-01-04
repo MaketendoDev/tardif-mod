@@ -32,7 +32,7 @@ public class TARDIFItems {
     }
 
     public static void register() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(SILVER_TARDIS_KEY);
             entries.add(GOLD_TARDIS_KEY);
         });

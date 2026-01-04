@@ -17,13 +17,15 @@ public class TARDIFMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        TARDIFSounds.register();
         TARDIFEntities.register();
         TARDIFItems.register();
         TARDIFBlocks.register();
         TARDIFBlockEntities.register();
         TARDIFItemGroups.register();
         TardifCommand.register();
-        StainedQuartzRegistry.init();
+        TARDIFPlayerStatistics.register();
+        StainedQuartzRegistry.register();
 
         // Events
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

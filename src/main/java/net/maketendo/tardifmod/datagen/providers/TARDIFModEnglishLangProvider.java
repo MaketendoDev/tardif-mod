@@ -112,6 +112,7 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         // Panels
         translationBuilder.add(TARDIFBlocks.POWER_PANEL, "TARDIS Power Panel");
         translationBuilder.add(TARDIFBlocks.COORDINATES_PANEL, "TARDIS Coordinates Panel");
+        translationBuilder.add(TARDIFBlocks.DEMATERIALISATION_PANEL, "TARDIS Dematerialisation Panel");
 
         // Item Tooltips
         translationBuilder.add("tooltip.tardif_mod.linkable_item.1", "Click on the interior door of the TARDIS");
@@ -132,5 +133,8 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add("tag.item.tardif_mod.paint_brush", "Paint Brushes");
         translationBuilder.add("tag.block.tardif_mod.roundels", "Roundels");
         translationBuilder.add("tag.block.tardif_mod.stained_quartz", "Stained Quartz");
+
+        // Statistics
+        translationBuilder.add("stat.tardif_mod.interact_with_tardis", "TARDIS Doors Opened");
     }
 }

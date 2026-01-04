@@ -1,6 +1,7 @@
 package net.maketendo.tardifmod.main.tardis;
 
 import com.google.gson.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
@@ -114,6 +115,23 @@ public class TardisManager {
         var list = new java.util.ArrayList<Integer>();
         index.getAsJsonArray("tardises")
                 .forEach(e -> list.add(e.getAsInt()));
+        return list;
+    }
+
+    public static Iterable<TardisData> getAll(MinecraftServer server) {
+        Path indexFile = getDir(server).resolve("index.json");
+        JsonObject index = loadIndex(indexFile);
+
+        var list = new java.util.ArrayList<TardisData>();
+
+        index.getAsJsonArray("tardises").forEach(e -> {
+            int id = e.getAsInt();
+            TardisData data = get(server, id);
+            if (data != null) {
+                list.add(data);
+            }
+        });
+
         return list;
     }
 }

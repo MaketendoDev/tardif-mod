@@ -1,0 +1,21 @@
+{
+  "tardis/tardis_demat": {
+    "subtitle": "sound.tardif_mod.tardis_demat",
+    "sounds": [
+      "tardif_mod:tardis/tardis_demat"
+    ]
+  },
+  "tardis/flight_loop": {
+    "subtitle": "sound.tardif_mod.flight_loop",
+    "sounds": [
+      "tardif_mod:tardis/flight_loop"
+    ],
+    "stream": true
+  },
+  "tardis/tardis_mat": {
+    "subtitle": "sound.tardif_mod.tardis_mat",
+    "sounds": [
+      "tardif_mod:tardis/tardis_mat"
+    ]
+  }
+}

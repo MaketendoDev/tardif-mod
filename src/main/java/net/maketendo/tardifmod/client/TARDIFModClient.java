@@ -8,16 +8,12 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.maketendo.tardifmod.TARDIFMod;
-import net.maketendo.tardifmod.client.renderers.entities.CoordinatesPanelBlockEntityRenderer;
-import net.maketendo.tardifmod.client.renderers.entities.PowerPanelBlockEntityRenderer;
-import net.maketendo.tardifmod.client.renderers.entities.TARDISEntityRenderer;
-import net.maketendo.tardifmod.client.renderers.entities.TARDISInteriorDoorEntityRenderer;
+import net.maketendo.tardifmod.client.renderers.entities.*;
 import net.maketendo.tardifmod.client.screens.DevOverlay;
 import net.maketendo.tardifmod.client.screens.PreviewOverlay;
 import net.maketendo.tardifmod.main.TARDIFBlockEntities;
 import net.maketendo.tardifmod.main.TARDIFEntities;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
-import net.minecraft.client.gui.hud.InGameOverlayRenderer;
+
 
 import java.util.Optional;
 
@@ -30,6 +26,7 @@ public class TARDIFModClient implements ClientModInitializer {
 
         BlockEntityRendererRegistry.register(TARDIFBlockEntities.POWER_PANEL, PowerPanelBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(TARDIFBlockEntities.COORDINATES_PANEL, CoordinatesPanelBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(TARDIFBlockEntities.DEMATERIALISATION_PANEL, DematPanelBlockEntityRenderer::new);
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             HudRenderCallback.EVENT.register(new DevOverlay());

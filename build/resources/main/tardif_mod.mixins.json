@@ -7,6 +7,8 @@
     "client.LevelSummaryMixin"
   ],
   "client": [
+    "client.FlashMixin",
+    "client.splash.SplashOverlayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

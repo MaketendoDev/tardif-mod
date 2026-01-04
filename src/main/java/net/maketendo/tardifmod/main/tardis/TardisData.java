@@ -31,6 +31,8 @@ public class TardisData {
 
     public Vec3d previousPos;
     public Vec3d setPos;
+    public Boolean dematerialised;
+
 
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
@@ -76,6 +78,8 @@ public class TardisData {
         setPosJson.addProperty("z", setPos.z);
         json.add("set_pos", setPosJson);
 
+        json.addProperty("dematerialised", dematerialised.toString());
+
         return json;
     }
 
@@ -114,12 +118,20 @@ public class TardisData {
         data.exteriorDimension = Identifier.of(json.get("exterior_dim").getAsString());
 
         // Travel
-        JsonObject setPosJson = json.getAsJsonObject("exterior_pos");
+        JsonObject setPreviousPosJson = json.getAsJsonObject("previous_pos");
         data.setPos = new Vec3d(
-                setPosJson.get("x").getAsDouble(),
-                setPosJson.get("y").getAsDouble(),
-                setPosJson.get("z").getAsDouble()
+                setPreviousPosJson.get("x").getAsDouble(),
+                setPreviousPosJson.get("y").getAsDouble(),
+                setPreviousPosJson.get("z").getAsDouble()
         );
+        JsonObject setSetPosJson = json.getAsJsonObject("set_pos");
+        data.setPos = new Vec3d(
+                setSetPosJson.get("x").getAsDouble(),
+                setSetPosJson.get("y").getAsDouble(),
+                setSetPosJson.get("z").getAsDouble()
+        );
+
+        data.dematerialised = json.get("dematerialised").getAsBoolean();
         return data;
     }
 
@@ -135,7 +147,5 @@ public class TardisData {
     public void incrementZ(int amount) {
         this.setPos = this.setPos.add(0, 0, amount);
     }
-
-
 }
 

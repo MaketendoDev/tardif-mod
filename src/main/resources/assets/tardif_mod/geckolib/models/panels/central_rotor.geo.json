@@ -1,0 +1,41 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.central column",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "bone",
+					"pivot": [8, 0, -8],
+					"cubes": [
+						{"origin": [-8, 0, -8], "size": [16, 2, 16], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "rotor",
+					"parent": "bone",
+					"pivot": [8, 2, -8],
+					"cubes": [
+						{"origin": [-7, 2, -7], "size": [14, 14, 14], "uv": [8, 36]}
+					]
+				},
+				{
+					"name": "innerrotor",
+					"parent": "rotor",
+					"pivot": [0, 9, 0],
+					"cubes": [
+						{"origin": [-6, 2, 0], "size": [12, 14, 0], "pivot": [0, 9, 0], "rotation": [0, 45, 0], "uv": [0, 21]},
+						{"origin": [0, 2, -6], "size": [0, 14, 12], "pivot": [0, 9, 0], "rotation": [0, 45, 0], "uv": [0, 9]}
+					]
+				}
+			]
+		}
+	]
+}

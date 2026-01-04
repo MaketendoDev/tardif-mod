@@ -1,14 +1,14 @@
 package net.maketendo.tardifmod.main.entities.tardis;
 
-import net.maketendo.tardifmod.main.TARDIFDimensions;
-import net.maketendo.tardifmod.main.TARDIFEntities;
-import net.maketendo.tardifmod.main.TARDIFItems;
-import net.maketendo.tardifmod.main.TARDIFTags;
+import net.maketendo.tardifmod.main.*;
 import net.maketendo.tardifmod.main.entities.TARDISExteriorBase;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.utils.TardisInteriorGenerator;
 import net.maketendo.tardifmod.utils.TardisInteriorUtil;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.particle.FireworksSparkParticle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
@@ -20,6 +20,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
@@ -31,7 +33,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -44,6 +48,8 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
+import static net.maketendo.tardifmod.utils.CommandUtil.runCommandAsEntity;
+
 public class TARDISEntity extends TARDISExteriorBase {
     private static final TrackedData<Integer> TARDIS_ID =
             DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -51,7 +57,11 @@ public class TARDISEntity extends TARDISExteriorBase {
             DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> TARDIS_INITIALISED =
             DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> DEMATERIALISED =
+            DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
+    private int dematTicks = 0;
+    private float fade = 1.0f;
     private ChunkPos forcedChunk;
 
     public TARDISEntity(EntityType<?> type, World world) {
@@ -63,6 +73,7 @@ public class TARDISEntity extends TARDISExteriorBase {
         builder.add(TARDIS_ID, -1);
         builder.add(DOOR_OPEN, false);
         builder.add(TARDIS_INITIALISED, false);
+        builder.add(DEMATERIALISED, false);
     }
 
     public int getTardisId() {
@@ -81,6 +92,14 @@ public class TARDISEntity extends TARDISExteriorBase {
         return dataTracker.get(DOOR_OPEN);
     }
 
+    public boolean isDematerialised() {return this.dataTracker.get(DEMATERIALISED);}
+
+    public void setDematerialised(boolean value) {this.dataTracker.set(DEMATERIALISED, value);}
+
+    public void preInitialised() {this.dataTracker.set(TARDIS_INITIALISED, true);}
+
+    public float getFade() {return fade;}
+
     @Override
     protected void writeCustomData(WriteView view) {
         view.putBoolean("TardisInit", this.dataTracker.get(TARDIS_INITIALISED));
@@ -97,13 +116,50 @@ public class TARDISEntity extends TARDISExteriorBase {
     @Override
     public void tick() {
         super.tick();
+
+        if (isDematerialised()) {
+            final int MAX_TICKS = 19 * 20;
+            dematTicks++;
+
+            float progress = MathHelper.clamp(dematTicks / (float) MAX_TICKS, 0.0f, 1.0f);
+
+            if (dematTicks < MAX_TICKS) {
+                float phaseSpeed = 0.10f + progress * 0.04f;
+                float phase = dematTicks * phaseSpeed;
+                float wave = (MathHelper.sin(phase) + 1.0f) * 0.5f;
+                float strength = MathHelper.lerp(progress, 0.45f, 1.0f);
+                float targetFade = 1.0f - (wave * strength);
+                fade += (targetFade - fade) * 0.1f;
+
+                if (getEntityWorld().isClient()) {
+                    spawnWind();
+                }
+            } else {
+                fade += (0.0f - fade) * 0.1f;
+
+                if (fade <= 0.01f && !getEntityWorld().isClient()) {
+                    this.remove(RemovalReason.DISCARDED);
+
+                    this.getEntityWorld().getChunkManager().setChunkForced(getChunkPos(), true);
+                }
+            }
+        }
+
         if (getEntityWorld().isClient()) return;
+
+        if (isDematerialised()) {
+            dematTicks++;
+            if (dematTicks % 16  == 0) {
+                runCommandAsEntity(this, "particle flash{color:[1.0,1.0,1.0,1.0]} ~ ~3 ~ 0 0 0 0.1 1 normal");
+            }
+        }
 
         forceLoadChunk();
 
         if (this.dataTracker.get(TARDIS_INITIALISED)) {
             TardisData data = TardisManager.get(getEntityWorld().getServer(), getTardisId());
             setDoorOpen(data.doorOpen);
+            setDematerialised(data.dematerialised);
             data.exteriorPos = getEntityPos();
             data.exteriorYaw = this.getYaw();
         }
@@ -114,6 +170,33 @@ public class TARDISEntity extends TARDISExteriorBase {
         // Tardis Initialising
         initTardis();
     }
+
+    private void spawnWind() {
+        World world = getEntityWorld();
+        Random random = world.getRandom();
+
+        for (int i = 0; i < 6; i++) {
+            double angle = random.nextDouble() * Math.PI * 2;
+            double speed = 0.05 + random.nextDouble() * 0.05;
+            double vx = Math.cos(angle) * speed;
+            double vz = Math.sin(angle) * speed;
+            double vy = 0.1 + random.nextDouble() * 0.05;
+
+            double x = getX() + (random.nextDouble() - 0.5) * 0.3;
+            double y = getY() + 0.02;
+            double z = getZ() + (random.nextDouble() - 0.5) * 0.3;
+
+            BlockState ground = world.getBlockState(getBlockPos().down());
+            if (!ground.isAir()) {
+                world.addParticleClient(
+                        new BlockStateParticleEffect(ParticleTypes.BLOCK, ground),
+                        x, y, z,
+                        vx, vy, vz
+                );
+            }
+        }
+    }
+
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
@@ -219,6 +302,7 @@ public class TARDISEntity extends TARDISExteriorBase {
 
     public void tardisDoor(TardisData data, PlayerEntity player) {
         if (!data.doorLocked) {
+            player.incrementStat(TARDIFPlayerStatistics.INTERACT_WITH_TARDIS);
             if (data.doorOpen == true) {
                 data.doorOpen = false;
             } else {
@@ -304,6 +388,8 @@ public class TARDISEntity extends TARDISExteriorBase {
 
         data.previousPos = getEntityPos();
         data.setPos = getEntityPos();
+
+        data.dematerialised = false;
 
         TardisInteriorGenerator.generate(tardisWorld, interiorOrigin);
 

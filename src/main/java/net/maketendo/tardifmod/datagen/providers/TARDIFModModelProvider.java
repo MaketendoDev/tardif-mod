@@ -68,6 +68,7 @@ public class TARDIFModModelProvider extends FabricModelProvider {
 
         blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.POWER_PANEL, Blocks.IRON_BLOCK);
         blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.COORDINATES_PANEL, Blocks.IRON_BLOCK);
+        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.DEMATERIALISATION_PANEL, Blocks.IRON_BLOCK);
 
         BlockStateModelGenerator.BlockTexturePool greyStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.GREY_STAINED_QUARTZ);
         greyStainedQuartzPool.stairs(TARDIFBlocks.GREY_STAINED_QUARTZ_STAIRS);
@@ -136,7 +137,9 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(TARDIFItems.GOLD_TARDIS_KEY, Models.GENERATED);
         itemModelGenerator.register(TARDIFItems.SILVER_TARDIS_KEY, Models.GENERATED);
         itemModelGenerator.register(TARDIFItems.TARDIS_ITEM, Models.GENERATED);
+
         itemModelGenerator.register(TARDIFBlocks.POWER_PANEL.asItem(), Models.GENERATED);
         itemModelGenerator.register(TARDIFBlocks.COORDINATES_PANEL.asItem(), Models.GENERATED);
+        itemModelGenerator.register(TARDIFBlocks.DEMATERIALISATION_PANEL.asItem(), Models.GENERATED);
     }
 }
