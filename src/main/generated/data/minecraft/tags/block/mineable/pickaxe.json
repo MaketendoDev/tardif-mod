@@ -1,6 +1,7 @@
 {
   "values": [
     "#tardif_mod:roundels",
-    "#tardif_mod:stained_quartz"
+    "#tardif_mod:stained_quartz",
+    "tardif_mod:interior_door_generator_block"
   ]
 }

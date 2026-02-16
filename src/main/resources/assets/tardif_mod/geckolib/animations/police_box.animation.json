@@ -124,6 +124,58 @@
 					}
 				}
 			}
+		},
+		"constant_open": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.75,
+			"bones": {
+				"rightdoor": {
+					"rotation": {
+						"0.0": {
+							"post": {
+								"vector": [0, 87.5, 0]
+							},
+							"lerp_mode": "catmullrom"
+						}
+					}
+				},
+				"leftdoor": {
+					"rotation": {
+						"0.0": {
+							"post": {
+								"vector": [0, -82.5, 0]
+							},
+							"lerp_mode": "catmullrom"
+						}
+					}
+				}
+			}
+		},
+		"constant_close": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.625,
+			"bones": {
+				"rightdoor": {
+					"rotation": {
+						"0.0": {
+							"post": {
+								"vector": [0, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						}
+					}
+				},
+				"leftdoor": {
+					"rotation": {
+						"0.0": {
+							"post": {
+								"vector": [0, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

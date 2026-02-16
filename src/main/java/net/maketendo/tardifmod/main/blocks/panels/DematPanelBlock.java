@@ -6,6 +6,7 @@ import net.maketendo.tardifmod.main.TARDIFSounds;
 import net.maketendo.tardifmod.main.blockentities.panels.DematPanelBlockEntity;
 import net.maketendo.tardifmod.main.blockentities.panels.PowerPanelBlockEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
+import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.main.tardis.managers.TardisTravelManager;
 import net.maketendo.tardifmod.utils.ShapeUtil;
 import net.maketendo.tardifmod.utils.TardisWorldUtil;
@@ -140,9 +141,9 @@ public class DematPanelBlock extends BlockWithEntity {
         switch (part) {
             case LEVER_A -> {
                 if (data.dematerialised) {
-                    TardisTravelManager.rematTardis(data, world.getServer());
+                    TardisTravelManager.rematTardis(data, TardisManager.getEntityFromId(data.id, world.getServer()), world.getServer());
                 } else {
-                    TardisTravelManager.dematTardis(data, world.getServer());
+                    TardisTravelManager.dematTardis(data, TardisManager.getEntityFromId(data.id, world.getServer()), world.getServer());
                 }
                 player.sendMessage(Text.literal(data.dematerialised ? "Dematerialising..." : "Materializing..."), true);
             }

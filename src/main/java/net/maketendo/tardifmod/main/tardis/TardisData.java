@@ -1,6 +1,7 @@
 package net.maketendo.tardifmod.main.tardis;
 
 import com.google.gson.JsonObject;
+import net.maketendo.tardifmod.main.TARDIFDimensions;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -12,27 +13,27 @@ public class TardisData {
     public int id;
     public UUID owner;
 
-    public Boolean doorOpen;
-    public Boolean doorLocked;
-    public Boolean powered;
-    public Boolean emergencyMode;
-    public Integer roundelLight;
+    public boolean doorOpen = false;
+    public boolean doorLocked = false;
+    public boolean powered = true;
+    public boolean emergencyMode = false;
+    public int roundelLight = 10;
 
     // Interior
-    public Float interiorYaw;
-    public BlockPos interiorOrigin;
-    public Vec3d interiorPos;
-    public Identifier interiorDimension;
+    public float interiorYaw = 0f;
+    public BlockPos interiorOrigin = BlockPos.ORIGIN;
+    public Vec3d interiorPos = Vec3d.ZERO;
+    public Identifier interiorDimension = TARDIFDimensions.TARDIS_DIM_ID;
 
     // Exterior
-    public Float exteriorYaw;
-    public Vec3d exteriorPos;
-    public Identifier exteriorDimension;
+    public float exteriorYaw = 0f;
+    public Vec3d exteriorPos = Vec3d.ZERO;
+    public Identifier exteriorDimension = TARDIFDimensions.TARDIS_DIM_ID;
 
-    public Vec3d previousPos;
-    public Vec3d setPos;
-    public Boolean dematerialised;
-
+    // Travel
+    public Vec3d previousPos = Vec3d.ZERO;
+    public Vec3d setPos = Vec3d.ZERO;
+    public boolean dematerialised = false;
 
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
@@ -42,110 +43,104 @@ public class TardisData {
 
         json.addProperty("door_open", doorOpen);
         json.addProperty("door_locked", doorLocked);
-        json.addProperty("powered", powered.toString());
-        json.addProperty("emergency_mode", emergencyMode.toString());
-        json.addProperty("roundel_light", roundelLight.toString());
+        json.addProperty("powered", powered);
+        json.addProperty("emergency_mode", emergencyMode);
+        json.addProperty("roundel_light", roundelLight);
+        json.addProperty("dematerialised", dematerialised);
 
-        // Interior
         json.addProperty("interior_yaw", interiorYaw);
         json.addProperty("interior_origin", interiorOrigin.asLong());
-        JsonObject interiorPosJson = new JsonObject();
-        interiorPosJson.addProperty("x", interiorPos.x);
-        interiorPosJson.addProperty("y", interiorPos.y);
-        interiorPosJson.addProperty("z", interiorPos.z);
-        json.add("interior_pos", interiorPosJson);
+        json.add("interior_pos", vecToJson(interiorPos));
         json.addProperty("interior_dim", interiorDimension.toString());
 
-        // Exterior
         json.addProperty("exterior_yaw", exteriorYaw);
-        JsonObject exteriorPosJson = new JsonObject();
-        exteriorPosJson.addProperty("x", exteriorPos.x);
-        exteriorPosJson.addProperty("y", exteriorPos.y);
-        exteriorPosJson.addProperty("z", exteriorPos.z);
-        json.add("exterior_pos", exteriorPosJson);
+        json.add("exterior_pos", vecToJson(exteriorPos));
         json.addProperty("exterior_dim", exteriorDimension.toString());
 
-        // Travel
-        JsonObject previousPosJson = new JsonObject();
-        previousPosJson.addProperty("x", previousPos.x);
-        previousPosJson.addProperty("y", previousPos.y);
-        previousPosJson.addProperty("z", previousPos.z);
-        json.add("previous_pos", previousPosJson);
-
-        JsonObject setPosJson = new JsonObject();
-        setPosJson.addProperty("x", setPos.x);
-        setPosJson.addProperty("y", setPos.y);
-        setPosJson.addProperty("z", setPos.z);
-        json.add("set_pos", setPosJson);
-
-        json.addProperty("dematerialised", dematerialised.toString());
+        json.add("previous_pos", vecToJson(previousPos));
+        json.add("set_pos", vecToJson(setPos));
 
         return json;
     }
 
-
     public static TardisData fromJson(JsonObject json) {
         TardisData data = new TardisData();
 
-        data.id = json.get("id").getAsInt();
-        data.owner = UUID.fromString(json.get("owner").getAsString());
+        data.id = getInt(json, "id", 0);
+        data.owner = json.has("owner")
+                ? UUID.fromString(json.get("owner").getAsString())
+                : new UUID(0, 0);
 
-        data.doorOpen = json.get("door_open").getAsBoolean();
-        data.doorLocked = json.get("door_locked").getAsBoolean();
-        data.powered = json.get("powered").getAsBoolean();
-        data.emergencyMode = json.get("emergency_mode").getAsBoolean();
-        data.roundelLight = json.get("roundel_light").getAsInt();
+        data.doorOpen = getBool(json, "door_open", false);
+        data.doorLocked = getBool(json, "door_locked", false);
+        data.powered = getBool(json, "powered", true);
+        data.emergencyMode = getBool(json, "emergency_mode", false);
+        data.roundelLight = getInt(json, "roundel_light", 10);
+        data.dematerialised = getBool(json, "dematerialised", false);
 
-        // Interior
-        data.interiorYaw = json.get("interior_yaw").getAsFloat();
-        data.interiorOrigin = BlockPos.fromLong(json.get("interior_origin").getAsLong());
-        JsonObject interiorPosJson = json.getAsJsonObject("interior_pos");
-        data.interiorPos = new Vec3d(
-                interiorPosJson.get("x").getAsDouble(),
-                interiorPosJson.get("y").getAsDouble(),
-                interiorPosJson.get("z").getAsDouble()
-        );
-        data.interiorDimension = Identifier.of(json.get("interior_dim").getAsString());
+        data.interiorYaw = getFloat(json, "interior_yaw", 0f);
+        data.interiorOrigin = json.has("interior_origin")
+                ? BlockPos.fromLong(json.get("interior_origin").getAsLong())
+                : BlockPos.ORIGIN;
 
-        // Exterior
-        data.exteriorYaw = json.get("exterior_yaw").getAsFloat();
-        JsonObject exteriorPosJson = json.getAsJsonObject("exterior_pos");
-        data.exteriorPos = new Vec3d(
-                exteriorPosJson.get("x").getAsDouble(),
-                exteriorPosJson.get("y").getAsDouble(),
-                exteriorPosJson.get("z").getAsDouble()
-        );
-        data.exteriorDimension = Identifier.of(json.get("exterior_dim").getAsString());
+        data.interiorPos = getVec(json, "interior_pos", Vec3d.ZERO);
+        data.interiorDimension = getId(json, "interior_dim", TARDIFDimensions.TARDIS_DIM_ID);
 
-        // Travel
-        JsonObject setPreviousPosJson = json.getAsJsonObject("previous_pos");
-        data.setPos = new Vec3d(
-                setPreviousPosJson.get("x").getAsDouble(),
-                setPreviousPosJson.get("y").getAsDouble(),
-                setPreviousPosJson.get("z").getAsDouble()
-        );
-        JsonObject setSetPosJson = json.getAsJsonObject("set_pos");
-        data.setPos = new Vec3d(
-                setSetPosJson.get("x").getAsDouble(),
-                setSetPosJson.get("y").getAsDouble(),
-                setSetPosJson.get("z").getAsDouble()
-        );
+        data.exteriorYaw = getFloat(json, "exterior_yaw", 0f);
+        data.exteriorPos = getVec(json, "exterior_pos", Vec3d.ZERO);
+        data.exteriorDimension = getId(json, "exterior_dim", TARDIFDimensions.TARDIS_DIM_ID);
 
-        data.dematerialised = json.get("dematerialised").getAsBoolean();
+        data.previousPos = getVec(json, "previous_pos", Vec3d.ZERO);
+        data.setPos = getVec(json, "set_pos", Vec3d.ZERO);
+
         return data;
     }
 
+    private static boolean getBool(JsonObject json, String key, boolean def) {
+        return json.has(key) && !json.get(key).isJsonNull()
+                ? json.get(key).getAsBoolean()
+                : def;
+    }
+
+    private static int getInt(JsonObject json, String key, int def) {
+        return json.has(key) && !json.get(key).isJsonNull()
+                ? json.get(key).getAsInt()
+                : def;
+    }
+
+    private static float getFloat(JsonObject json, String key, float def) {
+        return json.has(key) && !json.get(key).isJsonNull()
+                ? json.get(key).getAsFloat()
+                : def;
+    }
+
+    private static Identifier getId(JsonObject json, String key, Identifier def) {
+        return json.has(key)
+                ? Identifier.of(json.get(key).getAsString())
+                : def;
+    }
+
+    private static Vec3d getVec(JsonObject json, String key, Vec3d def) {
+        if (!json.has(key)) return def;
+        JsonObject o = json.getAsJsonObject(key);
+        return new Vec3d(
+                o.get("x").getAsDouble(),
+                o.get("y").getAsDouble(),
+                o.get("z").getAsDouble()
+        );
+    }
+
+    private static JsonObject vecToJson(Vec3d v) {
+        JsonObject o = new JsonObject();
+        o.addProperty("x", v.x);
+        o.addProperty("y", v.y);
+        o.addProperty("z", v.z);
+        return o;
+    }
+
     // Helpers
-    public void incrementX(int amount) {
-        this.setPos = this.setPos.add(amount, 0, 0);
-    }
+    public void incrementX(int amount) { this.setPos = this.setPos.add(amount, 0, 0); }
+    public void incrementY(int amount) { this.setPos = this.setPos.add(0, amount, 0); }
+    public void incrementZ(int amount) { this.setPos = this.setPos.add(0, 0, amount); }
 
-    public void incrementY(int amount) {
-        this.setPos = this.setPos.add(0, amount, 0);
-    }
-
-    public void incrementZ(int amount) {
-        this.setPos = this.setPos.add(0, 0, amount);
-    }
 }
-

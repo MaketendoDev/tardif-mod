@@ -23,7 +23,8 @@ public class TARDIFModBlockTagProvider extends FabricTagProvider.BlockTagProvide
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
                 .addTag(TARDIFTags.Blocks.ROUNDELS)
-                .addTag(TARDIFTags.Blocks.STAINED_QUARTZ);
+                .addTag(TARDIFTags.Blocks.STAINED_QUARTZ)
+                .add(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK);
 
         valueLookupBuilder(TARDIFTags.Blocks.ROUNDELS)
                 .add(

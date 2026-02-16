@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "tardif_mod:item/key_generated",
   "textures": {
     "layer0": "tardif_mod:item/silver_tardis_key"
   }

@@ -1,8 +1,8 @@
 package net.maketendo.tardifmod.main;
 
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.maketendo.tardifmod.TARDIFMod;
-import net.maketendo.tardifmod.main.blocks.RoundelBlock;
-import net.maketendo.tardifmod.main.blocks.StainedBlock;
+import net.maketendo.tardifmod.main.blocks.*;
 import net.maketendo.tardifmod.main.blocks.panels.CoordinatesPanelBlock;
 import net.maketendo.tardifmod.main.blocks.panels.DematPanelBlock;
 import net.maketendo.tardifmod.main.blocks.panels.PowerPanelBlock;
@@ -10,12 +10,15 @@ import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 
 import java.util.function.Function;
 
@@ -238,6 +241,7 @@ public class TARDIFBlocks {
     public static final Block PINK_STAINED_QUARTZ = registerBlock("pink_stained_quartz",
             properties -> new StainedBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
 
+    // Kill me.
     public static final Block GREY_STAINED_QUARTZ_SLAB = registerBlock("grey_stained_quartz_slab",
             properties -> new SlabBlock(properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
     public static final Block DARK_GREY_STAINED_QUARTZ_SLAB = registerBlock("dark_grey_stained_quartz_slab",
@@ -309,9 +313,35 @@ public class TARDIFBlocks {
     public static final Block DEMATERIALISATION_PANEL = registerBlock("dematerialisation_panel",
             properties -> new DematPanelBlock(properties.nonOpaque().strength(0.6F)));
 
+    public static final Block TARDIS_CONSOLE_BLOCK = registerBlock("tardis_console_block",
+            properties -> new TardisConsoleBlock(properties.nonOpaque().strength(0.6F)));
+
+    public static final Block INTERIOR_DOOR_GENERATOR_BLOCK = registerDevBlock("interior_door_generator_block",
+            properties -> new InteriorDoorGenBlock(properties.nonOpaque().strength(0.6F)));
+
+    public static final Block TARDIS_LIGHT_BLOCK = registerDevBlock(
+            "tardis_light_block",
+            properties -> new TardisLightBlock(
+                    properties
+                            .replaceable()
+                            .strength(-1.0F, 3600000.8F)
+                            .mapColor(createMapColorFromWaterloggedBlockState(MapColor.CLEAR))
+                            .dropsNothing()
+                            .nonOpaque()
+                            .luminance(TardisLightBlock.STATE_TO_LUMINANCE)
+            )
+    );
+
+
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> function) {
         Block toRegister = function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(TARDIFMod.MOD_ID, name))));
         registerBlockItem(name, toRegister);
+        return Registry.register(Registries.BLOCK, Identifier.of(TARDIFMod.MOD_ID, name), toRegister);
+    }
+
+    private static Block registerDevBlock(String name, Function<AbstractBlock.Settings, Block> function) {
+        Block toRegister = function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(TARDIFMod.MOD_ID, name))));
+        registerEpicItem(name, toRegister);
         return Registry.register(Registries.BLOCK, Identifier.of(TARDIFMod.MOD_ID, name), toRegister);
     }
 
@@ -332,6 +362,20 @@ public class TARDIFBlocks {
                         .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TARDIFMod.MOD_ID, name)))));
     }
 
+    private static void registerEpicItem(String name, Block block) {
+        Registry.register(Registries.ITEM, Identifier.of(TARDIFMod.MOD_ID, name),
+                new BlockItem(block, new Item.Settings().useBlockPrefixedTranslationKey().rarity(Rarity.EPIC)
+                        .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TARDIFMod.MOD_ID, name)))));
+    }
+
+    private static Function<BlockState, MapColor> createMapColorFromWaterloggedBlockState(MapColor mapColor) {
+        return (state) -> (Boolean)state.get(Properties.WATERLOGGED) ? MapColor.WATER_BLUE : mapColor;
+    }
+
     public static void register() {
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.OPERATOR).register(entries -> {
+            entries.add(INTERIOR_DOOR_GENERATOR_BLOCK);
+            entries.add(TARDIS_LIGHT_BLOCK);
+        });
     }
 }

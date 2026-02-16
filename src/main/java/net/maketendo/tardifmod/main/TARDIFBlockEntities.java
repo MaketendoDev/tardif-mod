@@ -3,6 +3,8 @@ package net.maketendo.tardifmod.main;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.blockentities.RoundelBlockEntity;
+import net.maketendo.tardifmod.main.blockentities.TardisConsoleBlockEntity;
+import net.maketendo.tardifmod.main.blockentities.TardisLightBlockEntity;
 import net.maketendo.tardifmod.main.blockentities.panels.CoordinatesPanelBlockEntity;
 import net.maketendo.tardifmod.main.blockentities.panels.DematPanelBlockEntity;
 import net.maketendo.tardifmod.main.blockentities.panels.PowerPanelBlockEntity;
@@ -36,6 +38,14 @@ public class TARDIFBlockEntities {
     public static final BlockEntityType<DematPanelBlockEntity> DEMATERIALISATION_PANEL =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "dematerialisation_panel"),
                     FabricBlockEntityTypeBuilder.create(DematPanelBlockEntity::new, TARDIFBlocks.DEMATERIALISATION_PANEL).build(null));
+
+    public static final BlockEntityType<TardisLightBlockEntity> TARDIS_LIGHT_BLOCK =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis_light_block"),
+                    FabricBlockEntityTypeBuilder.create(TardisLightBlockEntity::new, TARDIFBlocks.TARDIS_LIGHT_BLOCK).build(null));
+
+    public static final BlockEntityType<TardisConsoleBlockEntity> TARDIS_CONSOLE_BLOCK =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis_console_block"),
+                    FabricBlockEntityTypeBuilder.create(TardisConsoleBlockEntity::new, TARDIFBlocks.TARDIS_CONSOLE_BLOCK).build(null));
 
     public static final BlockEntityType<RoundelBlockEntity> ROUNDELS =
             Registry.register(

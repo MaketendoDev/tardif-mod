@@ -109,6 +109,9 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_STAIRS, "Magenta Stained Quartz Stairs");
         translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS, "Pink Stained Quartz Stairs");
 
+        translationBuilder.add(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK, "Interior Door Generator Block");
+        translationBuilder.add(TARDIFBlocks.TARDIS_LIGHT_BLOCK, "TARDIS Light Block");
+
         // Panels
         translationBuilder.add(TARDIFBlocks.POWER_PANEL, "TARDIS Power Panel");
         translationBuilder.add(TARDIFBlocks.COORDINATES_PANEL, "TARDIS Coordinates Panel");
@@ -134,7 +137,16 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add("tag.block.tardif_mod.roundels", "Roundels");
         translationBuilder.add("tag.block.tardif_mod.stained_quartz", "Stained Quartz");
 
+        // Paintings
+
+        translationBuilder.add("painting.tardif_mod.rasilon.title", "The Rasilon");
+        translationBuilder.add("painting.tardif_mod.rasilon.author", "???");
+        translationBuilder.add("painting.tardif_mod.galifrayan_lands.title", "Distant Galifrayan Lands");
+        translationBuilder.add("painting.tardif_mod.galifrayan_lands.author", "???");
+
         // Statistics
         translationBuilder.add("stat.tardif_mod.interact_with_tardis", "TARDIS Doors Opened");
+        translationBuilder.add("stat.tardif_mod.locked_tardis", "TARDIS Doors Locked");
+        translationBuilder.add("stat.tardif_mod.demat_tardis", "TARDIS Dematerialised");
     }
 }

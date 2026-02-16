@@ -2,10 +2,14 @@ package net.maketendo.tardifmod.main;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.maketendo.tardifmod.TARDIFMod;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.decoration.painting.PaintingVariant;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.item.Items;
+import net.minecraft.registry.*;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.PaintingVariantTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -24,6 +28,8 @@ public class TARDIFItemGroups {
                         entries.add(TARDIFBlocks.POWER_PANEL);
                         entries.add(TARDIFBlocks.COORDINATES_PANEL);
                         entries.add(TARDIFBlocks.DEMATERIALISATION_PANEL);
+
+                        entries.add(TARDIFBlocks.TARDIS_CONSOLE_BLOCK);
 
                     }).build());
 
@@ -115,8 +121,10 @@ public class TARDIFItemGroups {
                         entries.add(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS);
 
 
+
                     }).build());
 
 
     public static void register() {}
+
 }

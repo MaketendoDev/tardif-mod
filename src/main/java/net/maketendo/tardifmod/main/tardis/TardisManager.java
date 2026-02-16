@@ -1,8 +1,11 @@
 package net.maketendo.tardifmod.main.tardis;
 
 import com.google.gson.*;
+import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.WorldSavePath;
 
 import java.io.IOException;
@@ -133,5 +136,17 @@ public class TardisManager {
         });
 
         return list;
+    }
+
+    public static Entity getEntityFromId(int id, MinecraftServer server) {
+        for (ServerWorld world : server.getWorlds()) {
+            for (Entity entity : world.iterateEntities()) {
+                if (entity instanceof TARDISEntity tardis &&
+                        tardis.getTardisId() == id) {
+                    return tardis;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -7,13 +7,15 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jspecify.annotations.NonNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.stateless.StatelessGeoEntity;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public abstract class ObjectBaseEntity extends Entity implements GeoEntity {
+public abstract class ObjectBaseEntity extends Entity implements StatelessGeoEntity {
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     public ObjectBaseEntity(EntityType<?> type, World world) {
@@ -41,7 +43,7 @@ public abstract class ObjectBaseEntity extends Entity implements GeoEntity {
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
+    public @NonNull AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.geoCache;
     }
 }

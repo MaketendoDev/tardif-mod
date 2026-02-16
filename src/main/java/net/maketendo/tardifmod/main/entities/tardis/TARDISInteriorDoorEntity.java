@@ -1,12 +1,9 @@
 package net.maketendo.tardifmod.main.entities.tardis;
 
-import net.maketendo.tardifmod.TARDIFMod;
-import net.maketendo.tardifmod.main.TARDIFTags;
 import net.maketendo.tardifmod.main.entities.ObjectBaseEntity;
 import net.maketendo.tardifmod.main.items.LinkableItem;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -17,7 +14,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -30,6 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jspecify.annotations.NonNull;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -90,6 +87,8 @@ public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAni
 
         TardisData data = TardisManager.get(getEntityWorld().getServer(), getTardisId());
         setDoorOpen(data.doorOpen);
+
+        getEntityWorld().getChunkManager().setChunkForced(getChunkPos(), true);
 
         data.interiorPos = getEntityPos();
         data.interiorYaw = getYaw();
@@ -174,14 +173,14 @@ public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAni
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("DoorAnim", state -> {
             if (isDoorOpen())
-                return state.setAndContinue(RawAnimation.begin().thenLoop("open"));
+                return state.setAndContinue(RawAnimation.begin().thenPlayAndHold("open"));
             else
-                return state.setAndContinue(RawAnimation.begin().thenLoop("close"));
+                return state.setAndContinue(RawAnimation.begin().thenPlayAndHold("close"));
         }));
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
+    public @NonNull AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.geoCache;
     }
 

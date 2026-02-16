@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "tardif_mod:block/yellow_roundel"
-    }
+    "": [
+      {
+        "model": "tardif_mod:block/yellow_roundel"
+      },
+      {
+        "model": "tardif_mod:block/yellow_roundel",
+        "y": 90
+      },
+      {
+        "model": "tardif_mod:block/yellow_roundel",
+        "y": 180
+      },
+      {
+        "model": "tardif_mod:block/yellow_roundel",
+        "y": 270
+      }
+    ]
   }
 }

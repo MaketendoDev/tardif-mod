@@ -1,5 +1,6 @@
 package net.maketendo.tardifmod.main.tardis.managers;
 
+import net.maketendo.tardifmod.client.packets.TardisAnimPackets;
 import net.maketendo.tardifmod.main.TARDIFDimensions;
 import net.maketendo.tardifmod.main.TARDIFEntities;
 import net.maketendo.tardifmod.main.TARDIFSounds;
@@ -16,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class TardisTravelManager {
-    public static void dematTardis(TardisData data, MinecraftServer server) {
+    public static void dematTardis(TardisData data, Entity entity, MinecraftServer server) {
         data.dematerialised = true;
 
         ServerWorld intWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
@@ -46,9 +47,12 @@ public class TardisTravelManager {
                 5.0f,
                 1.0f
         );
+
+        TardisAnimPackets.send(extWorld, entity, 0);
+
     }
 
-    public static void rematTardis(TardisData data, MinecraftServer server) {
+    public static void rematTardis(TardisData data, Entity entity, MinecraftServer server) {
         data.dematerialised = false;
 
         ServerWorld intWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
@@ -81,13 +85,13 @@ public class TardisTravelManager {
 
                 landingWorld.setChunkForced((int) data.setPos.getX(), (int) data.setPos.getY(), true);
 
-                Entity entity = TARDIFEntities.TARDIS.spawn(
+                Entity rematTardis = TARDIFEntities.TARDIS.spawn(
                         landingWorld,
                         BlockPos.ofFloored(data.exteriorPos),
                         SpawnReason.TRIGGERED
                 );
 
-                if (entity instanceof TARDISEntity tardis) {
+                if (rematTardis instanceof TARDISEntity tardis) {
                     tardis.preInitialised();
                     tardis.setTardisId(data.id);
 
@@ -106,7 +110,6 @@ public class TardisTravelManager {
                     extWorld.spawnEntity(tardis);
                 }
             }
-
 
         }
     }

@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 public class CommandUtil {
 
     public static void runCommandAsEntity(Entity entity, String command) {
-        if (entity.getEntityWorld().isClient()) return; // only server
+        if (entity.getEntityWorld().isClient()) return;
 
         ServerWorld serverWorld = (ServerWorld) entity.getEntityWorld();
         MinecraftServer server = serverWorld.getServer();

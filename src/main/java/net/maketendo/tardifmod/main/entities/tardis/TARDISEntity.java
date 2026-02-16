@@ -1,17 +1,15 @@
 package net.maketendo.tardifmod.main.entities.tardis;
 
+import net.maketendo.tardifmod.client.managers.AnimationManager;
 import net.maketendo.tardifmod.main.*;
 import net.maketendo.tardifmod.main.entities.TARDISExteriorBase;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
+import net.maketendo.tardifmod.utils.animation.FadeTimeline;
 import net.maketendo.tardifmod.utils.TardisInteriorGenerator;
 import net.maketendo.tardifmod.utils.TardisInteriorUtil;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.particle.FireworksSparkParticle;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MovementType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -33,16 +31,14 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jspecify.annotations.Nullable;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.animation.object.PlayState;
 
 import java.io.IOException;
 import java.util.Set;
@@ -57,12 +53,11 @@ public class TARDISEntity extends TARDISExteriorBase {
             DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> TARDIS_INITIALISED =
             DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> DEMATERIALISED =
-            DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private int dematTicks = 0;
     private float fade = 1.0f;
     private ChunkPos forcedChunk;
+    private boolean dematAnimStarted = false;
 
     public TARDISEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -73,7 +68,6 @@ public class TARDISEntity extends TARDISExteriorBase {
         builder.add(TARDIS_ID, -1);
         builder.add(DOOR_OPEN, false);
         builder.add(TARDIS_INITIALISED, false);
-        builder.add(DEMATERIALISED, false);
     }
 
     public int getTardisId() {
@@ -92,13 +86,13 @@ public class TARDISEntity extends TARDISExteriorBase {
         return dataTracker.get(DOOR_OPEN);
     }
 
-    public boolean isDematerialised() {return this.dataTracker.get(DEMATERIALISED);}
-
-    public void setDematerialised(boolean value) {this.dataTracker.set(DEMATERIALISED, value);}
-
     public void preInitialised() {this.dataTracker.set(TARDIS_INITIALISED, true);}
 
     public float getFade() {return fade;}
+
+    public void setOpacity(Float opacity) {
+        this.fade = opacity;
+    }
 
     @Override
     protected void writeCustomData(WriteView view) {
@@ -117,51 +111,34 @@ public class TARDISEntity extends TARDISExteriorBase {
     public void tick() {
         super.tick();
 
-        if (isDematerialised()) {
-            final int MAX_TICKS = 19 * 20;
-            dematTicks++;
-
-            float progress = MathHelper.clamp(dematTicks / (float) MAX_TICKS, 0.0f, 1.0f);
-
-            if (dematTicks < MAX_TICKS) {
-                float phaseSpeed = 0.10f + progress * 0.04f;
-                float phase = dematTicks * phaseSpeed;
-                float wave = (MathHelper.sin(phase) + 1.0f) * 0.5f;
-                float strength = MathHelper.lerp(progress, 0.45f, 1.0f);
-                float targetFade = 1.0f - (wave * strength);
-                fade += (targetFade - fade) * 0.1f;
-
-                if (getEntityWorld().isClient()) {
-                    spawnWind();
-                }
-            } else {
-                fade += (0.0f - fade) * 0.1f;
-
-                if (fade <= 0.01f && !getEntityWorld().isClient()) {
-                    this.remove(RemovalReason.DISCARDED);
-
-                    this.getEntityWorld().getChunkManager().setChunkForced(getChunkPos(), true);
-                }
-            }
+        if (this.dataTracker.get(TARDIS_INITIALISED) && getEntityWorld().isClient()) {
+            TardisData data = TardisManager.get(getEntityWorld().getServer(), getTardisId());
+            clientTick(data);
         }
 
         if (getEntityWorld().isClient()) return;
-
-        if (isDematerialised()) {
-            dematTicks++;
-            if (dematTicks % 16  == 0) {
-                runCommandAsEntity(this, "particle flash{color:[1.0,1.0,1.0,1.0]} ~ ~3 ~ 0 0 0 0.1 1 normal");
-            }
-        }
 
         forceLoadChunk();
 
         if (this.dataTracker.get(TARDIS_INITIALISED)) {
             TardisData data = TardisManager.get(getEntityWorld().getServer(), getTardisId());
             setDoorOpen(data.doorOpen);
-            setDematerialised(data.dematerialised);
+
+            if (!data.dematerialised) {
+                dematAnimStarted = false;
+                setOpacity(1.0f);
+            }
+
             data.exteriorPos = getEntityPos();
             data.exteriorYaw = this.getYaw();
+
+            if (data.dematerialised) {
+                dematTicks++;
+                if (dematTicks % 16  == 0) {
+                    runCommandAsEntity(this, "particle flash{color:[1.0,1.0,1.0,1.0]} ~ ~3 ~ 0 0 0 0.1 1 normal");
+                }
+                if (dematTicks >= 20 * 15) {remove(RemovalReason.DISCARDED);}
+            }
         }
 
         // TARDIS Vector (hehe bananas)
@@ -170,6 +147,29 @@ public class TARDISEntity extends TARDISExteriorBase {
         // Tardis Initialising
         initTardis();
     }
+
+    private void clientTick(TardisData data) {
+        if (data.dematerialised && !dematAnimStarted) {
+            dematAnimStarted = true;
+
+            AnimationManager.trigger(
+                    new FadeTimeline(1.0f, this::setOpacity)
+                            .fadeTo(20, 1.0f)
+                            .fadeTo(20, 0.7f)
+                            .fadeTo(20, 1.0f)
+                            .fadeTo(20, 0.6f)
+                            .fadeTo(20, 0.9f)
+                            .fadeTo(20, 0.5f)
+                            .fadeTo(15, 0.7f)
+                            .fadeTo(20, 0.3f)
+                            .fadeTo(15, 0.5f)
+                            .fadeTo(20, 0.2f)
+                            .fadeTo(40, 0f)
+                            .onTick(this::spawnWind)
+            );
+        }
+    }
+
 
     private void spawnWind() {
         World world = getEntityWorld();
@@ -264,13 +264,19 @@ public class TARDISEntity extends TARDISExteriorBase {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("DoorAnim", state -> {
-            if (this.isDoorOpen())
-                return state.setAndContinue(RawAnimation.begin().thenLoop("open"));
-            else
-                return state.setAndContinue(RawAnimation.begin().thenLoop("close"));
-        }));
+        controllers.add(
+                new AnimationController<>(
+                        "DoorAnim",
+                        0,
+                        state -> PlayState.STOP
+                )
+                        .triggerableAnim("open", RawAnimation.begin().thenPlay("open"))
+                        .triggerableAnim("close", RawAnimation.begin().thenPlay("close"))
+        );
     }
+
+
+
 
     @Override
     public boolean isCollidable(@Nullable Entity entity) {
@@ -304,8 +310,12 @@ public class TARDISEntity extends TARDISExteriorBase {
         if (!data.doorLocked) {
             player.incrementStat(TARDIFPlayerStatistics.INTERACT_WITH_TARDIS);
             if (data.doorOpen == true) {
+                this.triggerAnim("DoorAnim", "close");
+
                 data.doorOpen = false;
             } else {
+                this.triggerAnim("DoorAnim", "open");
+
                 data.doorOpen = true;
             }
         } else {
@@ -391,28 +401,11 @@ public class TARDISEntity extends TARDISExteriorBase {
 
         data.dematerialised = false;
 
-        TardisInteriorGenerator.generate(tardisWorld, interiorOrigin);
-
         int id = TardisManager.createTardis(server, data);
 
         setTardisId(id);
 
-        ServerWorld targetWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
+        TardisInteriorGenerator.generate(tardisWorld, interiorOrigin, data);
 
-        if (targetWorld != null) {
-            TARDISInteriorDoorEntity entity = new TARDISInteriorDoorEntity(TARDIFEntities.TARDIS_INTERIOR_DOOR, targetWorld);
-
-            entity.setTardisId(id);
-
-            entity.refreshPositionAndAngles(
-                    data.interiorOrigin.getX() + 0.5,
-                    data.interiorOrigin.getY() + 1,
-                    data.interiorOrigin.getZ() + 3.9,
-                    0,
-                    0
-            );
-
-            targetWorld.spawnEntity(entity);
-        }
     }
 }

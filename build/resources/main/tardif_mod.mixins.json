@@ -7,8 +7,9 @@
     "client.LevelSummaryMixin"
   ],
   "client": [
-    "client.FlashMixin",
-    "client.splash.SplashOverlayMixin"
+    "client.CameraRotateShakeMixin",
+    "client.ClientWorldMixin",
+    "client.FlashMixin"
   ],
   "injectors": {
     "defaultRequire": 1

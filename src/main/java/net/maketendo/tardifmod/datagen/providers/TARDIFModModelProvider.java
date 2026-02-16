@@ -2,69 +2,69 @@ package net.maketendo.tardifmod.datagen.providers;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.TARDIFBlocks;
 import net.maketendo.tardifmod.main.TARDIFItems;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
+import net.minecraft.client.data.*;
+import net.minecraft.client.render.model.json.BlockModelDefinition;
+import net.minecraft.client.render.model.json.ModelVariant;
+import net.minecraft.client.render.model.json.WeightedVariant;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.Identifier;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import net.minecraft.client.data.BlockStateVariantMap;
+import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
+import net.minecraft.util.collection.Pool;
+
 
 public class TARDIFModModelProvider extends FabricModelProvider {
     public TARDIFModModelProvider(FabricDataOutput output) {
         super(output);
     }
 
+    public static final Model GENERATED_KEY = item("key_generated", TextureKey.LAYER0);;
+
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.ROUNDEL_HALF);
 
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREY_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLACK_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BROWN_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.RED_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ORANGE_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.YELLOW_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIME_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREEN_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.CYAN_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIGHT_BLUE_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLUE_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PURPLE_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.MAGENTA_STAINED_QUARTZ);
-//        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_STAINED_QUARTZ);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.GREY_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.GREY_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.DARK_GREY_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.DARK_GREY_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.BLACK_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.BLACK_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.BROWN_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.BROWN_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.RED_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.RED_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.ORANGE_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.ORANGE_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.YELLOW_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.YELLOW_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.LIME_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.LIME_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.GREEN_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.GREEN_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.CYAN_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.CYAN_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.LIGHT_BLUE_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.LIGHT_BLUE_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.BLUE_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.BLUE_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.PURPLE_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.PURPLE_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.MAGENTA_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.MAGENTA_ROUNDEL_HALF);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.PINK_ROUNDEL);
+        blockStateModelGenerator.registerRotatable(TARDIFBlocks.PINK_ROUNDEL_HALF);
 
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREY_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREY_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.DARK_GREY_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.DARK_GREY_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLACK_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLACK_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BROWN_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BROWN_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.RED_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.RED_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ORANGE_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.ORANGE_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.YELLOW_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.YELLOW_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIME_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIME_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREEN_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.GREEN_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.CYAN_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.CYAN_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIGHT_BLUE_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.LIGHT_BLUE_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLUE_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.BLUE_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PURPLE_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PURPLE_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.MAGENTA_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.MAGENTA_ROUNDEL_HALF);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_ROUNDEL);
-        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.PINK_ROUNDEL_HALF);
+        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK);
+        blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.TARDIS_LIGHT_BLOCK);
 
         blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.POWER_PANEL, Blocks.IRON_BLOCK);
         blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.COORDINATES_PANEL, Blocks.IRON_BLOCK);
@@ -134,12 +134,17 @@ public class TARDIFModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(TARDIFItems.GOLD_TARDIS_KEY, Models.GENERATED);
-        itemModelGenerator.register(TARDIFItems.SILVER_TARDIS_KEY, Models.GENERATED);
+        itemModelGenerator.register(TARDIFItems.GOLD_TARDIS_KEY, GENERATED_KEY);
+        itemModelGenerator.register(TARDIFItems.SILVER_TARDIS_KEY, GENERATED_KEY);
         itemModelGenerator.register(TARDIFItems.TARDIS_ITEM, Models.GENERATED);
 
+        itemModelGenerator.register(TARDIFBlocks.TARDIS_LIGHT_BLOCK.asItem(), Models.GENERATED);
         itemModelGenerator.register(TARDIFBlocks.POWER_PANEL.asItem(), Models.GENERATED);
         itemModelGenerator.register(TARDIFBlocks.COORDINATES_PANEL.asItem(), Models.GENERATED);
         itemModelGenerator.register(TARDIFBlocks.DEMATERIALISATION_PANEL.asItem(), Models.GENERATED);
+    }
+
+    private static Model item(String parent, TextureKey... requiredTextureKeys) {
+        return new Model(Optional.of(Identifier.of(TARDIFMod.MOD_ID, "item/" + parent)), Optional.empty(), requiredTextureKeys);
     }
 }
