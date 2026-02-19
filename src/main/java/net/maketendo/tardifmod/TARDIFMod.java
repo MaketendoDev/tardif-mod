@@ -42,9 +42,7 @@ public class TARDIFMod implements ModInitializer {
         }
         UseBlockEvent.registerQuartz();
 
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            TardisDataManager.init(server);
-        });
+        ServerLifecycleEvents.SERVER_STARTED.register(TardisDataManager::init);
 
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             TardisDataManager.saveAll();

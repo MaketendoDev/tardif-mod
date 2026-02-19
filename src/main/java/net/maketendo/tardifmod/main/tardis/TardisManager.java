@@ -13,10 +13,10 @@ public class TardisManager {
         String uuidString = tardis.getString("exterior_uuid");
         if (uuidString.isEmpty()) return null;
 
-        //ServerWorld level = (ServerWorld) TardisDimensionManager.getTardisDimension(id);
-        if (level == null) return null;
+        //ServerWorld world = (ServerWorld) TardisDimensionManager.getTardisDimension(id);
+        if (world == null) return null;
 
-        Entity entity = level.getEntity(UUID.fromString(uuidString));
+        Entity entity = world.getEntity(UUID.fromString(uuidString));
 
         return entity instanceof TARDISEntity exterior ? exterior : null;
     }
