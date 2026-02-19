@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.minecraft.command.argument.UuidArgumentType;
@@ -22,7 +21,7 @@ public class TardifCommand {
             dispatcher.register(
                     CommandManager.literal("tardif")
                             .then(CommandManager.literal("data")
-                                    .then(CommandManager.literal("get")
+                                    .then(CommandManager.literal("getFromId")
                                             .then(CommandManager.argument("uuid", UuidArgumentType.uuid())
                                                     .executes(ctx -> getData(ctx.getSource(),
                                                             UuidArgumentType.getUuid(ctx, "uuid")))
@@ -51,7 +50,7 @@ public class TardifCommand {
                 return 0;
             }
 
-            TardisData data = TardisManager.get(source.getServer(), tardisId);
+            TardisData data = TardisManager.getFromId(source.getServer(), tardisId);
             if (data == null) {
                 source.sendError(Text.literal("No data found for TARDIS ID " + tardisId)
                         .formatted(Formatting.RED));

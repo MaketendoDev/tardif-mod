@@ -13,6 +13,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -21,7 +22,7 @@ import java.io.IOException;
 
 public class TardisItem extends Item {
     public TardisItem(Settings settings) {
-        super(settings);
+        super(settings.rarity(Rarity.EPIC));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class TardisItem extends Item {
                     throw new RuntimeException(e);
                 }
 
-                TardisData data = TardisManager.get(world.getServer(), tardis.getTardisId());
+                TardisData data = TardisManager.getFromId(world.getServer(), tardis.getTardisId());
                 if (player != null) {
                     data.owner = player.getUuid();
                 }

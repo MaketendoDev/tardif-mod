@@ -27,9 +27,10 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFItems.GOLD_TARDIS_KEY, "TARDIS Key");
 
         // Blocks
+        translationBuilder.add(TARDIFBlocks.TARDIS_CONSOLE_BLOCK, "TARDIS Console");
+
         translationBuilder.add(TARDIFBlocks.ROUNDEL, "Roundel");
         translationBuilder.add(TARDIFBlocks.ROUNDEL_HALF, "Roundel");
-
         translationBuilder.add(TARDIFBlocks.GREY_STAINED_QUARTZ, "Grey Stained Quartz");
         translationBuilder.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ, "Dark Grey Stained Quartz");
         translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ, "Black Stained Quartz");
@@ -127,7 +128,7 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add("message.tardif_mod.tardis_item.created_tardis","Created TARDIS Successfully!");
 
         // Entities
-        translationBuilder.add(TARDIFEntities.TARDIS, "TARDIS");
+        translationBuilder.add(TARDIFEntities.TARDIS, "TARDIS Exterior");
         translationBuilder.add(TARDIFEntities.TARDIS_INTERIOR_DOOR, "TARDIS Interior Door");
 
         // Tags
@@ -138,7 +139,6 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add("tag.block.tardif_mod.stained_quartz", "Stained Quartz");
 
         // Paintings
-
         translationBuilder.add("painting.tardif_mod.rasilon.title", "The Rasilon");
         translationBuilder.add("painting.tardif_mod.rasilon.author", "???");
         translationBuilder.add("painting.tardif_mod.galifrayan_lands.title", "Distant Galifrayan Lands");

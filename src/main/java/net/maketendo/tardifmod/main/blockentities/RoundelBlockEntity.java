@@ -4,7 +4,7 @@ package net.maketendo.tardifmod.main.blockentities;
 import net.maketendo.tardifmod.main.TARDIFBlockEntities;
 import net.maketendo.tardifmod.main.blocks.RoundelBlock;
 import net.maketendo.tardifmod.main.tardis.TardisData;
-import net.maketendo.tardifmod.utils.TardisWorldUtil;
+import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,7 +20,7 @@ public class RoundelBlockEntity extends BlockEntity {
     public static void tick(World world, BlockPos pos, BlockState state, RoundelBlockEntity be) {
         if (world.isClient()) return;
 
-        TardisData data = TardisWorldUtil.getTardisData(world, pos);
+        TardisData data = TardisManager.getTardisData(world, pos);
         if (data == null) return;
 
         int targetLight;

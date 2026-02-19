@@ -25,9 +25,9 @@ public class TARDIFItemGroups {
                         entries.add(TARDIFItems.SILVER_TARDIS_KEY);
                         entries.add(TARDIFItems.GOLD_TARDIS_KEY);
 
-                        entries.add(TARDIFBlocks.POWER_PANEL);
-                        entries.add(TARDIFBlocks.COORDINATES_PANEL);
-                        entries.add(TARDIFBlocks.DEMATERIALISATION_PANEL);
+                        //entries.add(TARDIFBlocks.POWER_PANEL);
+                        //entries.add(TARDIFBlocks.COORDINATES_PANEL);
+                        //entries.add(TARDIFBlocks.DEMATERIALISATION_PANEL);
 
                         entries.add(TARDIFBlocks.TARDIS_CONSOLE_BLOCK);
 
@@ -119,8 +119,6 @@ public class TARDIFItemGroups {
                         entries.add(TARDIFBlocks.PURPLE_STAINED_QUARTZ_STAIRS);
                         entries.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_STAIRS);
                         entries.add(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS);
-
-
 
                     }).build());
 

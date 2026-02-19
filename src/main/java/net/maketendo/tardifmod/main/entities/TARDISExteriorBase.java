@@ -4,16 +4,14 @@ import net.maketendo.tardifmod.main.TARDIFItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Leashable;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jspecify.annotations.Nullable;
 
-public abstract class TARDISExteriorBase extends ObjectBaseEntity implements Leashable {
+public abstract class TARDISExteriorBase extends ObjectEntity implements Leashable {
 
     private Leashable.@Nullable LeashData leashData;
 

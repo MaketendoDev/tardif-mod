@@ -1,7 +1,7 @@
 package net.maketendo.tardifmod.main.entities.tardis;
 
-import net.maketendo.tardifmod.main.entities.ObjectBaseEntity;
-import net.maketendo.tardifmod.main.items.LinkableItem;
+import net.maketendo.tardifmod.main.entities.ObjectEntity;
+import net.maketendo.tardifmod.main.items.extendable.LinkableItem;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.minecraft.entity.EntityType;
@@ -33,9 +33,10 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
 import java.util.Set;
 
-public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAnimatable {
+public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimatable {
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     private static final TrackedData<Integer> TARDIS_ID =
@@ -85,7 +86,7 @@ public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAni
         super.tick();
         if (getEntityWorld().isClient()) return;
 
-        TardisData data = TardisManager.get(getEntityWorld().getServer(), getTardisId());
+        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
         setDoorOpen(data.doorOpen);
 
         getEntityWorld().getChunkManager().setChunkForced(getChunkPos(), true);
@@ -100,7 +101,7 @@ public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAni
         if (this.getEntityWorld().isClient()) return ActionResult.SUCCESS;
 
         ItemStack stack = player.getStackInHand(hand);
-        TardisData data = TardisManager.get(getEntityWorld().getServer(), getTardisId());
+        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
 
         if (stack.getItem() instanceof LinkableItem item) {
             linkItem(item,  stack, player);
@@ -117,7 +118,7 @@ public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAni
                     playSoundAtTardisDoor(SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
                 }
             } else {
-                lockTardisDoor(data);
+                lockTardisDoor(data, player);
             }
         }
 
@@ -130,7 +131,7 @@ public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAni
 
         if (getEntityWorld().isClient()) return;
 
-        TardisData data = TardisManager.get(getEntityWorld().getServer(), getTardisId());
+        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
         if (data != null && !data.doorOpen) return;
 
         double maxDistance = 0.45D;
@@ -184,12 +185,14 @@ public class TARDISInteriorDoorEntity extends ObjectBaseEntity implements GeoAni
         return this.geoCache;
     }
 
-    public void lockTardisDoor(TardisData data) {
+    public void lockTardisDoor(TardisData data, PlayerEntity player) {
         if (!data.doorOpen) {
             if (data.doorLocked) {
                 data.doorLocked = false;
+                player.sendMessage(Text.literal("\uDD13").formatted(Formatting.GRAY), true);
             } else {
                 data.doorLocked = true;
+                player.sendMessage(Text.literal("\uDD12").formatted(Formatting.GRAY), true);
             }
             playSoundAtTardisDoor(SoundEvents.ITEM_LODESTONE_COMPASS_LOCK, 0.5f);
         }

@@ -3,8 +3,6 @@ package net.maketendo.tardifmod.client.screens;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.maketendo.tardifmod.TARDIFMod;
-import net.maketendo.tardifmod.main.TARDIFEntities;
-import net.maketendo.tardifmod.main.entities.ObjectBaseEntity;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
 import net.minecraft.client.MinecraftClient;

@@ -2,7 +2,8 @@ package net.maketendo.tardifmod.events;
 
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.maketendo.tardifmod.main.TARDIFTags;
-import net.maketendo.tardifmod.main.tardis.TardisInteriorResolver;
+
+import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.utils.StainedQuartzRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,7 +24,7 @@ public class UseBlockEvent {
 
             BlockPos pos = hitResult.getBlockPos().offset(hitResult.getSide());
 
-            Integer tardisId = TardisInteriorResolver.getTardisIdAt(serverWorld, pos);
+            Integer tardisId = TardisManager.getTardisInteriorId(serverWorld, pos);
             if (tardisId != null) {
                 player.sendMessage(
                         Text.literal("Placed block in TARDIS ID: " + tardisId),

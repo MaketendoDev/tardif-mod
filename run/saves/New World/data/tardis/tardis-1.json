@@ -1,11 +1,12 @@
 {
   "id": 1,
-  "owner": "7619f16b-711c-43e2-b732-f1497abed575",
+  "owner": "c8a97f17-efac-4dae-9ee2-ed09b64bd30e",
   "door_open": false,
   "door_locked": false,
-  "powered": "true",
-  "roundel_light": "10",
-  "roundels": [],
+  "powered": true,
+  "emergency_mode": false,
+  "roundel_light": 10,
+  "dematerialised": false,
   "interior_yaw": 0.0,
   "interior_origin": 64,
   "interior_pos": {
@@ -20,5 +21,15 @@
     "y": 0.0,
     "z": 0.0
   },
-  "exterior_dim": "minecraft:overworld"
+  "exterior_dim": "minecraft:overworld",
+  "previous_pos": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "set_pos": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  }
 }
