@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "tardif_mod:block/interior_door_generator_block"
+  }
+}

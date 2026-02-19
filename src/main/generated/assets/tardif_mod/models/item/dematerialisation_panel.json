@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tardif_mod:item/dematerialisation_panel"
+  }
+}
