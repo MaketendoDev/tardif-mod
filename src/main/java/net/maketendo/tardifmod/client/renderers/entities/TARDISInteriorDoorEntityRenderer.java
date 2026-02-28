@@ -11,6 +11,6 @@ import software.bernie.geckolib.renderer.layer.builtin.AutoGlowingGeoLayer;
 public class TARDISInteriorDoorEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<TARDISInteriorDoorEntity, R> {
     public TARDISInteriorDoorEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new TARDISInteriorDoorModel());
-        this.renderLayers.addLayer(new AutoGlowingGeoLayer<>(this));
+        //this.renderLayers.addLayer(new AutoGlowingGeoLayer<>(this));
     }
 }

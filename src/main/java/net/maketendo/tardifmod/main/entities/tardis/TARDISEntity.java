@@ -110,6 +110,7 @@ public class TARDISEntity extends TARDISExteriorBase {
     public void tick() {
         super.tick();
 
+
         if (this.dataTracker.get(TARDIS_INITIALISED) && getEntityWorld().isClient()) {
             TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
             clientTick(data);
@@ -201,6 +202,8 @@ public class TARDISEntity extends TARDISExteriorBase {
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
 
         if (this.getEntityWorld().isClient()) return ActionResult.SUCCESS;
+
+        initParts();
 
         ItemStack itemStack = player.getStackInHand(hand);
         TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
@@ -369,6 +372,41 @@ public class TARDISEntity extends TARDISExteriorBase {
             this.dataTracker.set(TARDIS_INITIALISED, true);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private TARDISPartEntity leftArm;
+    private TARDISPartEntity rightArm;
+
+    private void initParts() {
+        if (this.getEntityWorld().isClient()) return;
+
+        leftArm = TARDIFEntities.TARDIS_PART.create(this.getEntityWorld(), SpawnReason.TRIGGERED);
+        rightArm = TARDIFEntities.TARDIS_PART.create(this.getEntityWorld(), SpawnReason.TRIGGERED);
+
+        if (leftArm != null) {
+            leftArm.setParent(this);
+            leftArm.refreshPositionAndAngles(
+                    this.getX() - 1.0,
+                    this.getY(),
+                    this.getZ(),
+                    this.getYaw(),
+                    this.getPitch()
+            );
+            this.getEntityWorld().spawnEntity(leftArm);
+        }
+
+        if (rightArm != null) {
+            rightArm.setParent(this);
+            rightArm.refreshPositionAndAngles(
+                    this.getX() + 1.0,
+                    this.getY(),
+                    this.getZ(),
+                    this.getYaw(),
+                    this.getPitch()
+            );
+            this.getEntityWorld().spawnEntity(rightArm);
         }
     }
 

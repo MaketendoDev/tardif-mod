@@ -14,7 +14,7 @@ public class DematPanelBlockEntity extends BlockEntity implements GeoBlockEntity
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public DematPanelBlockEntity(BlockPos pos, BlockState state) {
-        super(TARDIFBlockEntities.DEMATERIALISATION_PANEL, pos, state);
+        super(TARDIFBlockEntities.TARDIS_LIGHT_BLOCK, pos, state);
     }
 
     @Override

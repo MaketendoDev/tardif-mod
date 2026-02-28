@@ -15,7 +15,7 @@ public class CoordinatesPanelBlockEntity extends BlockEntity implements GeoBlock
     private int increment = 1;
 
     public CoordinatesPanelBlockEntity(BlockPos pos, BlockState state) {
-        super(TARDIFBlockEntities.COORDINATES_PANEL, pos, state);
+        super(TARDIFBlockEntities.TARDIS_LIGHT_BLOCK, pos, state);
     }
 
     @Override

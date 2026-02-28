@@ -4,6 +4,7 @@ import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.entities.controls.ConsoleControlEntity;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TARDISPartEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -22,6 +23,9 @@ public class TARDIFEntities {
     private static final RegistryKey<EntityType<?>> CONSOLE_CONTROL_KEY =
             RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "console_control"));
 
+    private static final RegistryKey<EntityType<?>> TARDIS_PART_KEY =
+            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis_part"));
+
     public static final EntityType<TARDISEntity> TARDIS = Registry.register(Registries.ENTITY_TYPE,
             Identifier.of(TARDIFMod.MOD_ID, "tardis"),
             EntityType.Builder.create(TARDISEntity::new, SpawnGroup.MISC)
@@ -36,6 +40,11 @@ public class TARDIFEntities {
             Identifier.of(TARDIFMod.MOD_ID, "console_control"),
             EntityType.Builder.create(ConsoleControlEntity::new, SpawnGroup.MISC)
                     .dimensions(0.1f, 2.5f).build(CONSOLE_CONTROL_KEY));
+
+    public static final EntityType<TARDISPartEntity> TARDIS_PART = Registry.register(Registries.ENTITY_TYPE,
+            Identifier.of(TARDIFMod.MOD_ID, "tardis_part"),
+            EntityType.Builder.create(TARDISPartEntity::new, SpawnGroup.MISC)
+                    .dimensions(0.1f, 2.5f).build(TARDIS_PART_KEY));
 
     public static void register() {
     }

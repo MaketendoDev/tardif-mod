@@ -26,6 +26,8 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFItems.SILVER_TARDIS_KEY, "TARDIS Key");
         translationBuilder.add(TARDIFItems.GOLD_TARDIS_KEY, "TARDIS Key");
 
+        translationBuilder.add(TARDIFItems.CRYSTALLINE_SHARD, "Crystalline Shard");
+
         // Blocks
         translationBuilder.add(TARDIFBlocks.TARDIS_CONSOLE_BLOCK, "TARDIS Console");
 
@@ -114,9 +116,9 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.TARDIS_LIGHT_BLOCK, "TARDIS Light Block");
 
         // Panels
-        translationBuilder.add(TARDIFBlocks.POWER_PANEL, "TARDIS Power Panel");
-        translationBuilder.add(TARDIFBlocks.COORDINATES_PANEL, "TARDIS Coordinates Panel");
-        translationBuilder.add(TARDIFBlocks.DEMATERIALISATION_PANEL, "TARDIS Dematerialisation Panel");
+//        translationBuilder.add(TARDIFBlocks.POWER_PANEL, "TARDIS Power Panel");
+//        translationBuilder.add(TARDIFBlocks.COORDINATES_PANEL, "TARDIS Coordinates Panel");
+//        translationBuilder.add(TARDIFBlocks.DEMATERIALISATION_PANEL, "TARDIS Dematerialisation Panel");
 
         // Item Tooltips
         translationBuilder.add("tooltip.tardif_mod.linkable_item.1", "Click on the interior door of the TARDIS");

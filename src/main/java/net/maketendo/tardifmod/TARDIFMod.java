@@ -8,7 +8,6 @@ import net.maketendo.tardifmod.client.packets.TardisAnimPackets;
 import net.maketendo.tardifmod.events.UseBlockEvent;
 import net.maketendo.tardifmod.main.*;
 import net.maketendo.tardifmod.main.commands.TardifCommand;
-import net.maketendo.tardifmod.main.tardis.TardisDataManager;
 import net.maketendo.tardifmod.utils.StainedQuartzRegistry;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -41,12 +40,6 @@ public class TARDIFMod implements ModInitializer {
             UseBlockEvent.register();
         }
         UseBlockEvent.registerQuartz();
-
-        ServerLifecycleEvents.SERVER_STARTED.register(TardisDataManager::init);
-
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            TardisDataManager.saveAll();
-        });
 
     }
 

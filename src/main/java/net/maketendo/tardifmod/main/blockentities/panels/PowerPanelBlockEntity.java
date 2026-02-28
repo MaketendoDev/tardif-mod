@@ -17,7 +17,7 @@ public class PowerPanelBlockEntity extends BlockEntity implements GeoBlockEntity
 
 
     public PowerPanelBlockEntity(BlockPos pos, BlockState state) {
-        super(TARDIFBlockEntities.POWER_PANEL, pos, state);
+        super(TARDIFBlockEntities.TARDIS_LIGHT_BLOCK, pos, state);
     }
 
     @Override

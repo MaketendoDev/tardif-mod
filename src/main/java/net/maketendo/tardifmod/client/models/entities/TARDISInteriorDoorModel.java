@@ -14,7 +14,7 @@ public class TARDISInteriorDoorModel extends GeoModel {
 
     @Override
     public Identifier getTextureResource(GeoRenderState geoRenderState) {
-        return Identifier.of(TARDIFMod.MOD_ID, "textures/entity/tardis/police_box_interior_door.png");
+        return Identifier.of(TARDIFMod.MOD_ID, "textures/entity/tardis/skins/police_box_troughton.png");
     }
 
     @Override

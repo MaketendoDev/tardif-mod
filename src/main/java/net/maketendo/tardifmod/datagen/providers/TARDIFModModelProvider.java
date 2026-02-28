@@ -66,9 +66,9 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK);
         blockStateModelGenerator.registerSimpleCubeAll(TARDIFBlocks.TARDIS_LIGHT_BLOCK);
 
-        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.POWER_PANEL, Blocks.IRON_BLOCK);
-        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.COORDINATES_PANEL, Blocks.IRON_BLOCK);
-        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.DEMATERIALISATION_PANEL, Blocks.IRON_BLOCK);
+//        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.POWER_PANEL, Blocks.IRON_BLOCK);
+//        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.COORDINATES_PANEL, Blocks.IRON_BLOCK);
+//        blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.DEMATERIALISATION_PANEL, Blocks.IRON_BLOCK);
         blockStateModelGenerator.registerBuiltinWithParticle(TARDIFBlocks.TARDIS_CONSOLE_BLOCK, Blocks.SHROOMLIGHT);
 
         BlockStateModelGenerator.BlockTexturePool greyStainedQuartzPool = blockStateModelGenerator.registerCubeAllModelTexturePool(TARDIFBlocks.GREY_STAINED_QUARTZ);
@@ -139,11 +139,13 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(TARDIFItems.SILVER_TARDIS_KEY, GENERATED_KEY);
         itemModelGenerator.register(TARDIFItems.TARDIS_ITEM, Models.GENERATED);
 
+        itemModelGenerator.register(TARDIFItems.CRYSTALLINE_SHARD, Models.GENERATED);
+
         itemModelGenerator.register(TARDIFBlocks.TARDIS_LIGHT_BLOCK.asItem(), Models.GENERATED);
         itemModelGenerator.register(TARDIFBlocks.TARDIS_CONSOLE_BLOCK.asItem(), Models.GENERATED);
-        itemModelGenerator.register(TARDIFBlocks.POWER_PANEL.asItem(), Models.GENERATED);
-        itemModelGenerator.register(TARDIFBlocks.COORDINATES_PANEL.asItem(), Models.GENERATED);
-        itemModelGenerator.register(TARDIFBlocks.DEMATERIALISATION_PANEL.asItem(), Models.GENERATED);
+//        itemModelGenerator.register(TARDIFBlocks.POWER_PANEL.asItem(), Models.GENERATED);
+//        itemModelGenerator.register(TARDIFBlocks.COORDINATES_PANEL.asItem(), Models.GENERATED);
+//        itemModelGenerator.register(TARDIFBlocks.DEMATERIALISATION_PANEL.asItem(), Models.GENERATED);
     }
 
     private static Model item(String parent, TextureKey... requiredTextureKeys) {

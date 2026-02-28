@@ -65,8 +65,8 @@ public class TARDIFModBlockLootTableProvider extends FabricBlockLootTableProvide
         addDrop(TARDIFBlocks.PINK_ROUNDEL);
         addDrop(TARDIFBlocks.PINK_ROUNDEL_HALF);
 
-        addDrop(TARDIFBlocks.COORDINATES_PANEL);
-        addDrop(TARDIFBlocks.DEMATERIALISATION_PANEL);
-        addDrop(TARDIFBlocks.POWER_PANEL);
+//        addDrop(TARDIFBlocks.COORDINATES_PANEL);
+//        addDrop(TARDIFBlocks.DEMATERIALISATION_PANEL);
+//        addDrop(TARDIFBlocks.POWER_PANEL);
     }
 }

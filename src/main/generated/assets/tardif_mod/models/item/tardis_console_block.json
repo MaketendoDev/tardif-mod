@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tardif_mod:item/coordinates_panel"
+    "layer0": "tardif_mod:item/tardis_console_block"
   }
 }

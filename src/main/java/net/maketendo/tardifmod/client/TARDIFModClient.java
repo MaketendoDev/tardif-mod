@@ -29,11 +29,12 @@ public class TARDIFModClient implements ClientModInitializer {
         EntityRendererRegistry.register(TARDIFEntities.TARDIS, TARDISEntityRenderer::new);
         EntityRendererRegistry.register(TARDIFEntities.TARDIS_INTERIOR_DOOR, TARDISInteriorDoorEntityRenderer::new);
         EntityRendererRegistry.register(TARDIFEntities.CONSOLE_CONTROL, ConsoleControlRenderer::new);
+        EntityRendererRegistry.register(TARDIFEntities.TARDIS_PART, TARDISPartsRenderer::new);
 
         BlockEntityRendererRegistry.register(TARDIFBlockEntities.TARDIS_CONSOLE_BLOCK, TardisConsoleBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(TARDIFBlockEntities.POWER_PANEL, PowerPanelBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(TARDIFBlockEntities.COORDINATES_PANEL, CoordinatesPanelBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(TARDIFBlockEntities.DEMATERIALISATION_PANEL, DematPanelBlockEntityRenderer::new);
+//        BlockEntityRendererRegistry.register(TARDIFBlockEntities.POWER_PANEL, PowerPanelBlockEntityRenderer::new);
+//        BlockEntityRendererRegistry.register(TARDIFBlockEntities.COORDINATES_PANEL, CoordinatesPanelBlockEntityRenderer::new);
+//        BlockEntityRendererRegistry.register(TARDIFBlockEntities.DEMATERIALISATION_PANEL, DematPanelBlockEntityRenderer::new);
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             HudRenderCallback.EVENT.register(new DevOverlay());

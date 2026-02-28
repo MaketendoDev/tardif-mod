@@ -304,14 +304,14 @@ public class TARDIFBlocks {
     public static final Block PINK_STAINED_QUARTZ_STAIRS = registerBlock("pink_stained_quartz_stairs",
             properties -> new StairsBlock(PINK_STAINED_QUARTZ.getDefaultState(), properties.mapColor(MapColor.OFF_WHITE).instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(0.8F)));
 
-    public static final Block POWER_PANEL = registerBlock("power_panel",
-            properties -> new PowerPanelBlock(properties.nonOpaque().strength(0.6F)));
-
-    public static final Block COORDINATES_PANEL = registerBlock("coordinates_panel",
-            properties -> new CoordinatesPanelBlock(properties.nonOpaque().strength(0.6F)));
-
-    public static final Block DEMATERIALISATION_PANEL = registerBlock("dematerialisation_panel",
-            properties -> new DematPanelBlock(properties.nonOpaque().strength(0.6F)));
+//    public static final Block POWER_PANEL = registerBlock("power_panel",
+//            properties -> new PowerPanelBlock(properties.nonOpaque().strength(0.6F)));
+//
+//    public static final Block COORDINATES_PANEL = registerBlock("coordinates_panel",
+//            properties -> new CoordinatesPanelBlock(properties.nonOpaque().strength(0.6F)));
+//
+//    public static final Block DEMATERIALISATION_PANEL = registerBlock("dematerialisation_panel",
+//            properties -> new DematPanelBlock(properties.nonOpaque().strength(0.6F)));
 
     public static final Block TARDIS_CONSOLE_BLOCK = registerBlock("tardis_console_block",
             properties -> new TardisConsoleBlock(properties.nonOpaque().strength(0.6F)));
