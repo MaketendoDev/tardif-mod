@@ -1,40 +1,39 @@
 package net.maketendo.tardifmod.main.items;
 
 import net.maketendo.tardifmod.main.items.extendable.LinkableItem;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.function.Consumer;
 
 public class TardisKeyItem extends LinkableItem {
 
     private final String material;
 
-    public TardisKeyItem(Settings settings, String material) {
+    public TardisKeyItem(Properties settings, String material) {
         super(settings);
         this.material = material;
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context,
-                              TooltipDisplayComponent displayComponent,
-                              Consumer<Text> textConsumer, TooltipType type) {
+    public void appendHoverText(ItemStack stack, TooltipContext context,
+                              TooltipDisplay displayComponent,
+                              Consumer<Component> textConsumer, TooltipFlag type) {
 
-        super.appendTooltip(stack, context, displayComponent, textConsumer, type);
+        super.appendHoverText(stack, context, displayComponent, textConsumer, type);
 
-        textConsumer.accept(Text.empty());
+        textConsumer.accept(Component.empty());
 
         textConsumer.accept(
-                Text.translatable("tooltip.tardif_mod.tardis_key.type")
-                        .formatted(Formatting.GRAY)
+                Component.translatable("tooltip.tardif_mod.tardis_key.type")
+                        .withStyle(ChatFormatting.GRAY)
         );
 
         textConsumer.accept(
-                Text.literal(material)
-                        .formatted(Formatting.BLUE)
+                Component.literal(material)
+                        .withStyle(ChatFormatting.BLUE)
         );
     }
 }

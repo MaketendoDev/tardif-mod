@@ -4,28 +4,29 @@ import net.maketendo.tardifmod.main.entities.ObjectEntity;
 import net.maketendo.tardifmod.main.items.extendable.LinkableItem;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -39,74 +40,81 @@ import java.util.Set;
 public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimatable {
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    private static final TrackedData<Integer> TARDIS_ID =
-            DataTracker.registerData(TARDISInteriorDoorEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Boolean> DOOR_OPEN =
-            DataTracker.registerData(TARDISInteriorDoorEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final EntityDataAccessor<Integer> TARDIS_ID =
+            SynchedEntityData.defineId(TARDISInteriorDoorEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DOOR_OPEN =
+            SynchedEntityData.defineId(TARDISInteriorDoorEntity.class, EntityDataSerializers.BOOLEAN);
 
 
-    public TARDISInteriorDoorEntity(EntityType<?> type, World world) {
+    public TARDISInteriorDoorEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     public int getTardisId() {
-        return this.dataTracker.get(TARDIS_ID);
+        return this.entityData.get(TARDIS_ID);
     }
 
     public void setTardisId(int id) {
-        this.dataTracker.set(TARDIS_ID, id);
+        this.entityData.set(TARDIS_ID, id);
     }
 
     public void setDoorOpen(boolean open) {
-        dataTracker.set(DOOR_OPEN, open);
+        entityData.set(DOOR_OPEN, open);
     }
 
     public boolean isDoorOpen() {
-        return dataTracker.get(DOOR_OPEN);
+        return entityData.get(DOOR_OPEN);
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        builder.add(TARDIS_ID, -1);
-        builder.add(DOOR_OPEN, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+
+        builder.define(TARDIS_ID, -1);
+        builder.define(DOOR_OPEN, false);
     }
 
     @Override
-    protected void writeCustomData(WriteView view) {
+    protected void addAdditionalSaveData(ValueOutput view) {
         view.putInt("TardisId", getTardisId());
     }
 
     @Override
-    protected void readCustomData(ReadView view) {
-        setTardisId(view.getInt("TardisId", -1));
+    protected void readAdditionalSaveData(ValueInput view) {
+        setTardisId(view.getIntOr("TardisId", -1));
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (getEntityWorld().isClient()) return;
+        if (level().isClientSide()) return;
 
-        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
+        TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
         setDoorOpen(data.doorOpen);
 
-        getEntityWorld().getChunkManager().setChunkForced(getChunkPos(), true);
+        level().getChunkSource().updateChunkForced(chunkPosition(), true);
 
-        data.interiorPos = getEntityPos();
-        data.interiorYaw = getYaw();
+        data.interiorPos = position();
+        data.interiorYaw = getYRot();
     }
 
     @Override
-    public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+    public HumanoidArm getMainArm() {
+        return null;
+    }
 
-        if (this.getEntityWorld().isClient()) return ActionResult.SUCCESS;
+    @Override
+    public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
 
-        ItemStack stack = player.getStackInHand(hand);
-        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
+        if (this.level().isClientSide()) return InteractionResult.SUCCESS;
+
+        ItemStack stack = player.getItemInHand(hand);
+        TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
 
         if (stack.getItem() instanceof LinkableItem item) {
             linkItem(item,  stack, player);
         } else {
-            if (!player.isSneaking()) {
+            if (!player.isShiftKeyDown()) {
                 if (!data.doorLocked) {
                     if (data.doorOpen == true) {
                         data.doorOpen = false;
@@ -114,43 +122,43 @@ public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimata
                         data.doorOpen = true;
                     }
                 } else {
-                    player.sendMessage(Text.literal("The door is locked...").formatted(Formatting.GRAY), true);
-                    playSoundAtTardisDoor(SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
+                    player.displayClientMessage(Component.literal("The door is locked...").withStyle(ChatFormatting.GRAY), true);
+                    playSoundAtTardisDoor(SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
                 }
             } else {
                 lockTardisDoor(data, player);
             }
         }
 
-        return ActionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override
-    public void onPlayerCollision(PlayerEntity player) {
-        super.onPlayerCollision(player);
+    public void playerTouch(Player player) {
+        super.playerTouch(player);
 
-        if (getEntityWorld().isClient()) return;
+        if (level().isClientSide()) return;
 
-        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
+        TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
         if (data != null && !data.doorOpen) return;
 
         double maxDistance = 0.45D;
 
-        if (player.getEntityPos().squaredDistanceTo(this.getEntityPos()) <= maxDistance * maxDistance) {
-            Vec3d offset = Vec3d.fromPolar(0, data.exteriorYaw).multiply(0.45);
+        if (player.position().distanceToSqr(this.position()) <= maxDistance * maxDistance) {
+            Vec3 offset = Vec3.directionFromRotation(0, data.exteriorYaw).scale(0.45);
 
-            player.teleport(
-                    getEntityWorld().getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, data.exteriorDimension)),
-                    data.exteriorPos.getX() + offset.x, data.exteriorPos.getY(), data.exteriorPos.getZ() + offset.z,
+            player.teleportTo(
+                    level().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, data.exteriorDimension)),
+                    data.exteriorPos.x() + offset.x, data.exteriorPos.y(), data.exteriorPos.z() + offset.z,
                     Set.of(),
                     data.exteriorYaw,
-                    player.getPitch(),
+                    player.getXRot(),
                     true
             );
 
-            player.addStatusEffect(
-                    new StatusEffectInstance(
-                            StatusEffects.BLINDNESS,
+            player.addEffect(
+                    new MobEffectInstance(
+                            MobEffects.BLINDNESS,
                             25,
                             1,
                             false,
@@ -161,8 +169,8 @@ public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimata
     }
 
     @Override
-    protected Box calculateDefaultBoundingBox(Vec3d pos) {
-        return new Box(
+    protected AABB makeBoundingBox(Vec3 pos) {
+        return new AABB(
                 getX() - 0.6, getY(),
                 getZ() - 0.1,
                 getX() + 0.6, getY() + 2.5,
@@ -185,38 +193,38 @@ public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimata
         return this.geoCache;
     }
 
-    public void lockTardisDoor(TardisData data, PlayerEntity player) {
+    public void lockTardisDoor(TardisData data, Player player) {
         if (!data.doorOpen) {
             if (data.doorLocked) {
                 data.doorLocked = false;
-                player.sendMessage(Text.literal("\uDD13").formatted(Formatting.GRAY), true);
+                player.displayClientMessage(Component.literal("\uDD13").withStyle(ChatFormatting.GRAY), true);
             } else {
                 data.doorLocked = true;
-                player.sendMessage(Text.literal("\uDD12").formatted(Formatting.GRAY), true);
+                player.displayClientMessage(Component.literal("\uDD12").withStyle(ChatFormatting.GRAY), true);
             }
-            playSoundAtTardisDoor(SoundEvents.ITEM_LODESTONE_COMPASS_LOCK, 0.5f);
+            playSoundAtTardisDoor(SoundEvents.LODESTONE_COMPASS_LOCK, 0.5f);
         }
     }
 
-    public void linkItem(LinkableItem item, ItemStack stack, PlayerEntity player) {
+    public void linkItem(LinkableItem item, ItemStack stack, Player player) {
         if (!(LinkableItem.getLinkedId(stack) == getTardisId())) {
             int id = this.getTardisId();
 
             if (id < 0) {
-                player.sendMessage(Text.literal("TARDIS Door is not linked to an ID").formatted(Formatting.RED), true);
+                player.displayClientMessage(Component.literal("TARDIS Door is not linked to an ID").withStyle(ChatFormatting.RED), true);
             }
 
             LinkableItem.setLinkedId(stack, id);
-            player.sendMessage(Text.literal("Linked to TARDIS #" + id + "!").formatted(Formatting.GREEN), true);
+            player.displayClientMessage(Component.literal("Linked to TARDIS #" + id + "!").withStyle(ChatFormatting.GREEN), true);
         }
     }
 
     public void playSoundAtTardisDoor(SoundEvent soundEvent, Float volume) {
-        getEntityWorld().playSound(
+        level().playSound(
                 null,
                 getX(), getY(), getZ(),
                 soundEvent,
-                SoundCategory.NEUTRAL,
+                SoundSource.NEUTRAL,
                 volume,
                 1.0f
         );

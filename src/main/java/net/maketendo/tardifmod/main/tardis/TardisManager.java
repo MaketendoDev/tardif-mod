@@ -4,12 +4,12 @@ import com.google.gson.*;
 import net.maketendo.tardifmod.main.TARDIFDimensions;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.maketendo.tardifmod.utils.TardisInteriorUtil;
-import net.minecraft.entity.Entity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.WorldSavePath;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.LevelResource;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class TardisManager {
     private static final Map<Integer, TardisData> CACHE = new HashMap<>();
 
     private static Path getDir(MinecraftServer server) {
-        return server.getSavePath(WorldSavePath.ROOT)
+        return server.getWorldPath(LevelResource.ROOT)
                 .resolve("data")
                 .resolve("tardis");
     }
@@ -123,7 +123,7 @@ public class TardisManager {
         }
     }
 
-    public static Integer getTardisInteriorId(ServerWorld world, BlockPos pos) {
+    public static Integer getTardisInteriorId(ServerLevel world, BlockPos pos) {
         MinecraftServer server = world.getServer();
 
         try {
@@ -131,7 +131,7 @@ public class TardisManager {
                 TardisData data = TardisManager.getFromId(server, id);
                 if (data == null) continue;
 
-                if (!data.interiorDimension.equals(world.getRegistryKey().getValue()))
+                if (!data.interiorDimension.equals(world.dimension().identifier()))
                     continue;
 
                 if (TardisInteriorUtil.isInside(data.interiorOrigin, TardisInteriorUtil.SPACING, pos)) {
@@ -145,13 +145,13 @@ public class TardisManager {
     }
 
     @Nullable
-    public static TardisData getTardisData(World world, BlockPos pos) {
-        if (world.isClient()) return null;
-        if (!(world instanceof ServerWorld serverWorld)) return null;
+    public static TardisData getTardisData(Level world, BlockPos pos) {
+        if (world.isClientSide()) return null;
+        if (!(world instanceof ServerLevel serverWorld)) return null;
 
         assert serverWorld.getServer() != null;
-        ServerWorld tardisWorld = serverWorld.getServer()
-                .getWorld(TARDIFDimensions.TARDIS_WORLD);
+        ServerLevel tardisWorld = serverWorld.getServer()
+                .getLevel(TARDIFDimensions.TARDIS_WORLD);
 
         if (tardisWorld == null) return null;
         if (serverWorld != tardisWorld) return null;
@@ -163,8 +163,8 @@ public class TardisManager {
     }
 
     public static Entity getEntityFromId(int id, MinecraftServer server) {
-        for (ServerWorld world : server.getWorlds()) {
-            for (Entity entity : world.iterateEntities()) {
+        for (ServerLevel world : server.getAllLevels()) {
+            for (Entity entity : world.getAllEntities()) {
                 if (entity instanceof TARDISEntity tardis &&
                         tardis.getTardisId() == id) {
                     return tardis;

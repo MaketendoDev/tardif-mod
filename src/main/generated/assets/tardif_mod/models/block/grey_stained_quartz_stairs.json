@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "tardif_mod:block/grey_stained_quartz",
-    "side": "tardif_mod:block/grey_stained_quartz",
-    "top": "tardif_mod:block/grey_stained_quartz"
-  }
-}

@@ -1,12 +1,11 @@
 package net.maketendo.tardifmod.utils;
 
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ShapeUtil {
 
@@ -32,7 +31,7 @@ public class ShapeUtil {
             double x, double y, double z,
             double width, double height, double length
     ) {
-        shapes.add(VoxelShapes.cuboid(
+        shapes.add(Shapes.box(
                 x / 16.0,
                 y / 16.0,
                 z / 16.0,
@@ -48,7 +47,7 @@ public class ShapeUtil {
      */
     public VoxelShape build() {
         return shapes.stream()
-                .reduce(VoxelShapes.empty(), VoxelShapes::union);
+                .reduce(Shapes.empty(), Shapes::or);
     }
 
     public static VoxelShape rotateY(VoxelShape shape, Direction direction) {
@@ -66,11 +65,11 @@ public class ShapeUtil {
         VoxelShape result = shape;
 
         for (int i = 0; i < times; i++) {
-            VoxelShape rotated = VoxelShapes.empty();
+            VoxelShape rotated = Shapes.empty();
 
-            for (Box box : result.getBoundingBoxes()) {
-                rotated = VoxelShapes.union(rotated,
-                        VoxelShapes.cuboid(
+            for (AABB box : result.toAabbs()) {
+                rotated = Shapes.or(rotated,
+                        Shapes.box(
                                 1.0 - box.maxZ,
                                 box.minY,
                                 box.minX,

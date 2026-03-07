@@ -5,18 +5,17 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.maketendo.tardifmod.main.TARDIFBlocks;
 import net.maketendo.tardifmod.main.TARDIFEntities;
 import net.maketendo.tardifmod.main.TARDIFItems;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
 import java.util.concurrent.CompletableFuture;
 
 public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
 
-    public TARDIFModEnglishLangProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+    public TARDIFModEnglishLangProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
+    public void generateTranslations(HolderLookup.Provider wrapperLookup, TranslationBuilder translationBuilder) {
         // Creative Tabs
         translationBuilder.add("itemgroup.tardif_mod.items", "TARDIF: Items");
         translationBuilder.add("itemgroup.tardif_mod.decoration", "TARDIF: Decoration");
@@ -33,8 +32,8 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
 
         translationBuilder.add(TARDIFBlocks.ROUNDEL, "Roundel");
         translationBuilder.add(TARDIFBlocks.ROUNDEL_HALF, "Roundel");
-        translationBuilder.add(TARDIFBlocks.GREY_STAINED_QUARTZ, "Grey Stained Quartz");
-        translationBuilder.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ, "Dark Grey Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.GRAY_STAINED_QUARTZ, "Grey Stained Quartz");
+        translationBuilder.add(TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ, "Dark Grey Stained Quartz");
         translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ, "Black Stained Quartz");
         translationBuilder.add(TARDIFBlocks.BROWN_STAINED_QUARTZ, "Brown Stained Quartz");
         translationBuilder.add(TARDIFBlocks.RED_STAINED_QUARTZ, "Red Stained Quartz");
@@ -49,10 +48,10 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ, "Magenta Stained Quartz");
         translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ, "Pink Stained Quartz");
 
-        translationBuilder.add(TARDIFBlocks.GREY_ROUNDEL, "Grey Roundel");
-        translationBuilder.add(TARDIFBlocks.GREY_ROUNDEL_HALF, "Grey Roundel");
-        translationBuilder.add(TARDIFBlocks.DARK_GREY_ROUNDEL, "Dark Grey Roundel");
-        translationBuilder.add(TARDIFBlocks.DARK_GREY_ROUNDEL_HALF, "Dark Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.GRAY_ROUNDEL, "Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.GRAY_ROUNDEL_HALF, "Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.DARK_GRAY_ROUNDEL, "Dark Grey Roundel");
+        translationBuilder.add(TARDIFBlocks.DARK_GRAY_ROUNDEL_HALF, "Dark Grey Roundel");
         translationBuilder.add(TARDIFBlocks.BLACK_ROUNDEL, "Black Roundel");
         translationBuilder.add(TARDIFBlocks.BLACK_ROUNDEL_HALF, "Black Roundel");
         translationBuilder.add(TARDIFBlocks.BROWN_ROUNDEL, "Brown Roundel");
@@ -80,8 +79,8 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.PINK_ROUNDEL, "Pink Roundel");
         translationBuilder.add(TARDIFBlocks.PINK_ROUNDEL_HALF, "Pink Roundel");
 
-        translationBuilder.add(TARDIFBlocks.GREY_STAINED_QUARTZ_SLAB, "Grey Stained Quartz Slab");
-        translationBuilder.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_SLAB, "Dark Grey Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.GRAY_STAINED_QUARTZ_SLAB, "Grey Stained Quartz Slab");
+        translationBuilder.add(TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ_SLAB, "Dark Grey Stained Quartz Slab");
         translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ_SLAB, "Black Stained Quartz Slab");
         translationBuilder.add(TARDIFBlocks.BROWN_STAINED_QUARTZ_SLAB, "Brown Stained Quartz Slab");
         translationBuilder.add(TARDIFBlocks.RED_STAINED_QUARTZ_SLAB, "Red Stained Quartz Slab");
@@ -96,8 +95,8 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_SLAB, "Magenta Stained Quartz Slab");
         translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ_SLAB, "Pink Stained Quartz Slab");
 
-        translationBuilder.add(TARDIFBlocks.GREY_STAINED_QUARTZ_STAIRS, "Grey Stained Quartz Stairs");
-        translationBuilder.add(TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_STAIRS, "Dark Grey Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.GRAY_STAINED_QUARTZ_STAIRS, "Grey Stained Quartz Stairs");
+        translationBuilder.add(TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ_STAIRS, "Dark Grey Stained Quartz Stairs");
         translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ_STAIRS, "Black Stained Quartz Stairs");
         translationBuilder.add(TARDIFBlocks.BROWN_STAINED_QUARTZ_STAIRS, "Brown Stained Quartz Stairs");
         translationBuilder.add(TARDIFBlocks.RED_STAINED_QUARTZ_STAIRS, "Red Stained Quartz Stairs");
@@ -111,6 +110,11 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.PURPLE_STAINED_QUARTZ_STAIRS, "Purple Stained Quartz Stairs");
         translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ_STAIRS, "Magenta Stained Quartz Stairs");
         translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ_STAIRS, "Pink Stained Quartz Stairs");
+
+        translationBuilder.add(TARDIFBlocks.CRYSTALLINE_BLOCK, "Block of Crystalline");
+        translationBuilder.add(TARDIFBlocks.CRYSTALLINE_SLAB, "Slab of Crystalline");
+        translationBuilder.add(TARDIFBlocks.CRYSTALLINE_STAIR, "Stair of Crystalline");
+
 
         translationBuilder.add(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK, "Interior Door Generator Block");
         translationBuilder.add(TARDIFBlocks.TARDIS_LIGHT_BLOCK, "TARDIS Light Block");

@@ -1,15 +1,16 @@
 package net.maketendo.tardifmod;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
-import net.maketendo.tardifmod.client.models.console.CrystalConsoleModel;
 import net.maketendo.tardifmod.client.packets.TardisAnimPackets;
 import net.maketendo.tardifmod.events.UseBlockEvent;
 import net.maketendo.tardifmod.main.*;
 import net.maketendo.tardifmod.main.commands.TardifCommand;
+import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
 import net.maketendo.tardifmod.utils.StainedQuartzRegistry;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,9 @@ public class TARDIFMod implements ModInitializer {
         StainedQuartzRegistry.register();
         TardisAnimPackets.register();
 
+        FabricDefaultAttributeRegistry.register(TARDIFEntities.TARDIS, TARDISEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(TARDIFEntities.TARDIS_INTERIOR_DOOR, TARDISInteriorDoorEntity.createAttributes());
+
 
         // Events
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
@@ -43,4 +47,7 @@ public class TARDIFMod implements ModInitializer {
 
     }
 
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
+    }
 }

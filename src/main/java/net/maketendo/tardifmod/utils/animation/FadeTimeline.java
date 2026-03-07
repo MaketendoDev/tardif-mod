@@ -1,10 +1,9 @@
 package net.maketendo.tardifmod.utils.animation;
 
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
-import net.minecraft.util.math.MathHelper;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.util.Mth;
 
 public class FadeTimeline implements TimelineAnimation {
 
@@ -50,9 +49,9 @@ public class FadeTimeline implements TimelineAnimation {
         stepTicks++;
 
         float progress = stepTicks / (float) step.ticks();
-        progress = MathHelper.clamp(progress, 0f, 1f);
+        progress = Mth.clamp(progress, 0f, 1f);
 
-        float value = MathHelper.lerp(progress, start, step.target());
+        float value = Mth.lerp(progress, start, step.target());
         setter.accept(value);
         onTick.run();
 

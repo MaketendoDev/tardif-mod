@@ -2,10 +2,9 @@ package net.maketendo.tardifmod.main.tardis;
 
 import com.google.gson.JsonObject;
 import net.maketendo.tardifmod.main.TARDIFDimensions;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.Vec3;
 import java.util.UUID;
 
 public class TardisData {
@@ -21,18 +20,18 @@ public class TardisData {
 
     // Interior
     public float interiorYaw = 0f;
-    public BlockPos interiorOrigin = BlockPos.ORIGIN;
-    public Vec3d interiorPos = Vec3d.ZERO;
+    public BlockPos interiorOrigin = BlockPos.ZERO;
+    public Vec3 interiorPos = Vec3.ZERO;
     public Identifier interiorDimension = TARDIFDimensions.TARDIS_DIM_ID;
 
     // Exterior
     public float exteriorYaw = 0f;
-    public Vec3d exteriorPos = Vec3d.ZERO;
+    public Vec3 exteriorPos = Vec3.ZERO;
     public Identifier exteriorDimension = TARDIFDimensions.TARDIS_DIM_ID;
 
     // Travel
-    public Vec3d previousPos = Vec3d.ZERO;
-    public Vec3d setPos = Vec3d.ZERO;
+    public Vec3 previousPos = Vec3.ZERO;
+    public Vec3 setPos = Vec3.ZERO;
     public boolean dematerialised = false;
 
     public JsonObject toJson() {
@@ -80,18 +79,18 @@ public class TardisData {
 
         data.interiorYaw = getFloat(json, "interior_yaw", 0f);
         data.interiorOrigin = json.has("interior_origin")
-                ? BlockPos.fromLong(json.get("interior_origin").getAsLong())
-                : BlockPos.ORIGIN;
+                ? BlockPos.of(json.get("interior_origin").getAsLong())
+                : BlockPos.ZERO;
 
-        data.interiorPos = getVec(json, "interior_pos", Vec3d.ZERO);
+        data.interiorPos = getVec(json, "interior_pos", Vec3.ZERO);
         data.interiorDimension = getId(json, "interior_dim", TARDIFDimensions.TARDIS_DIM_ID);
 
         data.exteriorYaw = getFloat(json, "exterior_yaw", 0f);
-        data.exteriorPos = getVec(json, "exterior_pos", Vec3d.ZERO);
+        data.exteriorPos = getVec(json, "exterior_pos", Vec3.ZERO);
         data.exteriorDimension = getId(json, "exterior_dim", TARDIFDimensions.TARDIS_DIM_ID);
 
-        data.previousPos = getVec(json, "previous_pos", Vec3d.ZERO);
-        data.setPos = getVec(json, "set_pos", Vec3d.ZERO);
+        data.previousPos = getVec(json, "previous_pos", Vec3.ZERO);
+        data.setPos = getVec(json, "set_pos", Vec3.ZERO);
 
         return data;
     }
@@ -116,21 +115,21 @@ public class TardisData {
 
     private static Identifier getId(JsonObject json, String key, Identifier def) {
         return json.has(key)
-                ? Identifier.of(json.get(key).getAsString())
+                ? Identifier.parse(json.get(key).getAsString())
                 : def;
     }
 
-    private static Vec3d getVec(JsonObject json, String key, Vec3d def) {
+    private static Vec3 getVec(JsonObject json, String key, Vec3 def) {
         if (!json.has(key)) return def;
         JsonObject o = json.getAsJsonObject(key);
-        return new Vec3d(
+        return new Vec3(
                 o.get("x").getAsDouble(),
                 o.get("y").getAsDouble(),
                 o.get("z").getAsDouble()
         );
     }
 
-    private static JsonObject vecToJson(Vec3d v) {
+    private static JsonObject vecToJson(Vec3 v) {
         JsonObject o = new JsonObject();
         o.addProperty("x", v.x);
         o.addProperty("y", v.y);

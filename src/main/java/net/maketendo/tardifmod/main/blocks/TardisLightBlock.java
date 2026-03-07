@@ -6,110 +6,116 @@ import java.util.function.ToIntFunction;
 import net.maketendo.tardifmod.main.TARDIFBlockEntities;
 import net.maketendo.tardifmod.main.TARDIFBlocks;
 import net.maketendo.tardifmod.main.blockentities.TardisLightBlockEntity;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-public class TardisLightBlock extends BlockWithEntity implements Waterloggable {
-    public static final MapCodec<TardisLightBlock> CODEC = createCodec(TardisLightBlock::new);
-    public static final IntProperty LEVEL = IntProperty.of("level", 0, 15);
+public class TardisLightBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+    public static final MapCodec<TardisLightBlock> CODEC = simpleCodec(TardisLightBlock::new);
+    public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, 15);
     public static final BooleanProperty WATERLOGGED;
     public static final ToIntFunction<BlockState> STATE_TO_LUMINANCE;
 
-    public MapCodec<TardisLightBlock> getCodec() {
+    public MapCodec<TardisLightBlock> codec() {
         return CODEC;
     }
 
-    public TardisLightBlock(AbstractBlock.Settings settings) {
+    public TardisLightBlock(BlockBehaviour.Properties settings) {
         super(settings);
-        this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(LEVEL, 2)).with(WATERLOGGED, false));
+        this.registerDefaultState((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(LEVEL, 2)).setValue(WATERLOGGED, false));
     }
 
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(new Property[]{LEVEL, WATERLOGGED});
     }
 
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (!world.isClient() && player.isCreativeLevelTwoOp()) {
-            world.setBlockState(pos, state.cycle(LEVEL), 2);
-            return ActionResult.SUCCESS_SERVER;
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if (!world.isClientSide() && player.canUseGameMasterBlocks()) {
+            world.setBlock(pos, state.cycle(LEVEL), 2);
+            return InteractionResult.SUCCESS_SERVER;
         } else {
-            return ActionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
     }
 
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return context.isHolding(Item.fromBlock(TARDIFBlocks.TARDIS_LIGHT_BLOCK)) ? VoxelShapes.fullCube() : VoxelShapes.empty();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return context.isHoldingItem(Item.byBlock(TARDIFBlocks.TARDIS_LIGHT_BLOCK)) ? Shapes.block() : Shapes.empty();
     }
 
-    protected boolean isTransparent(BlockState state) {
+    protected boolean propagatesSkylightDown(BlockState state) {
         return state.getFluidState().isEmpty();
     }
 
-    protected float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+    protected float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos) {
         return 1.0F;
     }
 
-    protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
-        if (state.get(WATERLOGGED)) {
-            tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+    protected BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        if (state.getValue(WATERLOGGED)) {
+            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
-        return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
+        return super.updateShape(state, world, tickView, pos, direction, neighborPos, neighborState, random);
     }
 
     protected FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
-        return addNbtForLevel(super.getPickStack(world, pos, state, includeData), (Integer)state.get(LEVEL));
+    protected ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData) {
+        return addNbtForLevel(super.getCloneItemStack(world, pos, state, includeData), (Integer)state.getValue(LEVEL));
     }
 
     public static ItemStack addNbtForLevel(ItemStack stack, int level) {
-        stack.set(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT.with(LEVEL, level));
+        stack.set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(LEVEL, level));
         return stack;
     }
 
     static {
-        WATERLOGGED = Properties.WATERLOGGED;
-        STATE_TO_LUMINANCE = (state) -> (Integer)state.get(LEVEL);
+        WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        STATE_TO_LUMINANCE = (state) -> (Integer)state.getValue(LEVEL);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TardisLightBlockEntity(pos, state);
     }
 
     @org.jetbrains.annotations.Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
-            World world, BlockState state, BlockEntityType<T> type) {
+            Level world, BlockState state, BlockEntityType<T> type) {
 
         if (type == TARDIFBlockEntities.TARDIS_LIGHT_BLOCK) {
             return (world1, pos, state1, be) ->
@@ -120,8 +126,8 @@ public class TardisLightBlock extends BlockWithEntity implements Waterloggable {
     }
 
     @Override
-    protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.INVISIBLE;
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.INVISIBLE;
     }
 }
 

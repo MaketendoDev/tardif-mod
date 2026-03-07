@@ -1,30 +1,30 @@
 package net.maketendo.tardifmod.utils;
 
-import net.minecraft.command.permission.PermissionPredicate;
-import net.minecraft.entity.Entity;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.PermissionSet;
+import net.minecraft.world.entity.Entity;
 
 public class CommandUtil {
 
     public static void runCommandAsEntity(Entity entity, String command) {
-        if (entity.getEntityWorld().isClient()) return;
+        if (entity.level().isClientSide()) return;
 
-        ServerWorld serverWorld = (ServerWorld) entity.getEntityWorld();
+        ServerLevel serverWorld = (ServerLevel) entity.level();
         MinecraftServer server = serverWorld.getServer();
 
         if (server == null) return;
 
-        ServerCommandSource source = entity.getCommandSource(serverWorld)
-                .withSilent()
-                .withPermissions(PermissionPredicate.ALL);
+        CommandSourceStack source = entity.createCommandSourceStackForNameResolution(serverWorld)
+                .withSuppressedOutput()
+                .withPermission(PermissionSet.ALL_PERMISSIONS);
 
         try {
-            server.getCommandManager().parseAndExecute(source, command);
+            server.getCommands().performPrefixedCommand(source, command);
         } catch (Exception e) {
-            server.sendMessage(Text.literal("Failed to run command for entity: " + e.getMessage()));
+            server.sendSystemMessage(Component.literal("Failed to run command for entity: " + e.getMessage()));
         }
     }
 }

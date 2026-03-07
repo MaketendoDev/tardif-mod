@@ -17,5 +17,11 @@
     "sounds": [
       "tardif_mod:tardis/tardis_mat"
     ]
+  },
+  "tardis/advancement_earn": {
+    "subtitle": "sound.tardif_mod.advancement_earn",
+    "sounds": [
+      "tardif_mod:ui/advancement_earn"
+    ]
   }
 }

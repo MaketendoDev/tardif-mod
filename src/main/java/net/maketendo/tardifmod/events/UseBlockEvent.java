@@ -5,70 +5,70 @@ import net.maketendo.tardifmod.main.TARDIFTags;
 
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.utils.StainedQuartzRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class UseBlockEvent {
     public static void register() {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (world.isClient()) return ActionResult.PASS;
-            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
+            if (world.isClientSide()) return InteractionResult.PASS;
+            if (!(world instanceof ServerLevel serverWorld)) return InteractionResult.PASS;
 
-            BlockPos pos = hitResult.getBlockPos().offset(hitResult.getSide());
+            BlockPos pos = hitResult.getBlockPos().relative(hitResult.getDirection());
 
             Integer tardisId = TardisManager.getTardisInteriorId(serverWorld, pos);
             if (tardisId != null) {
-                player.sendMessage(
-                        Text.literal("Placed block in TARDIS ID: " + tardisId),
+                player.displayClientMessage(
+                        Component.literal("Placed block in TARDIS ID: " + tardisId),
                         false
                 );
             }
 
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         });
 
     }
 
     public static void registerQuartz() {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (world.isClient()) return ActionResult.PASS;
+            if (world.isClientSide()) return InteractionResult.PASS;
 
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
 
-            if (!state.isOf(Blocks.QUARTZ_BLOCK)) return ActionResult.PASS;
+            if (!state.is(Blocks.QUARTZ_BLOCK)) return InteractionResult.PASS;
 
-            if (!player.getOffHandStack().isIn(TARDIFTags.Items.PAINT_BRUSH)) {
-                return ActionResult.PASS;
+            if (!player.getOffhandItem().is(TARDIFTags.Items.PAINT_BRUSH)) {
+                return InteractionResult.PASS;
             }
 
-            ItemStack brush = player.getOffHandStack();
+            ItemStack brush = player.getOffhandItem();
             Block replacement = StainedQuartzRegistry.getFromDye(brush);
-            if (replacement == null) return ActionResult.PASS;
+            if (replacement == null) return InteractionResult.PASS;
 
-            world.setBlockState(pos, replacement.getDefaultState());
+            world.setBlockAndUpdate(pos, replacement.defaultBlockState());
             world.playSound(
                     null,
                     pos,
-                    SoundEvents.ITEM_HONEYCOMB_WAX_ON,
-                    SoundCategory.BLOCKS,
+                    SoundEvents.HONEYCOMB_WAX_ON,
+                    SoundSource.BLOCKS,
                     0.5f,
                     1f
             );
 
             if (!player.isCreative()) {
-                brush.decrement(1);
+                brush.shrink(1);
             }
 
-            return ActionResult.CONSUME;
+            return InteractionResult.CONSUME;
         });
 
     }

@@ -1,11 +1,11 @@
 package net.maketendo.tardifmod.main.entities.controls;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 
 public class HandbrakeControlEntity extends ConsoleControlEntity {
 
-    public HandbrakeControlEntity(EntityType<?> type, World world) {
+    public HandbrakeControlEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 

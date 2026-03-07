@@ -6,21 +6,21 @@ import net.maketendo.tardifmod.main.TARDIFEntities;
 import net.maketendo.tardifmod.main.TARDIFSounds;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.phys.Vec3;
 
 public class TardisTravelManager {
     public static void dematTardis(TardisData data, Entity entity, MinecraftServer server) {
         data.dematerialised = true;
 
-        ServerWorld intWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
+        ServerLevel intWorld = server.getLevel(TARDIFDimensions.TARDIS_WORLD);
         if (intWorld == null) return;
 
         intWorld.playSound(
@@ -29,21 +29,21 @@ public class TardisTravelManager {
                 data.interiorOrigin.getY(),
                 data.interiorOrigin.getZ(),
                 TARDIFSounds.DEMATERIALISATION,
-                SoundCategory.BLOCKS,
+                SoundSource.BLOCKS,
                 10.0f,
                 1.0f
         );
 
-        ServerWorld extWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
+        ServerLevel extWorld = server.getLevel(TARDIFDimensions.TARDIS_WORLD);
         if (extWorld == null) return;
 
         extWorld.playSound(
                 null,
-                data.exteriorPos.getX(),
-                data.exteriorPos.getY(),
-                data.exteriorPos.getZ(),
+                data.exteriorPos.x(),
+                data.exteriorPos.y(),
+                data.exteriorPos.z(),
                 TARDIFSounds.DEMATERIALISATION,
-                SoundCategory.BLOCKS,
+                SoundSource.BLOCKS,
                 5.0f,
                 1.0f
         );
@@ -55,59 +55,59 @@ public class TardisTravelManager {
     public static void rematTardis(TardisData data, Entity entity, MinecraftServer server) {
         data.dematerialised = false;
 
-        ServerWorld intWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
+        ServerLevel intWorld = server.getLevel(TARDIFDimensions.TARDIS_WORLD);
         if (intWorld != null) {
             intWorld.playSound(
                     null,
                     data.interiorOrigin,
                     TARDIFSounds.MATERIALISATION,
-                    SoundCategory.BLOCKS,
+                    SoundSource.BLOCKS,
                     10.0f,
                     1.0f
             );
         }
 
-        ServerWorld extWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
+        ServerLevel extWorld = server.getLevel(TARDIFDimensions.TARDIS_WORLD);
         if (extWorld != null) {
             extWorld.playSound(
                     null,
-                    data.exteriorPos.getX(),
-                    data.exteriorPos.getY(),
-                    data.exteriorPos.getZ(),
+                    data.exteriorPos.x(),
+                    data.exteriorPos.y(),
+                    data.exteriorPos.z(),
                     TARDIFSounds.MATERIALISATION,
-                    SoundCategory.BLOCKS,
+                    SoundSource.BLOCKS,
                     5.0f,
                     1.0f
             );
 
-            ServerWorld landingWorld = server.getWorld(RegistryKey.of(RegistryKeys.WORLD, data.exteriorDimension));
+            ServerLevel landingWorld = server.getLevel(ResourceKey.create(Registries.DIMENSION, data.exteriorDimension));
             if (landingWorld != null) {
 
-                landingWorld.setChunkForced((int) data.setPos.getX(), (int) data.setPos.getY(), true);
+                landingWorld.setChunkForced((int) data.setPos.x(), (int) data.setPos.y(), true);
 
                 Entity rematTardis = TARDIFEntities.TARDIS.spawn(
                         landingWorld,
-                        BlockPos.ofFloored(data.exteriorPos),
-                        SpawnReason.TRIGGERED
+                        BlockPos.containing(data.exteriorPos),
+                        EntitySpawnReason.TRIGGERED
                 );
 
                 if (rematTardis instanceof TARDISEntity tardis) {
                     tardis.preInitialised();
                     tardis.setTardisId(data.id);
 
-                    data.exteriorPos = new Vec3d(
-                            data.setPos.getX() + 0.5,
-                            data.setPos.getY(),
-                            data.setPos.getZ() + 0.5
+                    data.exteriorPos = new Vec3(
+                            data.setPos.x() + 0.5,
+                            data.setPos.y(),
+                            data.setPos.z() + 0.5
                     );
 
-                    tardis.setPos(
-                            data.setPos.getX() + 0.5,
-                            data.setPos.getY(),
-                            data.setPos.getZ() + 0.5
+                    tardis.setPosRaw(
+                            data.setPos.x() + 0.5,
+                            data.setPos.y(),
+                            data.setPos.z() + 0.5
                     );
 
-                    extWorld.spawnEntity(tardis);
+                    extWorld.addFreshEntity(tardis);
                 }
             }
 

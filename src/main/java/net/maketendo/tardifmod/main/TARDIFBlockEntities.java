@@ -10,19 +10,10 @@ import net.maketendo.tardifmod.main.blockentities.panels.DematPanelBlockEntity;
 import net.maketendo.tardifmod.main.blockentities.panels.PowerPanelBlockEntity;
 import net.maketendo.tardifmod.main.blocks.RoundelBlock;
 import net.maketendo.tardifmod.main.blocks.StainedBlock;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.enums.NoteBlockInstrument;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.function.Function;
 
 public class TARDIFBlockEntities {
@@ -40,25 +31,25 @@ public class TARDIFBlockEntities {
 //                    FabricBlockEntityTypeBuilder.create(DematPanelBlockEntity::new, TARDIFBlocks.DEMATERIALISATION_PANEL).build(null));
 
     public static final BlockEntityType<TardisLightBlockEntity> TARDIS_LIGHT_BLOCK =
-            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis_light_block"),
+            Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis_light_block"),
                     FabricBlockEntityTypeBuilder.create(TardisLightBlockEntity::new, TARDIFBlocks.TARDIS_LIGHT_BLOCK).build(null));
 
     public static final BlockEntityType<TardisConsoleBlockEntity> TARDIS_CONSOLE_BLOCK =
-            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis_console_block"),
+            Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis_console_block"),
                     FabricBlockEntityTypeBuilder.create(TardisConsoleBlockEntity::new, TARDIFBlocks.TARDIS_CONSOLE_BLOCK).build(null));
 
     public static final BlockEntityType<RoundelBlockEntity> ROUNDELS =
             Registry.register(
-                    Registries.BLOCK_ENTITY_TYPE,
-                    Identifier.of(TARDIFMod.MOD_ID, "roundel"),
+                    BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                    Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "roundel"),
                     FabricBlockEntityTypeBuilder.create(
                             RoundelBlockEntity::new,
                             TARDIFBlocks.ROUNDEL,
                             TARDIFBlocks.ROUNDEL_HALF,
-                            TARDIFBlocks.GREY_ROUNDEL,
-                            TARDIFBlocks.GREY_ROUNDEL_HALF,
-                            TARDIFBlocks.DARK_GREY_ROUNDEL,
-                            TARDIFBlocks.DARK_GREY_ROUNDEL_HALF,
+                            TARDIFBlocks.GRAY_ROUNDEL,
+                            TARDIFBlocks.GRAY_ROUNDEL_HALF,
+                            TARDIFBlocks.DARK_GRAY_ROUNDEL,
+                            TARDIFBlocks.DARK_GRAY_ROUNDEL_HALF,
                             TARDIFBlocks.BLACK_ROUNDEL,
                             TARDIFBlocks.BLACK_ROUNDEL_HALF,
                             TARDIFBlocks.BROWN_ROUNDEL,

@@ -5,46 +5,46 @@ import net.maketendo.tardifmod.main.entities.controls.ConsoleControlEntity;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISPartEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 
 public class TARDIFEntities {
-    private static final RegistryKey<EntityType<?>> TARDIS_KEY =
-            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis"));
+    private static final ResourceKey<EntityType<?>> TARDIS_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis"));
 
-    private static final RegistryKey<EntityType<?>> TARDIS_INTERIOR_DOOR_KEY =
-            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis_interior_door"));
+    private static final ResourceKey<EntityType<?>> TARDIS_INTERIOR_DOOR_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis_interior_door"));
 
-    private static final RegistryKey<EntityType<?>> CONSOLE_CONTROL_KEY =
-            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "console_control"));
+    private static final ResourceKey<EntityType<?>> CONSOLE_CONTROL_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "console_control"));
 
-    private static final RegistryKey<EntityType<?>> TARDIS_PART_KEY =
-            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(TARDIFMod.MOD_ID, "tardis_part"));
+    private static final ResourceKey<EntityType<?>> TARDIS_PART_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis_part"));
 
-    public static final EntityType<TARDISEntity> TARDIS = Registry.register(Registries.ENTITY_TYPE,
-            Identifier.of(TARDIFMod.MOD_ID, "tardis"),
-            EntityType.Builder.create(TARDISEntity::new, SpawnGroup.MISC)
-                    .dimensions(1f, 2.74f).build(TARDIS_KEY));
+    public static final EntityType<TARDISEntity> TARDIS = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis"),
+            EntityType.Builder.of(TARDISEntity::new, MobCategory.MISC)
+                    .sized(1f, 2.74f).build(TARDIS_KEY));
 
-    public static final EntityType<TARDISInteriorDoorEntity> TARDIS_INTERIOR_DOOR = Registry.register(Registries.ENTITY_TYPE,
-            Identifier.of(TARDIFMod.MOD_ID, "tardis_interior_door"),
-            EntityType.Builder.create(TARDISInteriorDoorEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.1f, 2.5f).disableSummon().build(TARDIS_INTERIOR_DOOR_KEY));
+    public static final EntityType<TARDISInteriorDoorEntity> TARDIS_INTERIOR_DOOR = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis_interior_door"),
+            EntityType.Builder.of(TARDISInteriorDoorEntity::new, MobCategory.MISC)
+                    .sized(0.1f, 2.3f).noSummon().build(TARDIS_INTERIOR_DOOR_KEY));
 
-    public static final EntityType<ConsoleControlEntity> CONSOLE_CONTROL = Registry.register(Registries.ENTITY_TYPE,
-            Identifier.of(TARDIFMod.MOD_ID, "console_control"),
-            EntityType.Builder.create(ConsoleControlEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.1f, 2.5f).build(CONSOLE_CONTROL_KEY));
+    public static final EntityType<ConsoleControlEntity> CONSOLE_CONTROL = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "console_control"),
+            EntityType.Builder.of(ConsoleControlEntity::new, MobCategory.MISC)
+                    .sized(0.1f, 2.3f).build(CONSOLE_CONTROL_KEY));
 
-    public static final EntityType<TARDISPartEntity> TARDIS_PART = Registry.register(Registries.ENTITY_TYPE,
-            Identifier.of(TARDIFMod.MOD_ID, "tardis_part"),
-            EntityType.Builder.create(TARDISPartEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.1f, 2.5f).build(TARDIS_PART_KEY));
+    public static final EntityType<TARDISPartEntity> TARDIS_PART = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "tardis_part"),
+            EntityType.Builder.of(TARDISPartEntity::new, MobCategory.MISC)
+                    .sized(0.1f, 2.5f).build(TARDIS_PART_KEY));
 
     public static void register() {
     }

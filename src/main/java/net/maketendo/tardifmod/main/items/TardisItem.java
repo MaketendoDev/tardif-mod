@@ -4,42 +4,41 @@ import net.maketendo.tardifmod.main.TARDIFEntities;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import java.io.IOException;
 
 public class TardisItem extends Item {
-    public TardisItem(Settings settings) {
+    public TardisItem(Properties settings) {
         super(settings.rarity(Rarity.EPIC));
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        World world = context.getWorld();
+    public InteractionResult useOn(UseOnContext context) {
+        Level world = context.getLevel();
 
-        if (!world.isClient()) {
-            BlockPos pos = context.getBlockPos();
+        if (!world.isClientSide()) {
+            BlockPos pos = context.getClickedPos();
             BlockState state = world.getBlockState(pos);
-            ServerWorld serverWorld = (ServerWorld) world;
-            PlayerEntity player = context.getPlayer();
+            ServerLevel serverWorld = (ServerLevel) world;
+            Player player = context.getPlayer();
 
             double y;
 
-            if (context.getSide() == Direction.UP) {
+            if (context.getClickedFace() == Direction.UP) {
 
-                TARDISEntity tardis = TARDIFEntities.TARDIS.create(world, SpawnReason.SPAWN_ITEM_USE);
+                TARDISEntity tardis = TARDIFEntities.TARDIS.create(world, EntitySpawnReason.SPAWN_ITEM_USE);
                 try {
                     assert tardis != null;
                     tardis.initializeTardis(serverWorld);
@@ -49,29 +48,29 @@ public class TardisItem extends Item {
 
                 TardisData data = TardisManager.getFromId(world.getServer(), tardis.getTardisId());
                 if (player != null) {
-                    data.owner = player.getUuid();
+                    data.owner = player.getUUID();
                 }
 
                 double x = pos.getX() + 0.5;
                 double z = pos.getZ() + 0.5;
 
-                if (state.isFullCube(world, pos)) {
+                if (state.isCollisionShapeFullBlock(world, pos)) {
                     y = pos.getY() + 1;
                 } else {
                     y = pos.getY();
                 }
 
-                tardis.refreshPositionAndAngles(x, y, z, context.getPlayerYaw() - 180, 0);
-                serverWorld.spawnEntity(tardis);
+                tardis.snapTo(x, y, z, context.getRotation() - 180, 0);
+                serverWorld.addFreshEntity(tardis);
 
                 if (!player.isCreative()) {
-                    context.getStack().decrement(1);
+                    context.getItemInHand().shrink(1);
                 }
 
-                player.sendMessage(Text.translatable("message.tardif_mod.tardis_item.created_tardis").formatted(Formatting.GREEN),true);
-                return ActionResult.SUCCESS;
+                player.displayClientMessage(Component.translatable("message.tardif_mod.tardis_item.created_tardis").withStyle(ChatFormatting.GREEN),true);
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }

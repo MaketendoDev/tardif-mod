@@ -4,48 +4,46 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.items.TardisItem;
 import net.maketendo.tardifmod.main.items.TardisKeyItem;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.equipment.trim.ArmorTrimMaterials;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import java.util.function.Function;
 
 public class TARDIFItems {
 
     public static final Item TARDIS_ITEM = registerItem("tardis_item",
-            setting -> new TardisItem(setting.fireproof().maxCount(1)));
+            setting -> new TardisItem(setting.fireResistant().stacksTo(1)));
 
     public static final Item SILVER_TARDIS_KEY = registerItem("silver_tardis_key",
-            setting -> new TardisKeyItem(setting.fireproof().maxCount(1).rarity(Rarity.COMMON), "Silver"));
+            setting -> new TardisKeyItem(setting.fireResistant().stacksTo(1).rarity(Rarity.COMMON), "Silver"));
 
     public static final Item GOLD_TARDIS_KEY = registerItem("gold_tardis_key",
-            setting -> new TardisKeyItem(setting.fireproof().maxCount(1).rarity(Rarity.COMMON), "Gold"));
+            setting -> new TardisKeyItem(setting.fireResistant().stacksTo(1).rarity(Rarity.COMMON), "Gold"));
 
     // Materials
 
     public static final Item CRYSTALLINE_SHARD = registerItem("crystalline_shard",
-            setting -> new Item(setting.trimMaterial(ArmorTrimMaterials.RESIN).rarity(Rarity.COMMON)));
+            setting -> new Item(setting.trimMaterial(TrimMaterials.RESIN).rarity(Rarity.COMMON)));
 
-    private static Item registerItem(String name, Function<Item.Settings, Item> function) {
-        return Registry.register(Registries.ITEM, Identifier.of(TARDIFMod.MOD_ID, name),
-                function.apply(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TARDIFMod.MOD_ID, name)))));
+    private static Item registerItem(String name, Function<Item.Properties, Item> function) {
+        return Registry.register(BuiltInRegistries.ITEM, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, name),
+                function.apply(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, name)))));
     }
 
     public static void register() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
-            entries.add(SILVER_TARDIS_KEY);
-            entries.add(GOLD_TARDIS_KEY);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
+            entries.accept(SILVER_TARDIS_KEY);
+            entries.accept(GOLD_TARDIS_KEY);
         });
 
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
-            entries.add(CRYSTALLINE_SHARD);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries -> {
+            entries.accept(CRYSTALLINE_SHARD);
         });
     }
 }

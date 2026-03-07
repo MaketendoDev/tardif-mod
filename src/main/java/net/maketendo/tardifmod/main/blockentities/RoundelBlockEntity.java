@@ -5,11 +5,11 @@ import net.maketendo.tardifmod.main.TARDIFBlockEntities;
 import net.maketendo.tardifmod.main.blocks.RoundelBlock;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class RoundelBlockEntity extends BlockEntity {
 
@@ -17,8 +17,8 @@ public class RoundelBlockEntity extends BlockEntity {
         super(TARDIFBlockEntities.ROUNDELS, pos, state);
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, RoundelBlockEntity be) {
-        if (world.isClient()) return;
+    public static void tick(Level world, BlockPos pos, BlockState state, RoundelBlockEntity be) {
+        if (world.isClientSide()) return;
 
         TardisData data = TardisManager.getTardisData(world, pos);
         if (data == null) return;
@@ -31,11 +31,11 @@ public class RoundelBlockEntity extends BlockEntity {
             targetLight = Math.max(0, Math.min(15, data.roundelLight));
         }
 
-        if (state.get(RoundelBlock.LIGHT) != targetLight) {
-            world.setBlockState(
+        if (state.getValue(RoundelBlock.LIGHT) != targetLight) {
+            world.setBlock(
                     pos,
-                    state.with(RoundelBlock.LIGHT, targetLight),
-                    Block.NOTIFY_LISTENERS
+                    state.setValue(RoundelBlock.LIGHT, targetLight),
+                    Block.UPDATE_CLIENTS
             );
         }
     }

@@ -7,32 +7,32 @@ import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.utils.animation.FadeTimeline;
 import net.maketendo.tardifmod.utils.TardisInteriorUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -46,46 +46,47 @@ import java.util.UUID;
 import static net.maketendo.tardifmod.utils.CommandUtil.runCommandAsEntity;
 
 public class TARDISEntity extends TARDISExteriorBase {
-    private static final TrackedData<Integer> TARDIS_ID =
-            DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Boolean> DOOR_OPEN =
-            DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> TARDIS_INITIALISED =
-            DataTracker.registerData(TARDISEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final EntityDataAccessor<Integer> TARDIS_ID =
+            SynchedEntityData.defineId(TARDISEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DOOR_OPEN =
+            SynchedEntityData.defineId(TARDISEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TARDIS_INITIALISED =
+            SynchedEntityData.defineId(TARDISEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int dematTicks = 0;
     private float fade = 1.0f;
     private ChunkPos forcedChunk;
     private boolean dematAnimStarted = false;
 
-    public TARDISEntity(EntityType<?> type, World world) {
+    public TARDISEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        builder.add(TARDIS_ID, -1);
-        builder.add(DOOR_OPEN, false);
-        builder.add(TARDIS_INITIALISED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TARDIS_ID, -1);
+        builder.define(DOOR_OPEN, false);
+        builder.define(TARDIS_INITIALISED, false);
     }
 
     public int getTardisId() {
-        return this.dataTracker.get(TARDIS_ID);
+        return this.entityData.get(TARDIS_ID);
     }
 
     public void setTardisId(int id) {
-        this.dataTracker.set(TARDIS_ID, id);
+        this.entityData.set(TARDIS_ID, id);
     }
 
     public void setDoorOpen(boolean open) {
-        dataTracker.set(DOOR_OPEN, open);
+        entityData.set(DOOR_OPEN, open);
     }
 
     public boolean isDoorOpen() {
-        return dataTracker.get(DOOR_OPEN);
+        return entityData.get(DOOR_OPEN);
     }
 
-    public void preInitialised() {this.dataTracker.set(TARDIS_INITIALISED, true);}
+    public void preInitialised() {this.entityData.set(TARDIS_INITIALISED, true);}
 
     public float getFade() {return fade;}
 
@@ -94,16 +95,16 @@ public class TARDISEntity extends TARDISExteriorBase {
     }
 
     @Override
-    protected void writeCustomData(WriteView view) {
-        view.putBoolean("TardisInit", this.dataTracker.get(TARDIS_INITIALISED));
+    protected void addAdditionalSaveData(ValueOutput view) {
+        view.putBoolean("TardisInit", this.entityData.get(TARDIS_INITIALISED));
         view.putInt("TardisId", getTardisId());
 
     }
 
     @Override
-    protected void readCustomData(ReadView view) {
-        this.dataTracker.set(TARDIS_INITIALISED, view.getBoolean("TardisInit", false));
-        setTardisId(view.getInt("TardisId", -1));
+    protected void readAdditionalSaveData(ValueInput view) {
+        this.entityData.set(TARDIS_INITIALISED, view.getBooleanOr("TardisInit", false));
+        setTardisId(view.getIntOr("TardisId", -1));
     }
 
     @Override
@@ -111,17 +112,17 @@ public class TARDISEntity extends TARDISExteriorBase {
         super.tick();
 
 
-        if (this.dataTracker.get(TARDIS_INITIALISED) && getEntityWorld().isClient()) {
-            TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
+        if (this.entityData.get(TARDIS_INITIALISED) && level().isClientSide()) {
+            TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
             clientTick(data);
         }
 
-        if (getEntityWorld().isClient()) return;
+        if (level().isClientSide()) return;
 
         forceLoadChunk();
 
-        if (this.dataTracker.get(TARDIS_INITIALISED)) {
-            TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
+        if (this.entityData.get(TARDIS_INITIALISED)) {
+            TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
             setDoorOpen(data.doorOpen);
 
             if (!data.dematerialised) {
@@ -129,8 +130,8 @@ public class TARDISEntity extends TARDISExteriorBase {
                 setOpacity(1.0f);
             }
 
-            data.exteriorPos = getEntityPos();
-            data.exteriorYaw = this.getYaw();
+            data.exteriorPos = position();
+            data.exteriorYaw = this.getYRot();
 
             if (data.dematerialised) {
                 dematTicks++;
@@ -142,10 +143,15 @@ public class TARDISEntity extends TARDISExteriorBase {
         }
 
         // TARDIS Vector (hehe bananas)
-        tardisMovement();
+        //tardisMovement();
 
         // Tardis Initialising
         initTardis();
+    }
+
+    @Override
+    public HumanoidArm getMainArm() {
+        return null;
     }
 
     private void clientTick(TardisData data) {
@@ -164,16 +170,15 @@ public class TARDISEntity extends TARDISExteriorBase {
                             .fadeTo(20, 0.3f)
                             .fadeTo(15, 0.5f)
                             .fadeTo(20, 0.2f)
-                            .fadeTo(40, 0f)
+                            .fadeTo(30, 0f)
                             .onTick(this::spawnWind)
             );
         }
     }
 
-
     private void spawnWind() {
-        World world = getEntityWorld();
-        Random random = world.getRandom();
+        Level world = level();
+        RandomSource random = world.getRandom();
 
         for (int i = 0; i < 6; i++) {
             double angle = random.nextDouble() * Math.PI * 2;
@@ -186,10 +191,10 @@ public class TARDISEntity extends TARDISExteriorBase {
             double y = getY() + 0.02;
             double z = getZ() + (random.nextDouble() - 0.5) * 0.3;
 
-            BlockState ground = world.getBlockState(getBlockPos().down());
+            BlockState ground = world.getBlockState(blockPosition().below());
             if (!ground.isAir()) {
-                world.addParticleClient(
-                        new BlockStateParticleEffect(ParticleTypes.BLOCK, ground),
+                world.addParticle(
+                        new BlockParticleOption(ParticleTypes.BLOCK, ground),
                         x, y, z,
                         vx, vy, vz
                 );
@@ -199,56 +204,56 @@ public class TARDISEntity extends TARDISExteriorBase {
 
 
     @Override
-    public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+    public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
 
-        if (this.getEntityWorld().isClient()) return ActionResult.SUCCESS;
+        if (this.level().isClientSide()) return InteractionResult.SUCCESS;
 
         initParts();
 
-        ItemStack itemStack = player.getStackInHand(hand);
-        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
+        ItemStack itemStack = player.getItemInHand(hand);
+        TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
 
         if (itemStack.getItem() == Items.LEAD) {
             leadTardis(player, hand);
-        } else if (itemStack.isIn(TARDIFTags.Items.TARDIS_KEYS)) {
+        } else if (itemStack.is(TARDIFTags.Items.TARDIS_KEYS)) {
             lockTardisDoor(data, player);
         } else {
-            if (!(hitPos.y >= this.getHeight() - 0.25)) {
+            if (!(hitPos.y >= this.getBbHeight() - 0.25)) {
                 tardisDoor(data, player);
             } else {
                 player.startRiding(this);
             }
         }
-        return ActionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override
-    public void onPlayerCollision(PlayerEntity player) {
-        super.onPlayerCollision(player);
+    public void playerTouch(Player player) {
+        super.playerTouch(player);
 
-        if (!this.dataTracker.get(TARDIS_INITIALISED)) return;
-        TardisData data = TardisManager.getFromId(getEntityWorld().getServer(), getTardisId());
+        if (!this.entityData.get(TARDIS_INITIALISED)) return;
+        TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
 
-        if (getEntityWorld().isClient()) return;
+        if (level().isClientSide()) return;
         if (!data.doorOpen) return;
 
         double maxDistance = 0.40D;
 
-        if (player.getEntityPos().squaredDistanceTo(this.getEntityPos()) <= maxDistance * maxDistance) {
-            Vec3d offset = Vec3d.fromPolar(0, data.interiorYaw).multiply(0.6);
+        if (player.position().distanceToSqr(this.position()) <= maxDistance * maxDistance) {
+            Vec3 offset = Vec3.directionFromRotation(0, data.interiorYaw).scale(0.6);
 
-            player.teleport(
-                    getEntityWorld().getServer().getWorld(TARDIFDimensions.TARDIS_WORLD),
-                    data.interiorPos.getX() - offset.x, data.interiorPos.getY(), data.interiorPos.getZ() - offset.z,
+            player.teleportTo(
+                    level().getServer().getLevel(TARDIFDimensions.TARDIS_WORLD),
+                    data.interiorPos.x() - offset.x, data.interiorPos.y(), data.interiorPos.z() - offset.z,
                     Set.of(),
                     data.interiorYaw + 180f,
-                    player.getPitch(),
+                    player.getXRot(),
                     true
             );
 
-            player.addStatusEffect(
-                    new StatusEffectInstance(
-                            StatusEffects.BLINDNESS,
+            player.addEffect(
+                    new MobEffectInstance(
+                            MobEffects.BLINDNESS,
                             25,
                             1,
                             false,
@@ -259,78 +264,58 @@ public class TARDISEntity extends TARDISExteriorBase {
     }
 
     @Override
-    public boolean handleAttack(Entity attacker) {
-        playSoundAtTardis(SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
-        return super.handleAttack(attacker);
+    public boolean skipAttackInteraction(Entity attacker) {
+        playSoundAtTardis(SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
+        return super.skipAttackInteraction(attacker);
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(
-                new AnimationController<>(
-                        "DoorAnim",
-                        0,
-                        state -> PlayState.STOP
-                )
-                        .triggerableAnim("open", RawAnimation.begin().thenPlay("open"))
-                        .triggerableAnim("close", RawAnimation.begin().thenPlay("close"))
-        );
-    }
-
-
-
-
-    @Override
-    public boolean isCollidable(@Nullable Entity entity) {
+    public boolean canBeCollidedWith(@Nullable Entity entity) {
         return !isDoorOpen();
     }
 
-    public void leadTardis(PlayerEntity player, Hand hand) {
-        if (!player.isSneaking()) {
-            this.attachLeash(player, true);
+    public void leadTardis(Player player, InteractionHand hand) {
+        if (!player.isShiftKeyDown()) {
+            this.setLeashedTo(player, true);
 
-            if (!player.getAbilities().creativeMode) {
-                player.getStackInHand(hand).decrement(1);
+            if (!player.getAbilities().instabuild) {
+                player.getItemInHand(hand).shrink(1);
             }
         } else {
-            this.detachLeash();
+            this.dropLeash();
         }
     }
 
-    public void lockTardisDoor(TardisData data, PlayerEntity player) {
+    public void lockTardisDoor(TardisData data, Player player) {
         if (!data.doorOpen) {
             if (data.doorLocked) {
                 data.doorLocked = false;
-                player.sendMessage(Text.literal("\uDD13").formatted(Formatting.GRAY), true);
+                player.displayClientMessage(Component.literal("\uDD13").withStyle(ChatFormatting.GRAY), true);
             } else {
                 data.doorLocked = true;
-                player.sendMessage(Text.literal("\uDD12").formatted(Formatting.GRAY), true);
+                player.displayClientMessage(Component.literal("\uDD12").withStyle(ChatFormatting.GRAY), true);
             }
-            playSoundAtTardis(SoundEvents.ITEM_LODESTONE_COMPASS_LOCK, 0.5f);
+            playSoundAtTardis(SoundEvents.LODESTONE_COMPASS_LOCK, 0.5f);
         }
     }
 
-    public void tardisDoor(TardisData data, PlayerEntity player) {
+    public void tardisDoor(TardisData data, Player player) {
         if (!data.doorLocked) {
-            player.incrementStat(TARDIFPlayerStatistics.INTERACT_WITH_TARDIS);
+            player.awardStat(TARDIFPlayerStatistics.INTERACT_WITH_TARDIS);
             if (data.doorOpen == true) {
-                this.triggerAnim("DoorAnim", "close");
-
                 data.doorOpen = false;
             } else {
-                this.triggerAnim("DoorAnim", "open");
-
                 data.doorOpen = true;
             }
         } else {
-            player.sendMessage(Text.literal("The door is locked...").formatted(Formatting.GRAY), true);
-            playSoundAtTardis(SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
+            player.displayClientMessage(Component.literal("The door is locked...").withStyle(ChatFormatting.GRAY), true);
+            playSoundAtTardis(SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
         }
     }
 
     public void forceLoadChunk() {
-        if (getEntityWorld() instanceof ServerWorld world) {
-            ChunkPos current = new ChunkPos(getBlockPos());
+        if (level() instanceof ServerLevel world) {
+            ChunkPos current = new ChunkPos(blockPosition());
 
             if (!current.equals(forcedChunk)) {
                 if (forcedChunk != null) {
@@ -344,32 +329,32 @@ public class TARDISEntity extends TARDISExteriorBase {
     }
 
     public void tardisMovement() {
-        Vec3d velocity = this.getVelocity();
+        Vec3 velocity = this.getDeltaMovement();
 
-        if (!this.isOnGround() && !this.hasNoGravity()) {
-            velocity = velocity.add(0.0, -this.getGravity(), 0.0);
+        if (!this.onGround() && !this.isNoGravity()) {
+            velocity = velocity.add(0.0, -this.getDefaultGravity(), 0.0);
         }
 
         if (Math.abs(velocity.y) < 0.003) {
-            velocity = new Vec3d(0, 0, 0);
+            velocity = new Vec3(0, 0, 0);
         }
 
-        this.setVelocity(velocity);
-        this.move(MovementType.SELF, this.getVelocity());
+        this.setDeltaMovement(velocity);
+        this.move(MoverType.SELF, this.getDeltaMovement());
 
-        if (this.isOnGround()) {
-            this.setVelocity(0, 0, 0);
+        if (this.onGround()) {
+            this.setDeltaMovement(0, 0, 0);
         }
     }
 
     public void initTardis() {
-        if (this.dataTracker.get(TARDIS_INITIALISED)) return;
+        if (this.entityData.get(TARDIS_INITIALISED)) return;
 
-        ServerWorld serverWorld = (ServerWorld) getEntityWorld();
+        ServerLevel serverWorld = (ServerLevel) level();
 
         try {
             initializeTardis(serverWorld);
-            this.dataTracker.set(TARDIS_INITIALISED, true);
+            this.entityData.set(TARDIS_INITIALISED, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -380,37 +365,37 @@ public class TARDISEntity extends TARDISExteriorBase {
     private TARDISPartEntity rightArm;
 
     private void initParts() {
-        if (this.getEntityWorld().isClient()) return;
+        if (this.level().isClientSide()) return;
 
-        leftArm = TARDIFEntities.TARDIS_PART.create(this.getEntityWorld(), SpawnReason.TRIGGERED);
-        rightArm = TARDIFEntities.TARDIS_PART.create(this.getEntityWorld(), SpawnReason.TRIGGERED);
+        leftArm = TARDIFEntities.TARDIS_PART.create(this.level(), EntitySpawnReason.TRIGGERED);
+        rightArm = TARDIFEntities.TARDIS_PART.create(this.level(), EntitySpawnReason.TRIGGERED);
 
         if (leftArm != null) {
             leftArm.setParent(this);
-            leftArm.refreshPositionAndAngles(
+            leftArm.snapTo(
                     this.getX() - 1.0,
                     this.getY(),
                     this.getZ(),
-                    this.getYaw(),
-                    this.getPitch()
+                    this.getYRot(),
+                    this.getXRot()
             );
-            this.getEntityWorld().spawnEntity(leftArm);
+            this.level().addFreshEntity(leftArm);
         }
 
         if (rightArm != null) {
             rightArm.setParent(this);
-            rightArm.refreshPositionAndAngles(
+            rightArm.snapTo(
                     this.getX() + 1.0,
                     this.getY(),
                     this.getZ(),
-                    this.getYaw(),
-                    this.getPitch()
+                    this.getYRot(),
+                    this.getXRot()
             );
-            this.getEntityWorld().spawnEntity(rightArm);
+            this.level().addFreshEntity(rightArm);
         }
     }
 
-    public void initializeTardis(ServerWorld exteriorWorld) throws IOException {
+    public void initializeTardis(ServerLevel exteriorWorld) throws IOException {
         MinecraftServer server = exteriorWorld.getServer();
         TardisData data = new TardisData();
 
@@ -422,21 +407,21 @@ public class TARDISEntity extends TARDISExteriorBase {
         data.emergencyMode = false;
         data.roundelLight = 10;
 
-        data.exteriorPos = getEntityPos();
-        data.exteriorDimension = exteriorWorld.getRegistryKey().getValue();
+        data.exteriorPos = position();
+        data.exteriorDimension = exteriorWorld.dimension().identifier();
         data.exteriorYaw = 0f;
 
 
-        ServerWorld tardisWorld = server.getWorld(TARDIFDimensions.TARDIS_WORLD);
+        ServerLevel tardisWorld = server.getLevel(TARDIFDimensions.TARDIS_WORLD);
         BlockPos interiorOrigin = TardisInteriorUtil.allocate(server);
 
         data.interiorOrigin = interiorOrigin;
-        data.interiorPos = Vec3d.of(BlockPos.ofFloored(data.interiorOrigin.getX() + 0.5, data.interiorOrigin.getY() + 1, data.interiorOrigin.getZ() + 3.5));
+        data.interiorPos = Vec3.atLowerCornerOf(BlockPos.containing(data.interiorOrigin.getX() + 0.5, data.interiorOrigin.getY() + 1, data.interiorOrigin.getZ() + 3.5));
         data.interiorYaw = 0f;
-        data.interiorDimension = tardisWorld.getRegistryKey().getValue();
+        data.interiorDimension = tardisWorld.dimension().identifier();
 
-        data.previousPos = getEntityPos();
-        data.setPos = getEntityPos();
+        data.previousPos = position();
+        data.setPos = position();
 
         data.dematerialised = false;
 

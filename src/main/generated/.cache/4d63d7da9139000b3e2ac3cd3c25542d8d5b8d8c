@@ -1,4 +1,4 @@
 // 1.21.11	-999999999-01-01T00:00:00	TARDIF Mod/Tags for minecraft:block
 0f02b67a8bb273b60d066fec50157a4362b8957d data/minecraft/tags/block/mineable/pickaxe.json
-d39e1abd48312119cff17bfecda99622f7b8ce12 data/tardif_mod/tags/block/roundels.json
-3305c329893a3ec35539ec6dfd270608ea290748 data/tardif_mod/tags/block/stained_quartz.json
+db19ad5613dfbd11ea9172ef6edd3ff4d8ea1119 data/tardif_mod/tags/block/roundels.json
+0d256d43226cf362ece0da989f705484231f4b12 data/tardif_mod/tags/block/stained_quartz.json

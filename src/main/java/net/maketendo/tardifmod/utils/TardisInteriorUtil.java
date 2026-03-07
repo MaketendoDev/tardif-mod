@@ -6,20 +6,19 @@ import net.maketendo.tardifmod.main.TARDIFEntities;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Properties;
-import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.structure.StructureTemplate;
-import net.minecraft.structure.StructureTemplateManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
-
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.phys.Vec3;
 import java.io.IOException;
 
 public class TardisInteriorUtil {
@@ -35,10 +34,10 @@ public class TardisInteriorUtil {
         return new BlockPos(x, 64, z);
     }
 
-    public static void generate(ServerWorld world, BlockPos center, TardisData data) {
-        StructureTemplateManager manager = world.getStructureTemplateManager();
-        StructureTemplate template = manager.getTemplate(
-                Identifier.of(TARDIFMod.MOD_ID, "crystal")
+    public static void generate(ServerLevel world, BlockPos center, TardisData data) {
+        StructureTemplateManager manager = world.getStructureManager();
+        StructureTemplate template = manager.get(
+                Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "crystal")
         ).orElse(null);
 
         if (template == null) {
@@ -49,16 +48,16 @@ public class TardisInteriorUtil {
         Vec3i sizeVec = template.getSize();
         BlockPos size = new BlockPos(sizeVec.getX(), sizeVec.getY(), sizeVec.getZ());
 
-        BlockPos placementPos = center.add(
+        BlockPos placementPos = center.offset(
                 -size.getX() / 2,
                 0,
                 -size.getZ() / 2
         );
 
 
-        StructurePlacementData placement = new StructurePlacementData();
+        StructurePlaceSettings placement = new StructurePlaceSettings();
 
-        template.place(
+        template.placeInWorld(
                 world,
                 placementPos,
                 placementPos,
@@ -70,41 +69,41 @@ public class TardisInteriorUtil {
         handleMarkers(world, placementPos, size, data);
     }
 
-    private static void handleMarkers(ServerWorld world, BlockPos start, BlockPos size, TardisData data) {
-        BlockPos end = start.add(size).add(-1, -1, -1);
+    private static void handleMarkers(ServerLevel world, BlockPos start, BlockPos size, TardisData data) {
+        BlockPos end = start.offset(size).offset(-1, -1, -1);
 
-        BlockPos.iterate(start, end).forEach(pos -> {
+        BlockPos.betweenClosed(start, end).forEach(pos -> {
             var state = world.getBlockState(pos);
 
-            if (state.isOf(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK)) {
+            if (state.is(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK)) {
                 spawnTardisDoor(world, pos, state, data);
-                world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
             }
         });
     }
 
 
-    private static void spawnTardisDoor(ServerWorld world, BlockPos pos, BlockState state, TardisData data) {
-        Direction facing = state.get(Properties.HORIZONTAL_FACING);
+    private static void spawnTardisDoor(ServerLevel world, BlockPos pos, BlockState state, TardisData data) {
+        Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         double x = pos.getX() + 0.5;
         double y = pos.getY();
         double z = pos.getZ() + 0.5;
 
-        data.interiorPos = new Vec3d(x, y, z);
+        data.interiorPos = new Vec3(x, y, z);
 
-        x -= facing.getOffsetX() * 0.45;
-        z -= facing.getOffsetZ() * 0.45;
+        x -= facing.getStepX() * 0.45;
+        z -= facing.getStepZ() * 0.45;
 
         float yaw = yawFromFacing(facing);
 
         TARDISInteriorDoorEntity door =
                 new TARDISInteriorDoorEntity(TARDIFEntities.TARDIS_INTERIOR_DOOR, world);
 
-        door.refreshPositionAndAngles(x, y, z, yaw, 0);
+        door.snapTo(x, y, z, yaw, 0);
         door.setTardisId(data.id);
         world.setChunkForced((int) x, (int) z, true);
-        world.spawnEntity(door);
+        world.addFreshEntity(door);
     }
 
     private static float yawFromFacing(Direction facing) {

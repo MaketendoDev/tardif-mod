@@ -1,61 +1,61 @@
 package net.maketendo.tardifmod.main.entities.controls;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class ConsoleControlEntity extends Entity {
 
-    private static final TrackedData<Float> LENGTH =
-            DataTracker.registerData(ConsoleControlEntity.class, TrackedDataHandlerRegistry.FLOAT);
-    private static final TrackedData<Float> HEIGHT =
-            DataTracker.registerData(ConsoleControlEntity.class, TrackedDataHandlerRegistry.FLOAT);
-    private static final TrackedData<Float> WIDTH =
-            DataTracker.registerData(ConsoleControlEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final EntityDataAccessor<Float> LENGTH =
+            SynchedEntityData.defineId(ConsoleControlEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> HEIGHT =
+            SynchedEntityData.defineId(ConsoleControlEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> WIDTH =
+            SynchedEntityData.defineId(ConsoleControlEntity.class, EntityDataSerializers.FLOAT);
 
-    public ConsoleControlEntity(EntityType<?> type, World world) {
+    public ConsoleControlEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        builder.add(LENGTH, 1f);
-        builder.add(HEIGHT, 1f);
-        builder.add(WIDTH, 1f);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(LENGTH, 1f);
+        builder.define(HEIGHT, 1f);
+        builder.define(WIDTH, 1f);
     }
 
     @Override
-    protected void writeCustomData(WriteView view) {
-        view.putFloat("Length", this.dataTracker.get(LENGTH));
-        view.putFloat("Height", this.dataTracker.get(HEIGHT));
-        view.putFloat("Width", this.dataTracker.get(WIDTH));
+    protected void addAdditionalSaveData(ValueOutput view) {
+        view.putFloat("Length", this.entityData.get(LENGTH));
+        view.putFloat("Height", this.entityData.get(HEIGHT));
+        view.putFloat("Width", this.entityData.get(WIDTH));
     }
 
     @Override
-    protected void readCustomData(ReadView view) {
+    protected void readAdditionalSaveData(ValueInput view) {
         if (view.contains("Length")) {
-            this.dataTracker.set(LENGTH, view.getFloat("Length", 0L));
+            this.entityData.set(LENGTH, view.getFloatOr("Length", 0L));
         }
 
         if (view.contains("Height")) {
-            this.dataTracker.set(HEIGHT, view.getFloat("Height", 0L));
+            this.entityData.set(HEIGHT, view.getFloatOr("Height", 0L));
         }
 
         if (view.contains("Width")) {
-            this.dataTracker.set(WIDTH, view.getFloat("Width", 0L));
+            this.entityData.set(WIDTH, view.getFloatOr("Width", 0L));
         }
 
-        this.calculateDimensions();
+        this.refreshDimensions();
     }
 
 
@@ -70,24 +70,24 @@ public class ConsoleControlEntity extends Entity {
     }
 
     public void setSize(float length, float height, float width) {
-        this.dataTracker.set(LENGTH, length);
-        this.dataTracker.set(HEIGHT, height);
-        this.dataTracker.set(WIDTH, width);
+        this.entityData.set(LENGTH, length);
+        this.entityData.set(HEIGHT, height);
+        this.entityData.set(WIDTH, width);
 
-        this.calculateDimensions();
+        this.refreshDimensions();
     }
 
     @Override
-    public Box calculateDefaultBoundingBox(Vec3d pos) {
-        double length = this.dataTracker.get(LENGTH);
-        double height = this.dataTracker.get(HEIGHT);
-        double width = this.dataTracker.get(WIDTH);
+    public AABB makeBoundingBox(Vec3 pos) {
+        double length = this.entityData.get(LENGTH);
+        double height = this.entityData.get(HEIGHT);
+        double width = this.entityData.get(WIDTH);
 
         double x = this.getX();
         double y = this.getY();
         double z = this.getZ();
 
-        return new Box(
+        return new AABB(
                 x - width / 2.0,
                 y,
                 z - length / 2.0,
@@ -101,12 +101,12 @@ public class ConsoleControlEntity extends Entity {
 
 
     @Override
-    public boolean isCollidable(@Nullable Entity entity) {
+    public boolean canBeCollidedWith(@Nullable Entity entity) {
         return false;
     }
 
     @Override
-    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
         return false;
     }
 }

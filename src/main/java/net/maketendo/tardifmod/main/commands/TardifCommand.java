@@ -6,12 +6,11 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
-import net.minecraft.command.argument.UuidArgumentType;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.UuidArgument;
+import net.minecraft.network.chat.Component;
 import java.util.UUID;
 
 public class TardifCommand {
@@ -19,12 +18,12 @@ public class TardifCommand {
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(
-                    CommandManager.literal("tardif")
-                            .then(CommandManager.literal("data")
-                                    .then(CommandManager.literal("getFromId")
-                                            .then(CommandManager.argument("uuid", UuidArgumentType.uuid())
+                    Commands.literal("tardif")
+                            .then(Commands.literal("data")
+                                    .then(Commands.literal("getFromId")
+                                            .then(Commands.argument("uuid", UuidArgument.uuid())
                                                     .executes(ctx -> getData(ctx.getSource(),
-                                                            UuidArgumentType.getUuid(ctx, "uuid")))
+                                                            UuidArgument.getUuid(ctx, "uuid")))
                                             )
                                     )
                             )
@@ -32,28 +31,28 @@ public class TardifCommand {
         });
     }
 
-    private static int getData(ServerCommandSource source, UUID uuid) {
+    private static int getData(CommandSourceStack source, UUID uuid) {
         try {
-            var world = source.getWorld();
+            var world = source.getLevel();
 
             var entity = world.getEntity(uuid);
             if (!(entity instanceof TARDISEntity tardis)) {
-                source.sendError(Text.literal("That entity is not a TARDIS Linked Entity.")
-                        .formatted(Formatting.RED));
+                source.sendFailure(Component.literal("That entity is not a TARDIS Linked Entity.")
+                        .withStyle(ChatFormatting.RED));
                 return 0;
             }
 
             int tardisId = tardis.getTardisId();
             if (tardisId == -1) {
-                source.sendError(Text.literal("TARDIS has no ID.")
-                        .formatted(Formatting.RED));
+                source.sendFailure(Component.literal("TARDIS has no ID.")
+                        .withStyle(ChatFormatting.RED));
                 return 0;
             }
 
             TardisData data = TardisManager.getFromId(source.getServer(), tardisId);
             if (data == null) {
-                source.sendError(Text.literal("No data found for TARDIS ID " + tardisId)
-                        .formatted(Formatting.RED));
+                source.sendFailure(Component.literal("No data found for TARDIS ID " + tardisId)
+                        .withStyle(ChatFormatting.RED));
                 return 0;
             }
 
@@ -63,18 +62,18 @@ public class TardifCommand {
                     .create()
                     .toJson(json);
 
-            source.sendFeedback(() ->
-                            Text.literal("TARDIS DATA (id=" + tardisId + ")\n")
-                                    .formatted(Formatting.GOLD)
-                                    .append(Text.literal(pretty).formatted(Formatting.GRAY)),
+            source.sendSuccess(() ->
+                            Component.literal("TARDIS DATA (id=" + tardisId + ")\n")
+                                    .withStyle(ChatFormatting.GOLD)
+                                    .append(Component.literal(pretty).withStyle(ChatFormatting.GRAY)),
                     false
             );
 
             return 1;
 
         } catch (Exception e) {
-            source.sendError(Text.literal("Error reading TARDIS data.")
-                    .formatted(Formatting.RED));
+            source.sendFailure(Component.literal("Error reading TARDIS data.")
+                    .withStyle(ChatFormatting.RED));
             e.printStackTrace();
             return 0;
         }

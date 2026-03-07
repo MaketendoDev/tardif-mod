@@ -1,20 +1,18 @@
 package net.maketendo.tardifmod.main.entities.tardis;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.Box;
-import net.minecraft.world.World;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class TARDISPartEntity extends Entity {
     private TARDISEntity parent;
 
-    public TARDISPartEntity(EntityType<?> type, World world) {
+    public TARDISPartEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
@@ -31,12 +29,12 @@ public class TARDISPartEntity extends Entity {
             return;
         }
 
-        this.refreshPositionAndAngles(
+        this.snapTo(
                 parent.getX(),
                 parent.getY(),
                 parent.getZ(),
-                parent.getYaw(),
-                parent.getPitch()
+                parent.getYRot(),
+                parent.getXRot()
         );
     }
 
@@ -46,27 +44,27 @@ public class TARDISPartEntity extends Entity {
     }
 
     @Override
-    public boolean hasNoGravity() {
+    public boolean isNoGravity() {
         return true;
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 
     @Override
-    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
         return false;
     }
 
     @Override
-    protected void readCustomData(ReadView view) {
+    protected void readAdditionalSaveData(ValueInput view) {
 
     }
 
     @Override
-    protected void writeCustomData(WriteView view) {
+    protected void addAdditionalSaveData(ValueOutput view) {
 
     }
 }

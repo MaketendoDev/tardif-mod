@@ -4,10 +4,9 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.maketendo.tardifmod.main.TARDIFBlocks;
 import net.maketendo.tardifmod.main.TARDIFTags;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import org.jspecify.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -15,13 +14,13 @@ import java.util.concurrent.CompletableFuture;
 public class TARDIFModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
 
-    public TARDIFModBlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public TARDIFModBlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
+    protected void addTags(HolderLookup.Provider wrapperLookup) {
+        valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addTag(TARDIFTags.Blocks.ROUNDELS)
                 .addTag(TARDIFTags.Blocks.STAINED_QUARTZ)
                 .add(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK);
@@ -31,10 +30,10 @@ public class TARDIFModBlockTagProvider extends FabricTagProvider.BlockTagProvide
                         TARDIFBlocks.ROUNDEL,
                         TARDIFBlocks.ROUNDEL_HALF,
 
-                        TARDIFBlocks.GREY_ROUNDEL,
-                        TARDIFBlocks.GREY_ROUNDEL_HALF,
-                        TARDIFBlocks.DARK_GREY_ROUNDEL,
-                        TARDIFBlocks.DARK_GREY_ROUNDEL_HALF,
+                        TARDIFBlocks.GRAY_ROUNDEL,
+                        TARDIFBlocks.GRAY_ROUNDEL_HALF,
+                        TARDIFBlocks.DARK_GRAY_ROUNDEL,
+                        TARDIFBlocks.DARK_GRAY_ROUNDEL_HALF,
                         TARDIFBlocks.BLACK_ROUNDEL,
                         TARDIFBlocks.BLACK_ROUNDEL_HALF,
                         TARDIFBlocks.BROWN_ROUNDEL,
@@ -68,8 +67,8 @@ public class TARDIFModBlockTagProvider extends FabricTagProvider.BlockTagProvide
         valueLookupBuilder(TARDIFTags.Blocks.STAINED_QUARTZ)
                 .add(
                         Blocks.QUARTZ_BLOCK,
-                        TARDIFBlocks.GREY_STAINED_QUARTZ,
-                        TARDIFBlocks.DARK_GREY_STAINED_QUARTZ,
+                        TARDIFBlocks.GRAY_STAINED_QUARTZ,
+                        TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ,
                         TARDIFBlocks.BLACK_STAINED_QUARTZ,
                         TARDIFBlocks.BROWN_STAINED_QUARTZ,
                         TARDIFBlocks.RED_STAINED_QUARTZ,
@@ -83,10 +82,10 @@ public class TARDIFModBlockTagProvider extends FabricTagProvider.BlockTagProvide
                         TARDIFBlocks.PURPLE_STAINED_QUARTZ,
                         TARDIFBlocks.MAGENTA_STAINED_QUARTZ,
                         TARDIFBlocks.PINK_STAINED_QUARTZ,
-                        TARDIFBlocks.GREY_STAINED_QUARTZ_STAIRS,
-                        TARDIFBlocks.GREY_STAINED_QUARTZ_SLAB,
-                        TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_STAIRS,
-                        TARDIFBlocks.DARK_GREY_STAINED_QUARTZ_SLAB,
+                        TARDIFBlocks.GRAY_STAINED_QUARTZ_STAIRS,
+                        TARDIFBlocks.GRAY_STAINED_QUARTZ_SLAB,
+                        TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ_STAIRS,
+                        TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ_SLAB,
                         TARDIFBlocks.BLACK_STAINED_QUARTZ_STAIRS,
                         TARDIFBlocks.BLACK_STAINED_QUARTZ_SLAB,
                         TARDIFBlocks.BROWN_STAINED_QUARTZ_STAIRS,
