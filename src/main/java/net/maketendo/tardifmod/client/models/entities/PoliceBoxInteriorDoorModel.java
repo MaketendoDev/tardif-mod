@@ -1,6 +1,9 @@
 package net.maketendo.tardifmod.client.models.entities;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.maketendo.tardifmod.TARDIFMod;
+import net.maketendo.tardifmod.client.renderers.entities.renderstates.TARDISEntityRenderState;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -10,7 +13,7 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 
-public class PoliceBoxInteriorDoorModel extends EntityModel<EntityRenderState> {
+public class PoliceBoxInteriorDoorModel extends EntityModel<TARDISEntityRenderState> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "police_box_interior_door"), "main");
 	private final ModelPart TARDIF;
 	private final ModelPart doors;
@@ -31,8 +34,8 @@ public class PoliceBoxInteriorDoorModel extends EntityModel<EntityRenderState> {
 	private final ModelPart window8;
 
 	public PoliceBoxInteriorDoorModel(ModelPart root) {
-        super(root);
-        this.TARDIF = root.getChild("TARDIF");
+		super(root);
+		this.TARDIF = root.getChild("TARDIF");
 		this.doors = this.TARDIF.getChild("doors");
 		this.RightDoor = this.doors.getChild("RightDoor");
 		this.window = this.RightDoor.getChild("window");
@@ -110,4 +113,5 @@ public class PoliceBoxInteriorDoorModel extends EntityModel<EntityRenderState> {
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
+
 }

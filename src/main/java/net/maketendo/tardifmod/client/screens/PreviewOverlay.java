@@ -1,17 +1,12 @@
 package net.maketendo.tardifmod.client.screens;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.loader.api.FabricLoader;
-import net.maketendo.tardifmod.TARDIFMod;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 public class PreviewOverlay implements HudRenderCallback {
     @Override

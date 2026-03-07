@@ -126,6 +126,15 @@ public class TARDIFRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_tardis_crystal", has(TARDIFItems.CRYSTALLINE_SHARD))
                         .save(recipeExporter);
 
+                stairBuilder(
+                        TARDIFBlocks.CRYSTALLINE_STAIR,
+                        Ingredient.of(TARDIFItems.CRYSTALLINE_SHARD));
+
+                slabBuilder(
+                        RecipeCategory.BUILDING_BLOCKS,
+                        TARDIFBlocks.CRYSTALLINE_SLAB,
+                        Ingredient.of(TARDIFItems.CRYSTALLINE_SHARD));
+
             }
         };
     }

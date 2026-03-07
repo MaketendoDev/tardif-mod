@@ -3,8 +3,8 @@ package net.maketendo.tardifmod.client.screens;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.maketendo.tardifmod.TARDIFMod;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisInteriorDoorEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -80,7 +80,7 @@ public class DevOverlay implements HudRenderCallback {
                     false
             );
 
-            if (entity instanceof TARDISEntity tardisEntity) {
+            if (entity instanceof TardisEntity tardisEntity) {
                 drawContext.drawString(
                         client.font,
                         Component.literal("ID: " + tardisEntity.getTardisId()),
@@ -91,7 +91,7 @@ public class DevOverlay implements HudRenderCallback {
                 );
             }
 
-            if (entity instanceof TARDISInteriorDoorEntity tardisEntity) {
+            if (entity instanceof TardisInteriorDoorEntity tardisEntity) {
                 drawContext.drawString(
                         client.font,
                         Component.literal("ID: " + tardisEntity.getTardisId()),

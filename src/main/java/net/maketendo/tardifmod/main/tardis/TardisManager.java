@@ -2,7 +2,7 @@ package net.maketendo.tardifmod.main.tardis;
 
 import com.google.gson.*;
 import net.maketendo.tardifmod.main.TARDIFDimensions;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisEntity;
 import net.maketendo.tardifmod.utils.TardisInteriorUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
@@ -165,7 +165,7 @@ public class TardisManager {
     public static Entity getEntityFromId(int id, MinecraftServer server) {
         for (ServerLevel world : server.getAllLevels()) {
             for (Entity entity : world.getAllEntities()) {
-                if (entity instanceof TARDISEntity tardis &&
+                if (entity instanceof TardisEntity tardis &&
                         tardis.getTardisId() == id) {
                     return tardis;
                 }

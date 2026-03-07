@@ -7,8 +7,8 @@ import net.maketendo.tardifmod.client.packets.TardisAnimPackets;
 import net.maketendo.tardifmod.events.UseBlockEvent;
 import net.maketendo.tardifmod.main.*;
 import net.maketendo.tardifmod.main.commands.TardifCommand;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisInteriorDoorEntity;
 import net.maketendo.tardifmod.utils.StainedQuartzRegistry;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -35,8 +35,8 @@ public class TARDIFMod implements ModInitializer {
         StainedQuartzRegistry.register();
         TardisAnimPackets.register();
 
-        FabricDefaultAttributeRegistry.register(TARDIFEntities.TARDIS, TARDISEntity.createAttributes());
-        FabricDefaultAttributeRegistry.register(TARDIFEntities.TARDIS_INTERIOR_DOOR, TARDISInteriorDoorEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(TARDIFEntities.TARDIS, TardisEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(TARDIFEntities.TARDIS_INTERIOR_DOOR, TardisInteriorDoorEntity.createAttributes());
 
 
         // Events

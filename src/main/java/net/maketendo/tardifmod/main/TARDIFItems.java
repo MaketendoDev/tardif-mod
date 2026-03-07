@@ -20,6 +20,9 @@ public class TARDIFItems {
     public static final Item TARDIS_ITEM = registerItem("tardis_item",
             setting -> new TardisItem(setting.fireResistant().stacksTo(1)));
 
+    public static final Item SONIC_SCREWDRIVER = registerItem("sonic_screwdriver",
+            setting -> new Item(setting.fireResistant().stacksTo(1)));
+
     public static final Item SILVER_TARDIS_KEY = registerItem("silver_tardis_key",
             setting -> new TardisKeyItem(setting.fireResistant().stacksTo(1).rarity(Rarity.COMMON), "Silver"));
 

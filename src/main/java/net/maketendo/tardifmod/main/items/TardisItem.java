@@ -1,7 +1,7 @@
 package net.maketendo.tardifmod.main.items;
 
 import net.maketendo.tardifmod.main.TARDIFEntities;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.minecraft.ChatFormatting;
@@ -38,7 +38,7 @@ public class TardisItem extends Item {
 
             if (context.getClickedFace() == Direction.UP) {
 
-                TARDISEntity tardis = TARDIFEntities.TARDIS.create(world, EntitySpawnReason.SPAWN_ITEM_USE);
+                TardisEntity tardis = TARDIFEntities.TARDIS.create(world, EntitySpawnReason.SPAWN_ITEM_USE);
                 try {
                     assert tardis != null;
                     tardis.initializeTardis(serverWorld);

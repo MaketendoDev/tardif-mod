@@ -3,7 +3,7 @@ package net.maketendo.tardifmod.utils;
 import net.maketendo.tardifmod.TARDIFMod;
 import net.maketendo.tardifmod.main.TARDIFBlocks;
 import net.maketendo.tardifmod.main.TARDIFEntities;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISInteriorDoorEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisInteriorDoorEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.minecraft.core.BlockPos;
@@ -97,8 +97,8 @@ public class TardisInteriorUtil {
 
         float yaw = yawFromFacing(facing);
 
-        TARDISInteriorDoorEntity door =
-                new TARDISInteriorDoorEntity(TARDIFEntities.TARDIS_INTERIOR_DOOR, world);
+        TardisInteriorDoorEntity door =
+                new TardisInteriorDoorEntity(TARDIFEntities.TARDIS_INTERIOR_DOOR, world);
 
         door.snapTo(x, y, z, yaw, 0);
         door.setTardisId(data.id);

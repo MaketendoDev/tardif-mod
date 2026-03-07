@@ -1,5 +1,6 @@
 package net.maketendo.tardifmod.main.entities;
 
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -49,13 +50,25 @@ public abstract class ObjectEntity extends LivingEntity {
     }
 
     @Override
+    public boolean isCustomNameVisible() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldShowName() {
+        return false;
+    }
+
+    @Override
+    public @NonNull HumanoidArm getMainArm() {
+        return null;
+    }
+
+    @Override
     protected void pushEntities() {
         // disables the living entity push entities back.
         //super.pushEntities();
     }
-
-    @Override
-    public boolean shouldShowName() {return false;}
 
     public static AttributeSupplier.Builder createAttributes() {
         return LivingEntity.createLivingAttributes()

@@ -27,7 +27,7 @@ public class TARDIFModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityRendererRegistry.register(TARDIFEntities.TARDIS, TARDISEntityRenderer::new);
-        EntityRendererRegistry.register(TARDIFEntities.TARDIS_INTERIOR_DOOR, TARDISInteriorDoorEntityRenderer::new);
+        EntityRendererRegistry.register(TARDIFEntities.TARDIS_INTERIOR_DOOR, TardisInteriorDoorEntityRenderer::new);
         EntityRendererRegistry.register(TARDIFEntities.CONSOLE_CONTROL, ConsoleControlRenderer::new);
         EntityRendererRegistry.register(TARDIFEntities.TARDIS_PART, TARDISPartsRenderer::new);
 

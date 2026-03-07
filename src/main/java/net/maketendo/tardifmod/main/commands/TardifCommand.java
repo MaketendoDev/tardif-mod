@@ -3,7 +3,7 @@ package net.maketendo.tardifmod.main.commands;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.minecraft.ChatFormatting;
@@ -36,7 +36,7 @@ public class TardifCommand {
             var world = source.getLevel();
 
             var entity = world.getEntity(uuid);
-            if (!(entity instanceof TARDISEntity tardis)) {
+            if (!(entity instanceof TardisEntity tardis)) {
                 source.sendFailure(Component.literal("That entity is not a TARDIS Linked Entity.")
                         .withStyle(ChatFormatting.RED));
                 return 0;

@@ -19,7 +19,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -37,16 +36,16 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Set;
 
-public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimatable {
+public class TardisInteriorDoorEntity extends ObjectEntity implements GeoAnimatable {
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     private static final EntityDataAccessor<Integer> TARDIS_ID =
-            SynchedEntityData.defineId(TARDISInteriorDoorEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(TardisInteriorDoorEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DOOR_OPEN =
-            SynchedEntityData.defineId(TARDISInteriorDoorEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(TardisInteriorDoorEntity.class, EntityDataSerializers.BOOLEAN);
 
 
-    public TARDISInteriorDoorEntity(EntityType<?> type, Level world) {
+    public TardisInteriorDoorEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
@@ -99,11 +98,6 @@ public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimata
     }
 
     @Override
-    public HumanoidArm getMainArm() {
-        return null;
-    }
-
-    @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
 
         if (this.level().isClientSide()) return InteractionResult.SUCCESS;
@@ -142,7 +136,7 @@ public class TARDISInteriorDoorEntity extends ObjectEntity implements GeoAnimata
         TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
         if (data != null && !data.doorOpen) return;
 
-        double maxDistance = 0.45D;
+        double maxDistance = 0.3D;
 
         if (player.position().distanceToSqr(this.position()) <= maxDistance * maxDistance) {
             Vec3 offset = Vec3.directionFromRotation(0, data.exteriorYaw).scale(0.45);

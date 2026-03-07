@@ -1,8 +1,9 @@
 package net.maketendo.tardifmod.main.entities.tardis;
 
+import net.maketendo.tardifmod.client.animations.tardis.TardisAnimation;
 import net.maketendo.tardifmod.client.managers.AnimationManager;
 import net.maketendo.tardifmod.main.*;
-import net.maketendo.tardifmod.main.entities.TARDISExteriorBase;
+import net.maketendo.tardifmod.main.entities.TardisExteriorBase;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.maketendo.tardifmod.main.tardis.TardisManager;
 import net.maketendo.tardifmod.utils.animation.FadeTimeline;
@@ -33,11 +34,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.animation.object.PlayState;
 
 import java.io.IOException;
 import java.util.Set;
@@ -45,21 +43,48 @@ import java.util.UUID;
 
 import static net.maketendo.tardifmod.utils.CommandUtil.runCommandAsEntity;
 
-public class TARDISEntity extends TARDISExteriorBase {
+public class TardisEntity extends TardisExteriorBase {
     private static final EntityDataAccessor<Integer> TARDIS_ID =
-            SynchedEntityData.defineId(TARDISEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(TardisEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DOOR_OPEN =
-            SynchedEntityData.defineId(TARDISEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(TardisEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> TARDIS_INITIALISED =
-            SynchedEntityData.defineId(TARDISEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(TardisEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int dematTicks = 0;
     private float fade = 1.0f;
     private ChunkPos forcedChunk;
     private boolean dematAnimStarted = false;
 
-    public TARDISEntity(EntityType<?> type, Level world) {
+    public static final EntityDataAccessor<Integer> DATA_ANIMATION =
+            SynchedEntityData.defineId(TardisEntity.class, EntityDataSerializers.INT);
+
+    // Animations
+    public final AnimationState doorRightOpenAnimationState = new AnimationState();
+    public final AnimationState doorLeftOpenAnimationState = new AnimationState();
+
+    public final AnimationState doorRightCloseAnimationState = new AnimationState();
+    public final AnimationState doorLeftCloseAnimationState = new AnimationState();
+
+    public final AnimationState phoneBoothOpenAnimationState = new AnimationState();
+    public final AnimationState phoneBoothCloseAnimationState = new AnimationState();
+
+    public final AnimationState lampOpenAnimationState = new AnimationState();
+    public final AnimationState lampCloseAnimationState = new AnimationState();
+
+    public final AnimationState phoneRingAnimationState = new AnimationState();
+    public final AnimationState phoneDialAnimationState = new AnimationState();
+
+    public final AnimationState fallingStartAnimationState = new AnimationState();
+    public final AnimationState fallingLoopAnimationState = new AnimationState();
+
+    public TardisEntity(EntityType<?> type, Level world) {
         super(type, world);
+    }
+
+    @Override
+    public @NonNull Component getName() {
+        return Component.literal("§bTARDIS Exterior §7| ID: " + getTardisId());
     }
 
     @Override
@@ -68,6 +93,7 @@ public class TARDISEntity extends TARDISExteriorBase {
         builder.define(TARDIS_ID, -1);
         builder.define(DOOR_OPEN, false);
         builder.define(TARDIS_INITIALISED, false);
+        builder.define(DATA_ANIMATION, 0);
     }
 
     public int getTardisId() {
@@ -88,10 +114,12 @@ public class TARDISEntity extends TARDISExteriorBase {
 
     public void preInitialised() {this.entityData.set(TARDIS_INITIALISED, true);}
 
-    public float getFade() {return fade;}
-
     public void setOpacity(Float opacity) {
         this.fade = opacity;
+    }
+
+    public void playAnimation(TardisAnimation animation) {
+        this.entityData.set(DATA_ANIMATION, animation.ordinal());
     }
 
     @Override
@@ -105,6 +133,50 @@ public class TARDISEntity extends TARDISExteriorBase {
     protected void readAdditionalSaveData(ValueInput view) {
         this.entityData.set(TARDIS_INITIALISED, view.getBooleanOr("TardisInit", false));
         setTardisId(view.getIntOr("TardisId", -1));
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+
+        if (DATA_ANIMATION.equals(key)) {
+
+            switch (TardisAnimation.values()[this.entityData.get(DATA_ANIMATION)]) {
+
+                case DOOR_OPEN -> {
+                    //this.doorRightCloseAnimationState.stop();
+                    //this.doorLeftCloseAnimationState.stop();
+
+                    this.doorRightOpenAnimationState.startIfStopped(this.tickCount);
+                    this.doorLeftOpenAnimationState.startIfStopped(this.tickCount);
+                }
+
+                case DOOR_CLOSE -> {
+                    //this.doorLeftOpenAnimationState.stop();
+                    //this.doorRightOpenAnimationState.stop();
+
+                    this.doorRightCloseAnimationState.startIfStopped(this.tickCount);
+                    this.doorLeftCloseAnimationState.startIfStopped(this.tickCount);
+                }
+
+                case PHONE_OPEN -> this.phoneBoothOpenAnimationState.start(this.tickCount);
+
+                case PHONE_CLOSE -> this.phoneBoothCloseAnimationState.start(this.tickCount);
+
+                case LAMP_OPEN -> this.lampOpenAnimationState.start(this.tickCount);
+
+                case LAMP_CLOSE -> this.lampCloseAnimationState.start(this.tickCount);
+
+                case PHONE_RING -> this.phoneRingAnimationState.start(this.tickCount);
+
+                case PHONE_DIAL -> this.phoneDialAnimationState.start(this.tickCount);
+
+                case FALLING_START -> this.fallingStartAnimationState.start(this.tickCount);
+
+                case FALLING_LOOP -> this.fallingLoopAnimationState.start(this.tickCount);
+            }
+        }
+
+        super.onSyncedDataUpdated(key);
     }
 
     @Override
@@ -147,11 +219,6 @@ public class TARDISEntity extends TARDISExteriorBase {
 
         // Tardis Initialising
         initTardis();
-    }
-
-    @Override
-    public HumanoidArm getMainArm() {
-        return null;
     }
 
     private void clientTick(TardisData data) {
@@ -290,10 +357,10 @@ public class TARDISEntity extends TARDISExteriorBase {
         if (!data.doorOpen) {
             if (data.doorLocked) {
                 data.doorLocked = false;
-                player.displayClientMessage(Component.literal("\uDD13").withStyle(ChatFormatting.GRAY), true);
+                player.displayClientMessage(Component.literal("\uD83D\uDD12").withStyle(ChatFormatting.GRAY), true);
             } else {
                 data.doorLocked = true;
-                player.displayClientMessage(Component.literal("\uDD12").withStyle(ChatFormatting.GRAY), true);
+                player.displayClientMessage(Component.literal("\uD83D\uDD12").withStyle(ChatFormatting.GRAY), true);
             }
             playSoundAtTardis(SoundEvents.LODESTONE_COMPASS_LOCK, 0.5f);
         }
@@ -301,15 +368,27 @@ public class TARDISEntity extends TARDISExteriorBase {
 
     public void tardisDoor(TardisData data, Player player) {
         if (!data.doorLocked) {
+
             player.awardStat(TARDIFPlayerStatistics.INTERACT_WITH_TARDIS);
-            if (data.doorOpen == true) {
+
+            if (data.doorOpen) {
+
                 data.doorOpen = false;
+                playAnimation(TardisAnimation.DOOR_CLOSE);
+                this.doorRightCloseAnimationState.start(this.tickCount);
+                this.doorLeftCloseAnimationState.start(this.tickCount);
             } else {
                 data.doorOpen = true;
+                playAnimation(TardisAnimation.DOOR_OPEN);
+                this.doorRightOpenAnimationState.start(this.tickCount);
+                this.doorLeftOpenAnimationState.start(this.tickCount);
             }
+            this.refreshDimensions();
         } else {
+
             player.displayClientMessage(Component.literal("The door is locked...").withStyle(ChatFormatting.GRAY), true);
             playSoundAtTardis(SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR, 0.5f);
+
         }
     }
 
@@ -328,25 +407,6 @@ public class TARDISEntity extends TARDISExteriorBase {
         }
     }
 
-    public void tardisMovement() {
-        Vec3 velocity = this.getDeltaMovement();
-
-        if (!this.onGround() && !this.isNoGravity()) {
-            velocity = velocity.add(0.0, -this.getDefaultGravity(), 0.0);
-        }
-
-        if (Math.abs(velocity.y) < 0.003) {
-            velocity = new Vec3(0, 0, 0);
-        }
-
-        this.setDeltaMovement(velocity);
-        this.move(MoverType.SELF, this.getDeltaMovement());
-
-        if (this.onGround()) {
-            this.setDeltaMovement(0, 0, 0);
-        }
-    }
-
     public void initTardis() {
         if (this.entityData.get(TARDIS_INITIALISED)) return;
 
@@ -361,8 +421,8 @@ public class TARDISEntity extends TARDISExteriorBase {
     }
 
 
-    private TARDISPartEntity leftArm;
-    private TARDISPartEntity rightArm;
+    private TardisPartEntity leftArm;
+    private TardisPartEntity rightArm;
 
     private void initParts() {
         if (this.level().isClientSide()) return;

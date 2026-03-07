@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "tardif_mod:block/crystalline_block",
+    "side": "tardif_mod:block/crystalline_block",
+    "top": "tardif_mod:block/crystalline_block"
+  }
+}

@@ -9,14 +9,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class TARDISPartEntity extends Entity {
-    private TARDISEntity parent;
+public class TardisPartEntity extends Entity {
+    private TardisEntity parent;
 
-    public TARDISPartEntity(EntityType<?> type, Level world) {
+    public TardisPartEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
-    public void setParent(TARDISEntity parent) {
+    public void setParent(TardisEntity parent) {
         this.parent = parent;
     }
 
@@ -49,9 +49,7 @@ public class TARDISPartEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-
-    }
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
 
     @Override
     public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
@@ -59,12 +57,8 @@ public class TARDISPartEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput view) {
-
-    }
+    protected void readAdditionalSaveData(ValueInput view) {}
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput view) {
-
-    }
+    protected void addAdditionalSaveData(ValueOutput view) {}
 }

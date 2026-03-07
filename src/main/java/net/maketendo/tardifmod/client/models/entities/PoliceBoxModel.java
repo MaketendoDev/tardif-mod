@@ -1,7 +1,11 @@
 package net.maketendo.tardifmod.client.models.entities;
 
 
+import net.maketendo.tardifmod.client.animations.tardis.PoliceBoxAnimations;
+import net.maketendo.tardifmod.client.animations.tardis.TardisAnimation;
 import net.maketendo.tardifmod.client.renderers.entities.renderstates.TARDISEntityRenderState;
+import net.minecraft.client.animation.KeyframeAnimation;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -33,6 +37,23 @@ public class PoliceBoxModel extends EntityModel<TARDISEntityRenderState> {
 	private final ModelPart window7;
 	private final ModelPart window8;
 
+	private final KeyframeAnimation doorRightOpen;
+	private final KeyframeAnimation doorLeftOpen;
+
+	private final KeyframeAnimation doorRightClose;
+	private final KeyframeAnimation doorLeftClose;
+
+	private final KeyframeAnimation phoneOpen;
+	private final KeyframeAnimation phoneClose;
+	private final KeyframeAnimation phoneRing;
+	private final KeyframeAnimation phoneDial;
+
+	private final KeyframeAnimation lampOpen;
+	private final KeyframeAnimation lampClose;
+
+	private final KeyframeAnimation fallingStart;
+	private final KeyframeAnimation fallingLoop;
+
 	public PoliceBoxModel(ModelPart root) {
 		super(root);
 		this.TARDIF = root.getChild("TARDIF");
@@ -52,6 +73,23 @@ public class PoliceBoxModel extends EntityModel<TARDISEntityRenderState> {
 		this.window6 = this.TARDIF.getChild("window6");
 		this.window7 = this.TARDIF.getChild("window7");
 		this.window8 = this.TARDIF.getChild("window8");
+
+		this.doorRightOpen = PoliceBoxAnimations.door_right_open.bake(root);
+		this.doorLeftOpen = PoliceBoxAnimations.door_left_open.bake(root);
+
+		this.doorRightClose = PoliceBoxAnimations.right_door_close.bake(root);
+		this.doorLeftClose = PoliceBoxAnimations.left_door_close.bake(root);
+
+		this.phoneOpen = PoliceBoxAnimations.phone_booth_open.bake(root);
+		this.phoneClose = PoliceBoxAnimations.phone_booth_close.bake(root);
+		this.phoneRing = PoliceBoxAnimations.phone_ring.bake(root);
+		this.phoneDial = PoliceBoxAnimations.phone_dial.bake(root);
+
+		this.lampOpen = PoliceBoxAnimations.lamp_open.bake(root);
+		this.lampClose = PoliceBoxAnimations.lamp_close.bake(root);
+
+		this.fallingStart = PoliceBoxAnimations.falling_start.bake(root);
+		this.fallingLoop = PoliceBoxAnimations.falling_loop.bake(root);
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -147,5 +185,26 @@ public class PoliceBoxModel extends EntityModel<TARDISEntityRenderState> {
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
+	@Override
+	public void setupAnim(TARDISEntityRenderState state) {
+		super.setupAnim(state);
 
+		this.doorRightOpen.apply(state.doorRightOpenAnimationState, state.ageInTicks);
+		this.doorLeftOpen.apply(state.doorLeftOpenAnimationState, state.ageInTicks);
+
+		this.doorRightClose.apply(state.doorRightCloseAnimationState, state.ageInTicks);
+		this.doorLeftClose.apply(state.doorLeftCloseAnimationState, state.ageInTicks);
+
+		this.phoneOpen.apply(state.phoneBoothOpenAnimationState, state.ageInTicks);
+		this.phoneClose.apply(state.phoneBoothCloseAnimationState, state.ageInTicks);
+
+		this.lampOpen.apply(state.lampOpenAnimationState, state.ageInTicks);
+		this.lampClose.apply(state.lampCloseAnimationState, state.ageInTicks);
+
+		this.phoneRing.apply(state.phoneRingAnimationState, state.ageInTicks);
+		this.phoneDial.apply(state.phoneDialAnimationState, state.ageInTicks);
+
+		this.fallingStart.apply(state.fallingStartAnimationState, state.ageInTicks);
+		this.fallingLoop.apply(state.fallingLoopAnimationState, state.ageInTicks);
+	}
 }

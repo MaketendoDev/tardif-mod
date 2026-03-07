@@ -4,7 +4,7 @@ import net.maketendo.tardifmod.client.packets.TardisAnimPackets;
 import net.maketendo.tardifmod.main.TARDIFDimensions;
 import net.maketendo.tardifmod.main.TARDIFEntities;
 import net.maketendo.tardifmod.main.TARDIFSounds;
-import net.maketendo.tardifmod.main.entities.tardis.TARDISEntity;
+import net.maketendo.tardifmod.main.entities.tardis.TardisEntity;
 import net.maketendo.tardifmod.main.tardis.TardisData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -91,7 +91,7 @@ public class TardisTravelManager {
                         EntitySpawnReason.TRIGGERED
                 );
 
-                if (rematTardis instanceof TARDISEntity tardis) {
+                if (rematTardis instanceof TardisEntity tardis) {
                     tardis.preInitialised();
                     tardis.setTardisId(data.id);
 
