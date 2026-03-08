@@ -24,14 +24,15 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFItems.TARDIS_ITEM, "TARDIS");
         translationBuilder.add(TARDIFItems.SILVER_TARDIS_KEY, "TARDIS Key");
         translationBuilder.add(TARDIFItems.GOLD_TARDIS_KEY, "TARDIS Key");
+        translationBuilder.add(TARDIFItems.SONIC_SCREWDRIVER, "Sonic Screwdriver");
 
         translationBuilder.add(TARDIFItems.CRYSTALLINE_SHARD, "Crystalline Shard");
 
         // Blocks
         translationBuilder.add(TARDIFBlocks.TARDIS_CONSOLE_BLOCK, "TARDIS Console");
 
-        translationBuilder.add(TARDIFBlocks.ROUNDEL, "Roundel");
-        translationBuilder.add(TARDIFBlocks.ROUNDEL_HALF, "Roundel");
+        translationBuilder.add(TARDIFBlocks.HALF_CHISELED_QUARTZ, "Half Chiseled Quartz");
+
         translationBuilder.add(TARDIFBlocks.GRAY_STAINED_QUARTZ, "Grey Stained Quartz");
         translationBuilder.add(TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ, "Dark Grey Stained Quartz");
         translationBuilder.add(TARDIFBlocks.BLACK_STAINED_QUARTZ, "Black Stained Quartz");
@@ -48,6 +49,10 @@ public class TARDIFModEnglishLangProvider extends FabricLanguageProvider {
         translationBuilder.add(TARDIFBlocks.MAGENTA_STAINED_QUARTZ, "Magenta Stained Quartz");
         translationBuilder.add(TARDIFBlocks.PINK_STAINED_QUARTZ, "Pink Stained Quartz");
 
+        translationBuilder.add(TARDIFBlocks.REDSTONE_ROUNDEL, "Redstone Roundel");
+        translationBuilder.add(TARDIFBlocks.REDSTONE_ROUNDEL_HALF, "Redstone Roundel");
+        translationBuilder.add(TARDIFBlocks.WHITE_ROUNDEL, "White Roundel");
+        translationBuilder.add(TARDIFBlocks.WHITE_ROUNDEL_HALF, "White Roundel");
         translationBuilder.add(TARDIFBlocks.GRAY_ROUNDEL, "Grey Roundel");
         translationBuilder.add(TARDIFBlocks.GRAY_ROUNDEL_HALF, "Grey Roundel");
         translationBuilder.add(TARDIFBlocks.DARK_GRAY_ROUNDEL, "Dark Grey Roundel");

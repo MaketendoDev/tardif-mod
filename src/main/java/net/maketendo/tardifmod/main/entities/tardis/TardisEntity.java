@@ -183,7 +183,6 @@ public class TardisEntity extends TardisExteriorBase {
     public void tick() {
         super.tick();
 
-
         if (this.entityData.get(TARDIS_INITIALISED) && level().isClientSide()) {
             TardisData data = TardisManager.getFromId(level().getServer(), getTardisId());
             clientTick(data);

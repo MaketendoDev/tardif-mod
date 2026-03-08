@@ -21,6 +21,8 @@ public class TARDIFItemGroups {
                         entries.accept(TARDIFItems.SILVER_TARDIS_KEY);
                         entries.accept(TARDIFItems.GOLD_TARDIS_KEY);
 
+                        entries.accept(TARDIFItems.SONIC_SCREWDRIVER);
+
                         //entries.add(TARDIFBlocks.POWER_PANEL);
                         //entries.add(TARDIFBlocks.COORDINATES_PANEL);
                         //entries.add(TARDIFBlocks.DEMATERIALISATION_PANEL);
@@ -31,12 +33,16 @@ public class TARDIFItemGroups {
 
     public static final CreativeModeTab DECORATION = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "decoration"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(TARDIFBlocks.ROUNDEL.asItem()))
+            FabricItemGroup.builder().icon(() -> new ItemStack(TARDIFBlocks.WHITE_ROUNDEL_HALF.asItem()))
                     .title(Component.translatable("itemgroup.tardif_mod.decoration"))
                     .displayItems((displayContext, entries) -> {
-                        entries.accept(TARDIFBlocks.ROUNDEL);
-                        entries.accept(TARDIFBlocks.ROUNDEL_HALF);
 
+                        entries.accept(TARDIFBlocks.HALF_CHISELED_QUARTZ);
+
+                        entries.accept(TARDIFBlocks.REDSTONE_ROUNDEL);
+                        entries.accept(TARDIFBlocks.REDSTONE_ROUNDEL_HALF);
+                        entries.accept(TARDIFBlocks.WHITE_ROUNDEL);
+                        entries.accept(TARDIFBlocks.WHITE_ROUNDEL_HALF);
                         entries.accept(TARDIFBlocks.GRAY_ROUNDEL);
                         entries.accept(TARDIFBlocks.GRAY_ROUNDEL_HALF);
                         entries.accept(TARDIFBlocks.DARK_GRAY_ROUNDEL);

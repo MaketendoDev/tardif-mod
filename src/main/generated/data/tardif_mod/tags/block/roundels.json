@@ -1,7 +1,9 @@
 {
   "values": [
-    "tardif_mod:roundel",
-    "tardif_mod:roundel_half",
+    "tardif_mod:redstone_roundel",
+    "tardif_mod:redstone_roundel_half",
+    "tardif_mod:white_roundel",
+    "tardif_mod:white_roundel_half",
     "tardif_mod:gray_roundel",
     "tardif_mod:gray_roundel_half",
     "tardif_mod:dark_gray_roundel",

@@ -7,12 +7,15 @@ import net.maketendo.tardifmod.main.TARDIFBlocks;
 import net.maketendo.tardifmod.main.TARDIFItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.model.ModelTemplate;
-import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.texture.TextureContents;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
 import java.util.*;
 
 
@@ -26,9 +29,8 @@ public class TARDIFModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
 
-        blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.ROUNDEL);
-        blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.ROUNDEL_HALF);
-
+        blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.WHITE_ROUNDEL);
+        blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.WHITE_ROUNDEL_HALF);
         blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.GRAY_ROUNDEL);
         blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.GRAY_ROUNDEL_HALF);
         blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.DARK_GRAY_ROUNDEL);
@@ -60,7 +62,13 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.PINK_ROUNDEL);
         blockStateModelGenerator.createRotatedVariantBlock(TARDIFBlocks.PINK_ROUNDEL_HALF);
 
-        //blockStateModelGenerator.createMultifaceBlockStates(TARDIFBlocks.TARDIS_MONITOR);
+        blockStateModelGenerator.createAxisAlignedPillarBlock(
+                TARDIFBlocks.HALF_CHISELED_QUARTZ,
+                TexturedModel.COLUMN
+        );
+
+        createRedstoneLamp(blockStateModelGenerator, TARDIFBlocks.REDSTONE_ROUNDEL);
+        createRedstoneLamp(blockStateModelGenerator, TARDIFBlocks.REDSTONE_ROUNDEL_HALF);
 
         blockStateModelGenerator.createTrivialCube(TARDIFBlocks.INTERIOR_DOOR_GENERATOR_BLOCK);
         blockStateModelGenerator.createTrivialCube(TARDIFBlocks.TARDIS_LIGHT_BLOCK);
@@ -143,6 +151,7 @@ public class TARDIFModModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(TARDIFItems.TARDIS_ITEM, ModelTemplates.FLAT_ITEM);
 
         itemModelGenerator.generateFlatItem(TARDIFItems.CRYSTALLINE_SHARD, ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(TARDIFItems.SONIC_SCREWDRIVER, ModelTemplates.FLAT_ITEM);
 
         itemModelGenerator.generateFlatItem(TARDIFBlocks.TARDIS_LIGHT_BLOCK.asItem(), ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(TARDIFBlocks.TARDIS_CONSOLE_BLOCK.asItem(), ModelTemplates.FLAT_ITEM);
@@ -153,5 +162,11 @@ public class TARDIFModModelProvider extends FabricModelProvider {
 
     private static ModelTemplate item(String parent, TextureSlot... requiredTextureKeys) {
         return new ModelTemplate(Optional.of(Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "item/" + parent)), Optional.empty(), requiredTextureKeys);
+    }
+
+    private void createRedstoneLamp(BlockModelGenerators blockModelGenerators, Block lamp) {
+        MultiVariant multiVariant = blockModelGenerators.plainVariant(TexturedModel.CUBE.create(lamp, blockModelGenerators.modelOutput));
+        MultiVariant multiVariant2 = blockModelGenerators.plainVariant(blockModelGenerators.createSuffixedVariant(lamp, "_on", ModelTemplates.CUBE_ALL, TextureMapping::cube));
+        blockModelGenerators.blockStateOutput.accept(MultiVariantGenerator.dispatch(lamp).with(blockModelGenerators.createBooleanModelDispatch(BlockStateProperties.LIT, multiVariant2, multiVariant)));
     }
 }

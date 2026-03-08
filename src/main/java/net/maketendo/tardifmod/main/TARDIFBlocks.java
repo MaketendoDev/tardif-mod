@@ -12,10 +12,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -26,9 +23,19 @@ import java.util.function.ToIntFunction;
 
 public class TARDIFBlocks {
 
-    public static final Block ROUNDEL = registerBlock("roundel",
+    public static final Block HALF_CHISELED_QUARTZ = registerBlock("half_chiseled_quartz",
+            properties -> new RotatedPillarBlock(properties.mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.8F)));
+
+    public static final Block REDSTONE_ROUNDEL = registerBlock("redstone_roundel",
+            properties -> new RedstoneRoundelBlock(properties.mapColor(MapColor.QUARTZ).lightLevel(litBlockEmission(15)).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.8F)));
+
+    public static final Block REDSTONE_ROUNDEL_HALF = registerBlock("redstone_roundel_half",
+            properties -> new RedstoneRoundelBlock(properties.mapColor(MapColor.QUARTZ).lightLevel(litBlockEmission(15)).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.8F)));
+
+    public static final Block WHITE_ROUNDEL = registerBlock("white_roundel",
             properties -> new RoundelBlock(properties.mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.8F)));
-    public static final Block ROUNDEL_HALF = registerBlock("roundel_half",
+
+    public static final Block WHITE_ROUNDEL_HALF = registerBlock("white_roundel_half",
             properties -> new RoundelBlock(properties.mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.8F)));
 
     public static final Block GRAY_ROUNDEL = registerBlock("gray_roundel",
@@ -372,6 +379,10 @@ public class TARDIFBlocks {
         return (state) -> (Boolean)state.getValue(BlockStateProperties.WATERLOGGED) ? MapColor.WATER : mapColor;
     }
 
+    public static ToIntFunction<BlockState> litBlockEmission(int i) {
+        return (blockState) -> (Boolean)blockState.getValue(BlockStateProperties.LIT) ? i : 0;
+    }
+
     public static void register() {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.OP_BLOCKS).register(entries -> {
             entries.accept(INTERIOR_DOOR_GENERATOR_BLOCK);
@@ -382,6 +393,12 @@ public class TARDIFBlocks {
             entries.accept(TARDIFBlocks.CRYSTALLINE_BLOCK);
             entries.accept(TARDIFBlocks.CRYSTALLINE_SLAB);
             entries.accept(TARDIFBlocks.CRYSTALLINE_STAIR);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> {
+            entries.accept(TARDIFBlocks.REDSTONE_ROUNDEL);
+            entries.accept(TARDIFBlocks.REDSTONE_ROUNDEL_HALF);
+
         });
     }
 }

@@ -27,8 +27,11 @@ public class TARDIFModBlockTagProvider extends FabricTagProvider.BlockTagProvide
 
         valueLookupBuilder(TARDIFTags.Blocks.ROUNDELS)
                 .add(
-                        TARDIFBlocks.ROUNDEL,
-                        TARDIFBlocks.ROUNDEL_HALF,
+                        TARDIFBlocks.REDSTONE_ROUNDEL,
+                        TARDIFBlocks.REDSTONE_ROUNDEL_HALF,
+
+                        TARDIFBlocks.WHITE_ROUNDEL,
+                        TARDIFBlocks.WHITE_ROUNDEL_HALF,
 
                         TARDIFBlocks.GRAY_ROUNDEL,
                         TARDIFBlocks.GRAY_ROUNDEL_HALF,

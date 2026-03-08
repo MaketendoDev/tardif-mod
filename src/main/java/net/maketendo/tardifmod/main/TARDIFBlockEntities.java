@@ -44,8 +44,8 @@ public class TARDIFBlockEntities {
                     Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "roundel"),
                     FabricBlockEntityTypeBuilder.create(
                             RoundelBlockEntity::new,
-                            TARDIFBlocks.ROUNDEL,
-                            TARDIFBlocks.ROUNDEL_HALF,
+                            TARDIFBlocks.WHITE_ROUNDEL,
+                            TARDIFBlocks.WHITE_ROUNDEL_HALF,
                             TARDIFBlocks.GRAY_ROUNDEL,
                             TARDIFBlocks.GRAY_ROUNDEL_HALF,
                             TARDIFBlocks.DARK_GRAY_ROUNDEL,

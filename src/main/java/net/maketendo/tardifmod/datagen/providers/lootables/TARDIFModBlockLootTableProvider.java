@@ -14,8 +14,6 @@ public class TARDIFModBlockLootTableProvider extends FabricBlockLootTableProvide
 
     @Override
     public void generate() {
-        dropSelf(TARDIFBlocks.ROUNDEL);
-        dropSelf(TARDIFBlocks.ROUNDEL_HALF);
 
         dropSelf(TARDIFBlocks.GRAY_STAINED_QUARTZ);
         dropSelf(TARDIFBlocks.DARK_GRAY_STAINED_QUARTZ);
@@ -33,6 +31,12 @@ public class TARDIFModBlockLootTableProvider extends FabricBlockLootTableProvide
         dropSelf(TARDIFBlocks.MAGENTA_STAINED_QUARTZ);
         dropSelf(TARDIFBlocks.PINK_STAINED_QUARTZ);
 
+        dropSelf(TARDIFBlocks.HALF_CHISELED_QUARTZ);
+
+        dropSelf(TARDIFBlocks.REDSTONE_ROUNDEL);
+        dropSelf(TARDIFBlocks.REDSTONE_ROUNDEL_HALF);
+        dropSelf(TARDIFBlocks.WHITE_ROUNDEL);
+        dropSelf(TARDIFBlocks.WHITE_ROUNDEL_HALF);
         dropSelf(TARDIFBlocks.GRAY_ROUNDEL);
         dropSelf(TARDIFBlocks.GRAY_ROUNDEL_HALF);
         dropSelf(TARDIFBlocks.DARK_GRAY_ROUNDEL);

@@ -11,6 +11,8 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
+
 import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.data.recipes.RecipeProvider.*;
@@ -27,6 +29,12 @@ public class TARDIFRecipeProvider extends FabricRecipeProvider {
         return new RecipeProvider(wrapperLookup, recipeExporter) {
             @Override
             public void buildRecipes() {
+
+                // WHITE
+                SingleItemRecipeBuilder.stonecutting(Ingredient.of(Blocks.SMOOTH_QUARTZ), RecipeCategory.BUILDING_BLOCKS, TARDIFBlocks.WHITE_ROUNDEL, 1).unlockedBy("has_grey_stained_quartz", has(Blocks.SMOOTH_QUARTZ)).save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "stonecutting/white_roundel")));
+                SingleItemRecipeBuilder.stonecutting(Ingredient.of(Blocks.SMOOTH_QUARTZ), RecipeCategory.BUILDING_BLOCKS, TARDIFBlocks.WHITE_ROUNDEL_HALF, 2).unlockedBy("has_grey_stained_quartz", has(Blocks.SMOOTH_QUARTZ)).save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "stonecutting/white_roundel_half")));
+                SingleItemRecipeBuilder.stonecutting(Ingredient.of(Blocks.SMOOTH_QUARTZ), RecipeCategory.BUILDING_BLOCKS, Blocks.SMOOTH_QUARTZ_SLAB, 2).unlockedBy("has_grey_stained_quartz", has(Blocks.SMOOTH_QUARTZ)).save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "stonecutting/quartz_slab")));
+                SingleItemRecipeBuilder.stonecutting(Ingredient.of(Blocks.SMOOTH_QUARTZ), RecipeCategory.BUILDING_BLOCKS, Blocks.SMOOTH_QUARTZ_STAIRS, 1).unlockedBy("has_grey_stained_quartz", has(Blocks.SMOOTH_QUARTZ)).save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "stonecutting/quartz_stairs")));
 
                 // GREY
                 SingleItemRecipeBuilder.stonecutting(Ingredient.of(TARDIFBlocks.GRAY_STAINED_QUARTZ), RecipeCategory.BUILDING_BLOCKS, TARDIFBlocks.GRAY_ROUNDEL, 1).unlockedBy("has_grey_stained_quartz", has(TARDIFBlocks.GRAY_STAINED_QUARTZ)).save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(TARDIFMod.MOD_ID, "stonecutting/grey_roundel")));
