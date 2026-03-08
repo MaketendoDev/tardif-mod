@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "tardif_mod:block/redstone_roundel"
+    },
+    "lit=true": {
+      "model": "tardif_mod:block/redstone_roundel_on"
+    }
+  }
+}

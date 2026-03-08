@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "tardif_mod:block/half_chiseled_quartz_top",
+    "side": "tardif_mod:block/half_chiseled_quartz_side"
+  }
+}

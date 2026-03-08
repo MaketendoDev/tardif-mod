@@ -9,6 +9,7 @@
   "client": [
     "client.CameraRotateShakeMixin",
     "client.ClientWorldMixin",
+    "client.EntityRendererMixin",
     "client.FlashMixin"
   ],
   "injectors": {

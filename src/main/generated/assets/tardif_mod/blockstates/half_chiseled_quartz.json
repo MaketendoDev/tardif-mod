@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "tardif_mod:block/half_chiseled_quartz",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "tardif_mod:block/half_chiseled_quartz"
+    },
+    "axis=z": {
+      "model": "tardif_mod:block/half_chiseled_quartz",
+      "x": 90
+    }
+  }
+}
